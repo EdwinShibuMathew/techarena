@@ -1,0 +1,33 @@
+{
+  "train": {
+    "events": 686824,
+    "min_timestamp": 1737331200,
+    "max_timestamp": 1737935940,
+    "empty_histories": 2244,
+    "cache_invariants_pass": true
+  },
+  "evaluation": {
+    "events": 52939,
+    "min_timestamp": 1737936000,
+    "max_timestamp": 1738540560,
+    "empty_histories": 665,
+    "cache_invariants_pass": true
+  },
+  "train_archive_sample": {
+    "archive_members": [
+      "train.csv"
+    ],
+    "events_compared": 2000,
+    "rows_compared": 20000,
+    "seconds": 0.3
+  },
+  "evaluation_archive_full": {
+    "archive_members": [
+      "evaluation.csv"
+    ],
+    "events_compared": 52939,
+    "rows_compared": 529390,
+    "seconds": 6.75
+  },
+  "all_evaluation_ids_match_cache_and_example": true
+}

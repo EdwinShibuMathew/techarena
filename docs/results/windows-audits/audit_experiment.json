@@ -1,0 +1,192 @@
+{
+  "checkpoint_max_prediction_error": 5.960464477539062e-07,
+  "baseline_auc": 0.802322148784919,
+  "protocol": "January 26 development only; January 24 reserved and not examined",
+  "slices_before": {
+    "history_0_0": {
+      "rows": 1980,
+      "clicks": 90,
+      "auc": 0.5338212815990594
+    },
+    "history_1_5": {
+      "rows": 32580,
+      "clicks": 1895,
+      "auc": 0.7348094154449653
+    },
+    "history_6_10": {
+      "rows": 53300,
+      "clicks": 3242,
+      "auc": 0.7725280007701861
+    },
+    "history_11_19": {
+      "rows": 83910,
+      "clicks": 5143,
+      "auc": 0.8028602566592904
+    },
+    "history_20_20": {
+      "rows": 179610,
+      "clicks": 11896,
+      "auc": 0.8215292228718793
+    },
+    "unseen_user": {
+      "rows": 5950,
+      "clicks": 380,
+      "auc": 0.6984961731078144
+    },
+    "unseen_item": {
+      "rows": 0,
+      "clicks": 0,
+      "auc": null
+    },
+    "repeat": {
+      "rows": 9037,
+      "clicks": 2712,
+      "auc": 0.6811995872538389
+    },
+    "nonrepeat": {
+      "rows": 342343,
+      "clicks": 19554,
+      "auc": 0.7895805670356139
+    },
+    "time_bucket_0": {
+      "rows": 80650,
+      "clicks": 5075,
+      "auc": 0.8143285347638548
+    },
+    "time_bucket_1": {
+      "rows": 103350,
+      "clicks": 6555,
+      "auc": 0.8077811840502601
+    },
+    "time_bucket_2": {
+      "rows": 93660,
+      "clicks": 5986,
+      "auc": 0.797055378381693
+    },
+    "time_bucket_3": {
+      "rows": 73720,
+      "clicks": 4650,
+      "auc": 0.788013326047597
+    },
+    "activity_0_2": {
+      "rows": 36830,
+      "clicks": 2332,
+      "auc": 0.7457315993260653
+    },
+    "activity_3_10": {
+      "rows": 150640,
+      "clicks": 9576,
+      "auc": 0.7924844704828575
+    },
+    "activity_11_10000": {
+      "rows": 163910,
+      "clicks": 10358,
+      "auc": 0.8229707342261149
+    }
+  },
+  "experiments": [
+    {
+      "scale": 0.25,
+      "preference_auc": 0.7804935838501253,
+      "blend_auc": 0.802795659868981
+    },
+    {
+      "scale": 0.5,
+      "preference_auc": 0.7801923789866214,
+      "blend_auc": 0.8027182278345315
+    },
+    {
+      "scale": 1.0,
+      "preference_auc": 0.7755365954998877,
+      "blend_auc": 0.8013248068341713
+    }
+  ],
+  "seconds": 27.73,
+  "best": {
+    "scale": 0.25,
+    "preference_auc": 0.7804935838501253,
+    "blend_auc": 0.802795659868981
+  },
+  "slices_after": {
+    "history_0_0": {
+      "rows": 1980,
+      "clicks": 90,
+      "auc": 0.5320987654320988
+    },
+    "history_1_5": {
+      "rows": 32580,
+      "clicks": 1895,
+      "auc": 0.736331323091951
+    },
+    "history_6_10": {
+      "rows": 53300,
+      "clicks": 3242,
+      "auc": 0.7730812393342414
+    },
+    "history_11_19": {
+      "rows": 83910,
+      "clicks": 5143,
+      "auc": 0.8032533213802293
+    },
+    "history_20_20": {
+      "rows": 179610,
+      "clicks": 11896,
+      "auc": 0.8217873810363704
+    },
+    "unseen_user": {
+      "rows": 5950,
+      "clicks": 380,
+      "auc": 0.7066035150713408
+    },
+    "unseen_item": {
+      "rows": 0,
+      "clicks": 0,
+      "auc": null
+    },
+    "repeat": {
+      "rows": 9037,
+      "clicks": 2712,
+      "auc": 0.6816710389776954
+    },
+    "nonrepeat": {
+      "rows": 342343,
+      "clicks": 19554,
+      "auc": 0.790134610585247
+    },
+    "time_bucket_0": {
+      "rows": 80650,
+      "clicks": 5075,
+      "auc": 0.8147653357102933
+    },
+    "time_bucket_1": {
+      "rows": 103350,
+      "clicks": 6555,
+      "auc": 0.8081946539134565
+    },
+    "time_bucket_2": {
+      "rows": 93660,
+      "clicks": 5986,
+      "auc": 0.7974216358765689
+    },
+    "time_bucket_3": {
+      "rows": 73720,
+      "clicks": 4650,
+      "auc": 0.7887575889194537
+    },
+    "activity_0_2": {
+      "rows": 36830,
+      "clicks": 2332,
+      "auc": 0.7466441363791989
+    },
+    "activity_3_10": {
+      "rows": 150640,
+      "clicks": 9576,
+      "auc": 0.7929177629713426
+    },
+    "activity_11_10000": {
+      "rows": 163910,
+      "clicks": 10358,
+      "auc": 0.8233822730191619
+    }
+  }
+}

@@ -1,0 +1,24 @@
+# Local competition assets and migration state never belong in Git.
+/data/
+/artifacts/
+/local/
+/archive/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+.env
+.env.*
+!.env.example
+*.pt
+*.pth
+*.cbm
+*.npz
+*.npy
+*.csv
+*.zip
+*.tar
+*.tar.gz
+*.log
+.DS_Store
+Thumbs.db

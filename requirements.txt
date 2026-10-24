@@ -1,0 +1,9 @@
+# Package names, NOT an exact reproduction lock. Prefer Edwin's working conda env.
+# tools/consolidate.py bundle records installed versions locally.
+# New CUDA installations should use https://pytorch.org/get-started/locally/
+numpy
+pandas
+scipy
+scikit-learn
+catboost
+torch

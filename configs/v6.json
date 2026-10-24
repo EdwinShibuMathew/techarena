@@ -1,0 +1,10 @@
+{
+  "version": "v6_candidate_row_ranking",
+  "evaluation_events": 52939,
+  "evaluation_rows": 529390,
+  "submission_sha256": "c386d545b3746e05dd515020c6185afda06cefdbcdf7d48df022454762fb378c",
+  "members": ["dim8_seed42", "dim8_seed43", "dim8_seed44", "dim16_seed42", "dim16_seed43"],
+  "weights": [0.2222222222222222, 0.2222222222222222, 0.2222222222222222, 0.16666666666666666, 0.16666666666666666],
+  "reported_public_auc": 0.819451,
+  "status": "submitted by Edwin; original artifacts protected"
+}
