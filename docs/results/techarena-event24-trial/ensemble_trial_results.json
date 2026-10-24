@@ -1,0 +1,54 @@
+{
+  "protocol": {
+    "changed_setting": "event epochs 8 to 24 for the two dim8 models",
+    "dimension": 8,
+    "seeds": [
+      42,
+      43
+    ],
+    "preference_epochs": 196,
+    "preference_models_reused": true,
+    "event_epochs": 24,
+    "event_learning_rate": 0.0015,
+    "event_anchor_regularization": 0.1,
+    "event_effect_regularization": 0.05,
+    "combiner_trees": 545,
+    "combiner_seed": 42,
+    "combiner_early_stopping": false,
+    "candidate": "replace the two dim8 event models; retain the existing dim16 models",
+    "weights": [
+      0.3333333333333333,
+      0.3333333333333333,
+      0.16666666666666666,
+      0.16666666666666666
+    ],
+    "primary_check": "first event per user across Jan25-26; combiner trained on Jan24",
+    "secondary_check": "first event per user on Jan26; combiner trained on Jan25",
+    "support_rule": "primary paired-gain interval entirely above zero and secondary AUC change nonnegative",
+    "bootstrap_resamples": 300,
+    "bootstrap_seed": 2026,
+    "status": "retrospective development experiment"
+  },
+  "two_day_primary": {
+    "events": 43964,
+    "baseline_event8_auc": 0.8162401445033456,
+    "candidate_event24_auc": 0.8144742270569346,
+    "auc_change": -0.0017659174464109695,
+    "event24_dim8_seed42_auc": 0.8064532942793607,
+    "event24_dim8_seed43_auc": 0.8074222779619218
+  },
+  "jan26_secondary": {
+    "events": 35138,
+    "baseline_event8_auc": 0.8256163176107802,
+    "candidate_event24_auc": 0.823814019617254,
+    "auc_change": -0.0018022979935262695,
+    "event24_dim8_seed42_auc": 0.8172567325134728,
+    "event24_dim8_seed43_auc": 0.8170500788307418
+  },
+  "primary_paired_gain_95_percentile_interval": [
+    -0.0020889211243559106,
+    -0.0014364374488531563
+  ],
+  "supported_for_further_confirmation": false,
+  "runtime_seconds": 90.93
+}

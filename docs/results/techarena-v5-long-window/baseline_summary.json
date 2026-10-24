@@ -1,0 +1,188 @@
+{
+  "diagnostic": "frozen V5 recipe, earlier fitting cutoffs, first event per user across Jan22-26",
+  "meta_neural_cutoff": "2025-01-21T00:00:00+00:00",
+  "combiner_fitting_day": "2025-01-21",
+  "target_neural_cutoff": "2025-01-22T00:00:00+00:00",
+  "weights": [
+    0.2222222222222222,
+    0.2222222222222222,
+    0.2222222222222222,
+    0.16666666666666666,
+    0.16666666666666666
+  ],
+  "fitting_data": {
+    "jan21": {
+      "cutoff": 1737417600,
+      "training_events": 98514,
+      "training_users": 35259,
+      "initial_history_clicks": 462997,
+      "observed_training_clicks": 62096,
+      "total_click_examples": 525093,
+      "examples_match_raw_multiset": true,
+      "future_only_users_excluded": true,
+      "fixed_day_monitoring_events": 35156
+    },
+    "jan22": {
+      "cutoff": 1737504000,
+      "training_events": 197017,
+      "training_users": 44034,
+      "initial_history_clicks": 533504,
+      "observed_training_clicks": 124053,
+      "total_click_examples": 657557,
+      "examples_match_raw_multiset": true,
+      "future_only_users_excluded": true,
+      "fixed_day_monitoring_events": 35112
+    }
+  },
+  "overall": {
+    "events": 51488,
+    "rows": 514880,
+    "clicks": 32725,
+    "auc": 0.7817113213682659,
+    "actual_click_rate": 0.06355849906774394,
+    "mean_prediction": 0.059297665052949436,
+    "log_loss": 0.2035038239747814,
+    "choice_diagnostics": {
+      "clicked_events": 32725,
+      "within_event_auc_clicked_events": 0.7707393260334438,
+      "clicked_candidate_top1_with_fractional_ties": 0.3541329258976318,
+      "mean_clicked_rank_with_average_ties": 3.063346065699007,
+      "note": "choice diagnostics, not the competition's global row AUC"
+    }
+  },
+  "auc_95_percentile_interval": [
+    0.779202736673251,
+    0.7840613458547244
+  ],
+  "per_day": {
+    "2025-01-22": {
+      "events": 35112,
+      "auc": 0.7933042060735607,
+      "actual_click_rate": 0.06359364319890635,
+      "mean_prediction": 0.05970898616696191,
+      "unseen_user_fraction": 0.11335156071998177,
+      "history_1_5_fraction": 0.13411369332421963
+    },
+    "2025-01-23": {
+      "events": 8780,
+      "auc": 0.768619939645498,
+      "actual_click_rate": 0.06338268792710706,
+      "mean_prediction": 0.05886636259740305,
+      "unseen_user_fraction": 0.24248291571753985,
+      "history_1_5_fraction": 0.3165148063781321
+    },
+    "2025-01-24": {
+      "events": 4065,
+      "auc": 0.7440590418560521,
+      "actual_click_rate": 0.06337023370233702,
+      "mean_prediction": 0.058681094604561695,
+      "unseen_user_fraction": 0.34243542435424357,
+      "history_1_5_fraction": 0.44551045510455106
+    },
+    "2025-01-25": {
+      "events": 2165,
+      "auc": 0.7341142166640247,
+      "actual_click_rate": 0.06457274826789838,
+      "mean_prediction": 0.057296428115755686,
+      "unseen_user_fraction": 0.40323325635103924,
+      "history_1_5_fraction": 0.5237875288683603
+    },
+    "2025-01-26": {
+      "events": 1366,
+      "auc": 0.7335755157297493,
+      "actual_click_rate": 0.06273792093704246,
+      "mean_prediction": 0.05650378909849276,
+      "unseen_user_fraction": 0.4355783308931186,
+      "history_1_5_fraction": 0.5651537335285505
+    }
+  },
+  "groups": {
+    "seen_users": {
+      "events": 42519,
+      "auc": 0.7906270311230789,
+      "actual_click_rate": 0.06335990968743385,
+      "mean_prediction": 0.059247798179546986
+    },
+    "unseen_with_history": {
+      "events": 8276,
+      "auc": 0.7431783253172323,
+      "actual_click_rate": 0.06585306911551474,
+      "mean_prediction": 0.060558404471925224
+    },
+    "unseen_empty_history": {
+      "events": 693,
+      "auc": 0.5026892829257805,
+      "actual_click_rate": 0.048340548340548344,
+      "mean_prediction": 0.04730114291551165
+    },
+    "history_empty": {
+      "events": 960,
+      "auc": 0.5302341517455544,
+      "actual_click_rate": 0.044895833333333336,
+      "mean_prediction": 0.04390932699055058
+    },
+    "history_1_5": {
+      "events": 11205,
+      "auc": 0.7279132218489829,
+      "actual_click_rate": 0.060812137438643464,
+      "mean_prediction": 0.05716177832708989
+    },
+    "history_6_19": {
+      "events": 23685,
+      "auc": 0.7854716080330946,
+      "actual_click_rate": 0.06348743930757864,
+      "mean_prediction": 0.058888207299668135
+    },
+    "history_20": {
+      "events": 15638,
+      "auc": 0.8137694432796031,
+      "actual_click_rate": 0.06677963934006906,
+      "mean_prediction": 0.06239290883026281
+    },
+    "activity_1_5": {
+      "events": 31684,
+      "auc": 0.7822715435306937,
+      "actual_click_rate": 0.06343264739300593,
+      "mean_prediction": 0.05896550877294988
+    },
+    "activity_6_15": {
+      "events": 9262,
+      "auc": 0.8115836140515932,
+      "actual_click_rate": 0.0630533362124811,
+      "mean_prediction": 0.05955193271780954
+    },
+    "activity_16_plus": {
+      "events": 1573,
+      "auc": 0.828130675097388,
+      "actual_click_rate": 0.06369993642720916,
+      "mean_prediction": 0.06314300699406356
+    }
+  },
+  "member_auc": {
+    "dim8_seed42": 0.7692800799415794,
+    "dim8_seed43": 0.7661652802263748,
+    "dim8_seed44": 0.7673421632740183,
+    "dim16_seed42": 0.7533455248213634,
+    "dim16_seed43": 0.7539837056827066
+  },
+  "population": {
+    "users": 51488,
+    "first_event_per_user_verified": true,
+    "unseen_user_fraction": 0.17419592914853946,
+    "empty_history_fraction": 0.018645121193287758,
+    "horizon_hours_p50_p90_max": [
+      16.4,
+      64.36666666666666,
+      119.98333333333333
+    ]
+  },
+  "sampling_unit": "whole first event per user, preserving all 10 candidates",
+  "data_and_saved_combiner_checks_passed": true,
+  "candidate_comparison_performed": false,
+  "baseline_established": true,
+  "submission_created": false,
+  "interpretation": "horizon groups contain different users; their AUC differences do not isolate temporal decay",
+  "status": "retrospective diagnostic; reused dates, smaller fitting set, not independent confirmation",
+  "full_report": "/home/edwin/projects/techarena-v5-long-window/outputs/baseline_results.json",
+  "runtime_seconds": 69.75
+}

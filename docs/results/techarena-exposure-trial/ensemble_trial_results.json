@@ -1,0 +1,223 @@
+{
+  "protocol": {
+    "experiment": "past exposure, recent activity and time-bucket CTR summaries added to V5 combiners",
+    "configuration": {
+      "extra_features": [
+        "log_ui_prior_displays",
+        "log_ui_prior_nonclicks",
+        "log_ui_prior_clicks",
+        "log_ui_last_display_age",
+        "log_user_last_event_age",
+        "log_user_last_observed_click_age",
+        "log_user_recent24h_events",
+        "user_recent24h_ctr",
+        "log_item_recent24h_displays",
+        "item_recent24h_ctr",
+        "log_user_bucket_events",
+        "user_bucket_ctr",
+        "log_item_bucket_displays",
+        "item_bucket_ctr",
+        "log_user_bucket_last_event_age",
+        "log_item_last_display_age"
+      ],
+      "base_feature_count": 37,
+      "total_feature_count": 53,
+      "recent_window_hours": 24,
+      "maximum_age_hours": 720.0,
+      "ctr_smoothing_candidate_rows": 50.0,
+      "time_context": "four six-hour time buckets, pooled over both day types",
+      "combiner_trees": 545,
+      "combiner_depth": 6,
+      "combiner_learning_rate": 0.05,
+      "combiner_l2_leaf_reg": 20,
+      "combiner_seed": 42,
+      "combiner_threads": 4,
+      "combiner_early_stopping": false,
+      "candidate_v5_weight": 0.5,
+      "candidate_augmented_weight": 0.5
+    },
+    "members": [
+      "dim8_seed42",
+      "dim8_seed43",
+      "dim8_seed44",
+      "dim16_seed42",
+      "dim16_seed43"
+    ],
+    "member_weights": [
+      0.2222222222222222,
+      0.2222222222222222,
+      0.2222222222222222,
+      0.16666666666666666,
+      0.16666666666666666
+    ],
+    "neural_models_unchanged": true,
+    "fitting_selection": "first event per user on the same meta-training days as V5; no weighting change",
+    "feature_fitting_rule": "all impression counts, outcomes, smoothing priors and timestamps strictly before each prefix cutoff",
+    "target_rule": "target user, item, time and bucket are queries only; no aggregate updates from targets or histories",
+    "nonclick_interpretation": "observed exposure without a click; not explicit dislike",
+    "primary_check": "Jan24 prefix/meta day for combiner fitting; Jan25 prefix, first-user Jan25-26 evaluation",
+    "secondary_check": "Jan25 prefix/meta day for combiner fitting; Jan26 prefix, first-user Jan26 evaluation",
+    "bootstrap_resamples": 300,
+    "bootstrap_seed": 2026,
+    "support_rule": "global primary paired gain interval entirely positive and global secondary AUC change nonnegative",
+    "next_gate": "same fixed feature/blend recipe versus V5 in earlier-cutoff five-day paired check before full-data promotion",
+    "weight_search_performed": false,
+    "submission_created": false,
+    "status": "retrospective development experiment; reused validation dates; interval not selection-adjusted"
+  },
+  "two_day_primary": {
+    "events": 43964,
+    "baseline_v5_auc": 0.8183722315263706,
+    "augmented_ensemble_auc": 0.81818859070466,
+    "fixed_50_50_candidate_auc": 0.8183658779052249,
+    "auc_change": -6.353621145760435e-06
+  },
+  "jan26_secondary": {
+    "events": 35138,
+    "baseline_v5_auc": 0.8269940935263442,
+    "augmented_ensemble_auc": 0.8268000517895865,
+    "fixed_50_50_candidate_auc": 0.8269906306689739,
+    "auc_change": -3.4628573702955023e-06
+  },
+  "primary_paired_gain_95_percentile_interval": [
+    -7.069033175956808e-05,
+    5.3978873194956964e-05
+  ],
+  "primary_groups_exploratory": {
+    "with_prior_user_item_exposure": {
+      "events": 8564,
+      "baseline_auc": 0.851933569978579,
+      "candidate_auc": 0.8520234003423104,
+      "auc_change": 8.98303637313358e-05
+    },
+    "without_prior_user_item_exposure": {
+      "events": 35400,
+      "baseline_auc": 0.8085851617458457,
+      "candidate_auc": 0.8085610475204623,
+      "auc_change": -2.4114225383398136e-05
+    },
+    "activity_1_5": {
+      "events": 16587,
+      "baseline_auc": 0.7935267809090032,
+      "candidate_auc": 0.7936477964273528,
+      "auc_change": 0.00012101551834964308
+    },
+    "activity_16_plus": {
+      "events": 8452,
+      "baseline_auc": 0.8449689123065495,
+      "candidate_auc": 0.8448266838661804,
+      "auc_change": -0.00014222844036904103
+    },
+    "unseen_with_history": {
+      "events": 1278,
+      "baseline_auc": 0.7533950342181915,
+      "candidate_auc": 0.7533782279847595,
+      "auc_change": -1.6806233432031803e-05
+    },
+    "history_empty": {
+      "events": 361,
+      "baseline_auc": 0.5592610983855437,
+      "candidate_auc": 0.5614271145354456,
+      "auc_change": 0.0021660161499018615
+    },
+    "horizon_24_48h": {
+      "events": 8734,
+      "baseline_auc": 0.8039556107046674,
+      "candidate_auc": 0.8040867596357143,
+      "auc_change": 0.0001311489310469316
+    }
+  },
+  "exposure_coverage": {
+    "jan24": {
+      "events": 35040,
+      "fitting_events": 392831,
+      "candidate_rows_with_prior_ui_display": 7019,
+      "candidate_rows_with_prior_ui_display_percent": 2.0031392694063928,
+      "events_without_fitting_activity": 1392,
+      "events_without_recent24h_activity": 8988
+    },
+    "jan25": {
+      "events": 43964,
+      "fitting_events": 490420,
+      "candidate_rows_with_prior_ui_display": 9696,
+      "candidate_rows_with_prior_ui_display_percent": 2.2054408152124467,
+      "events_without_fitting_activity": 1468,
+      "events_without_recent24h_activity": 12888
+    },
+    "jan26": {
+      "events": 35138,
+      "fitting_events": 588873,
+      "candidate_rows_with_prior_ui_display": 9446,
+      "candidate_rows_with_prior_ui_display_percent": 2.688257726677671,
+      "events_without_fitting_activity": 595,
+      "events_without_recent24h_activity": 8734
+    }
+  },
+  "member_checks": {
+    "dim8_seed42": {
+      "primary_v5_max_abs_difference": 0.0,
+      "secondary_v5_max_abs_difference": 0.0,
+      "original_feature_columns_unchanged": true,
+      "saved_combiners_reproduced": true,
+      "extra_feature_importance_percent_jan24": 5.4591870335674795,
+      "extra_feature_importance_percent_jan25": 5.100275427534681
+    },
+    "dim8_seed43": {
+      "primary_v5_max_abs_difference": 0.0,
+      "secondary_v5_max_abs_difference": 0.0,
+      "original_feature_columns_unchanged": true,
+      "saved_combiners_reproduced": true,
+      "extra_feature_importance_percent_jan24": 5.2281849855022315,
+      "extra_feature_importance_percent_jan25": 5.01895581435377
+    },
+    "dim8_seed44": {
+      "primary_v5_max_abs_difference": 0.0,
+      "secondary_v5_max_abs_difference": 0.0,
+      "original_feature_columns_unchanged": true,
+      "saved_combiners_reproduced": true,
+      "extra_feature_importance_percent_jan24": 4.944748306080452,
+      "extra_feature_importance_percent_jan25": 5.508239076989595
+    },
+    "dim16_seed42": {
+      "primary_v5_max_abs_difference": 0.0,
+      "secondary_v5_max_abs_difference": 0.0,
+      "original_feature_columns_unchanged": true,
+      "saved_combiners_reproduced": true,
+      "extra_feature_importance_percent_jan24": 6.742208334059281,
+      "extra_feature_importance_percent_jan25": 6.481355555577478
+    },
+    "dim16_seed43": {
+      "primary_v5_max_abs_difference": 0.0,
+      "secondary_v5_max_abs_difference": 0.0,
+      "original_feature_columns_unchanged": true,
+      "saved_combiners_reproduced": true,
+      "extra_feature_importance_percent_jan24": 6.570478845463099,
+      "extra_feature_importance_percent_jan25": 6.478566825031483
+    }
+  },
+  "v5_reproduction_passed": true,
+  "neural_training_performed": false,
+  "supported_for_five_day_check": false,
+  "sampling_unit": "whole first event per user, preserving all ten candidates; global row AUC",
+  "submission_created": false,
+  "runtime_seconds": 163.77,
+  "artifact_sha256": {
+    "work/dim8_seed42_predictions.npz": "a16798cfd97db225dccd764ffe3a8d3d278ff2cc6e30312d615da56f2df5ac04",
+    "work/dim8_seed42_jan24.cbm": "38e12e174dbd0ad06da4536d71557e4d8d31a98ae5d93af2cb0eae9046a411e9",
+    "work/dim8_seed42_jan25.cbm": "423a4ee6b3b29cd2f48fb9d1de37578c71f14268b0f048f4f327afb8cc88261f",
+    "work/dim8_seed43_predictions.npz": "ef0e054860cdc0d5b6a2273081117c3a508f9e84358346a38f04275ccfe7f2af",
+    "work/dim8_seed43_jan24.cbm": "f88686296d0e41cb09f1f2e5a36e3a505ba79560a409beeb632a03884d5e2a27",
+    "work/dim8_seed43_jan25.cbm": "01a20490427b0b766be9bacef9aa80372f78e48a0f8c5d08a26f2901d5e89a22",
+    "work/dim8_seed44_predictions.npz": "32c3280116d29700e9b78fa4635a4f2db35bebde5c89e6c5f0d67b45da959b23",
+    "work/dim8_seed44_jan24.cbm": "2e75f67d2918ab859bfd7020a420d5e23a115f89c1aae0fac48b7694bd66699c",
+    "work/dim8_seed44_jan25.cbm": "de8c37bcb16c76b4458d4b7eb0aa6cd91b5adf69d12e5712db5ff67e70b12c10",
+    "work/dim16_seed42_predictions.npz": "637bdd7124e39be2564a24977527cf8f0ec4e05973a916a6655f984a46a3ec03",
+    "work/dim16_seed42_jan24.cbm": "fa2d18091fae0ed3b2eaa748acb9f8b341df97a337c228a47eea6a5431f6e42f",
+    "work/dim16_seed42_jan25.cbm": "5992f37e38f7253a01a8a416e6911fb05086410a6002ec2626a80b564abe03a5",
+    "work/dim16_seed43_predictions.npz": "ef0780f19185c42b9a01e764d56148cd6564fbd2c8058963a851ead9d527446c",
+    "work/dim16_seed43_jan24.cbm": "4598d5cd890998e1c80ae97b0a78cabc02a0140d77ec37db2f6b1ad0d63885d4",
+    "work/dim16_seed43_jan25.cbm": "4ca62546b4614dbe2cd0c53b9add90d8723aa09595b8c943bff492cb38929d3d",
+    "work/two_day_ensemble_predictions.npz": "965a46f76cf870302ff46ed54b8b09be3a919b9ffaa6c7cfad0fdf21ee489b3f",
+    "work/jan26_ensemble_predictions.npz": "0fdb5aece43e8bf2a36470274b507b5b1ced903a507b75e72f2777743239763e"
+  }
+}

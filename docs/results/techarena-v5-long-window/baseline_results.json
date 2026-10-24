@@ -1,0 +1,537 @@
+{
+  "protocol": {
+    "experiment": "V5 recipe five-day historical baseline; no new candidate",
+    "members": [
+      "dim8_seed42",
+      "dim8_seed43",
+      "dim8_seed44",
+      "dim16_seed42",
+      "dim16_seed43"
+    ],
+    "weights": [
+      0.2222222222222222,
+      0.2222222222222222,
+      0.2222222222222222,
+      0.16666666666666666,
+      0.16666666666666666
+    ],
+    "dim8_schedule": {
+      "initial_preference_epochs": 196,
+      "fine_tuning_epochs": 64,
+      "initial_learning_rate": 0.012,
+      "fine_tuning_learning_rate": 0.003,
+      "adam_moments_reused": true,
+      "fine_tuning_sampling_seeds": [
+        1042,
+        1043,
+        1044
+      ]
+    },
+    "dim16_schedule": {
+      "preference_epochs": 196,
+      "learning_rate": 0.012
+    },
+    "event_epochs": 8,
+    "event_learning_rate": 0.0015,
+    "combiner": {
+      "trees": 545,
+      "depth": 6,
+      "learning_rate": 0.05,
+      "l2_leaf_reg": 20,
+      "seed": 42,
+      "features": 37,
+      "early_stopping": false
+    },
+    "meta_neural_cutoff": "2025-01-21T00:00:00+00:00",
+    "combiner_fitting_day": "2025-01-21",
+    "target_neural_cutoff": "2025-01-22T00:00:00+00:00",
+    "target_window": "2025-01-22T00:00:00+00:00 through 2025-01-27T00:00:00+00:00 exclusive",
+    "target_selection": "first event per user across the entire five-day window; stable original order for equal times",
+    "target_history_policy": "use each target's supplied prior history; never update fitted weights/statistics with window events",
+    "early_stopping_or_weight_search": false,
+    "bootstrap_resamples": 300,
+    "bootstrap_seed": 2026,
+    "bootstrap_interpretation": "sampling uncertainty conditional on these fitted models; excludes training variability",
+    "status": "retrospective diagnostic; reused dates, smaller fitting set, not independent confirmation",
+    "interpretation": "horizon groups contain different users; their AUC differences do not isolate temporal decay",
+    "promotion_or_qualification_threshold": null,
+    "folds": {
+      "jan21": {
+        "cutoff": 1737417600,
+        "training_events": 98514,
+        "training_users": 35259,
+        "initial_history_clicks": 462997,
+        "observed_training_clicks": 62096,
+        "total_click_examples": 525093,
+        "examples_match_raw_multiset": true,
+        "future_only_users_excluded": true,
+        "fixed_day_monitoring_events": 35156
+      },
+      "jan22": {
+        "cutoff": 1737504000,
+        "training_events": 197017,
+        "training_users": 44034,
+        "initial_history_clicks": 533504,
+        "observed_training_clicks": 124053,
+        "total_click_examples": 657557,
+        "examples_match_raw_multiset": true,
+        "future_only_users_excluded": true,
+        "fixed_day_monitoring_events": 35112
+      }
+    },
+    "target_events": 51488
+  },
+  "overall": {
+    "events": 51488,
+    "rows": 514880,
+    "clicks": 32725,
+    "auc": 0.7817113213682659,
+    "actual_click_rate": 0.06355849906774394,
+    "mean_prediction": 0.059297665052949436,
+    "log_loss": 0.2035038239747814,
+    "choice_diagnostics": {
+      "clicked_events": 32725,
+      "within_event_auc_clicked_events": 0.7707393260334438,
+      "clicked_candidate_top1_with_fractional_ties": 0.3541329258976318,
+      "mean_clicked_rank_with_average_ties": 3.063346065699007,
+      "note": "choice diagnostics, not the competition's global row AUC"
+    }
+  },
+  "auc_95_percentile_interval": [
+    0.779202736673251,
+    0.7840613458547244
+  ],
+  "per_day": {
+    "2025-01-22": {
+      "events": 35112,
+      "rows": 351120,
+      "clicks": 22329,
+      "auc": 0.7933042060735607,
+      "actual_click_rate": 0.06359364319890635,
+      "mean_prediction": 0.05970898616696191,
+      "log_loss": 0.20082174555363191,
+      "choice_diagnostics": {
+        "clicked_events": 22329,
+        "within_event_auc_clicked_events": 0.7837092769243784,
+        "clicked_candidate_top1_with_fractional_ties": 0.3699225222804425,
+        "mean_clicked_rank_with_average_ties": 2.9466165076805946,
+        "note": "choice diagnostics, not the competition's global row AUC"
+      },
+      "unseen_user_fraction": 0.11335156071998177,
+      "history_1_5_fraction": 0.13411369332421963
+    },
+    "2025-01-23": {
+      "events": 8780,
+      "rows": 87800,
+      "clicks": 5565,
+      "auc": 0.768619939645498,
+      "actual_click_rate": 0.06338268792710706,
+      "mean_prediction": 0.05886636259740305,
+      "log_loss": 0.20645017495613543,
+      "choice_diagnostics": {
+        "clicked_events": 5565,
+        "within_event_auc_clicked_events": 0.759508834980533,
+        "clicked_candidate_top1_with_fractional_ties": 0.33315363881401616,
+        "mean_clicked_rank_with_average_ties": 3.164420485175202,
+        "note": "choice diagnostics, not the competition's global row AUC"
+      },
+      "unseen_user_fraction": 0.24248291571753985,
+      "history_1_5_fraction": 0.3165148063781321
+    },
+    "2025-01-24": {
+      "events": 4065,
+      "rows": 40650,
+      "clicks": 2576,
+      "auc": 0.7440590418560521,
+      "actual_click_rate": 0.06337023370233702,
+      "mean_prediction": 0.058681094604561695,
+      "log_loss": 0.21069916775052197,
+      "choice_diagnostics": {
+        "clicked_events": 2576,
+        "within_event_auc_clicked_events": 0.7311939268461007,
+        "clicked_candidate_top1_with_fractional_ties": 0.31288819875776397,
+        "mean_clicked_rank_with_average_ties": 3.419254658385093,
+        "note": "choice diagnostics, not the competition's global row AUC"
+      },
+      "unseen_user_fraction": 0.34243542435424357,
+      "history_1_5_fraction": 0.44551045510455106
+    },
+    "2025-01-25": {
+      "events": 2165,
+      "rows": 21650,
+      "clicks": 1398,
+      "auc": 0.7341142166640247,
+      "actual_click_rate": 0.06457274826789838,
+      "mean_prediction": 0.057296428115755686,
+      "log_loss": 0.21578546806466306,
+      "choice_diagnostics": {
+        "clicked_events": 1398,
+        "within_event_auc_clicked_events": 0.7131616595135909,
+        "clicked_candidate_top1_with_fractional_ties": 0.3147353361945637,
+        "mean_clicked_rank_with_average_ties": 3.5815450643776825,
+        "note": "choice diagnostics, not the competition's global row AUC"
+      },
+      "unseen_user_fraction": 0.40323325635103924,
+      "history_1_5_fraction": 0.5237875288683603
+    },
+    "2025-01-26": {
+      "events": 1366,
+      "rows": 13660,
+      "clicks": 857,
+      "auc": 0.7335755157297493,
+      "actual_click_rate": 0.06273792093704246,
+      "mean_prediction": 0.05650378909849276,
+      "log_loss": 0.21262925882407246,
+      "choice_diagnostics": {
+        "clicked_events": 857,
+        "within_event_auc_clicked_events": 0.7185271619343966,
+        "clicked_candidate_top1_with_fractional_ties": 0.26721120186697783,
+        "mean_clicked_rank_with_average_ties": 3.5332555425904317,
+        "note": "choice diagnostics, not the competition's global row AUC"
+      },
+      "unseen_user_fraction": 0.4355783308931186,
+      "history_1_5_fraction": 0.5651537335285505
+    }
+  },
+  "groups": {
+    "seen_users": {
+      "events": 42519,
+      "rows": 425190,
+      "clicks": 26940,
+      "auc": 0.7906270311230789,
+      "actual_click_rate": 0.06335990968743385,
+      "mean_prediction": 0.059247798179546986,
+      "log_loss": 0.20103827899289678,
+      "choice_diagnostics": {
+        "clicked_events": 26940,
+        "within_event_auc_clicked_events": 0.7810442959663451,
+        "clicked_candidate_top1_with_fractional_ties": 0.3638084632516704,
+        "mean_clicked_rank_with_average_ties": 2.970601336302895,
+        "note": "choice diagnostics, not the competition's global row AUC"
+      }
+    },
+    "unseen_with_history": {
+      "events": 8276,
+      "rows": 82760,
+      "clicks": 5450,
+      "auc": 0.7431783253172323,
+      "actual_click_rate": 0.06585306911551474,
+      "mean_prediction": 0.060558404471925224,
+      "log_loss": 0.21699311371025293,
+      "choice_diagnostics": {
+        "clicked_events": 5450,
+        "within_event_auc_clicked_events": 0.7360244648318042,
+        "clicked_candidate_top1_with_fractional_ties": 0.32091743119266053,
+        "mean_clicked_rank_with_average_ties": 3.3757798165137616,
+        "note": "choice diagnostics, not the competition's global row AUC"
+      }
+    },
+    "unseen_empty_history": {
+      "events": 693,
+      "rows": 6930,
+      "clicks": 335,
+      "auc": 0.5026892829257805,
+      "actual_click_rate": 0.048340548340548344,
+      "mean_prediction": 0.04730114291551165,
+      "log_loss": 0.19368440872800816,
+      "choice_diagnostics": {
+        "clicked_events": 335,
+        "within_event_auc_clicked_events": 0.5067993366500829,
+        "clicked_candidate_top1_with_fractional_ties": 0.11641791044776119,
+        "mean_clicked_rank_with_average_ties": 5.438805970149254,
+        "note": "choice diagnostics, not the competition's global row AUC"
+      }
+    },
+    "history_empty": {
+      "events": 960,
+      "rows": 9600,
+      "clicks": 431,
+      "auc": 0.5302341517455544,
+      "actual_click_rate": 0.044895833333333336,
+      "mean_prediction": 0.04390932699055058,
+      "log_loss": 0.1829824443523042,
+      "choice_diagnostics": {
+        "clicked_events": 431,
+        "within_event_auc_clicked_events": 0.5076050528486723,
+        "clicked_candidate_top1_with_fractional_ties": 0.11832946635730858,
+        "mean_clicked_rank_with_average_ties": 5.431554524361949,
+        "note": "choice diagnostics, not the competition's global row AUC"
+      }
+    },
+    "history_1_5": {
+      "events": 11205,
+      "rows": 112050,
+      "clicks": 6814,
+      "auc": 0.7279132218489829,
+      "actual_click_rate": 0.060812137438643464,
+      "mean_prediction": 0.05716177832708989,
+      "log_loss": 0.2075563174569542,
+      "choice_diagnostics": {
+        "clicked_events": 6814,
+        "within_event_auc_clicked_events": 0.7194827642435508,
+        "clicked_candidate_top1_with_fractional_ties": 0.30275902553566186,
+        "mean_clicked_rank_with_average_ties": 3.5246551218080424,
+        "note": "choice diagnostics, not the competition's global row AUC"
+      }
+    },
+    "history_6_19": {
+      "events": 23685,
+      "rows": 236850,
+      "clicks": 15037,
+      "auc": 0.7854716080330946,
+      "actual_click_rate": 0.06348743930757864,
+      "mean_prediction": 0.058888207299668135,
+      "log_loss": 0.2032885854888128,
+      "choice_diagnostics": {
+        "clicked_events": 15037,
+        "within_event_auc_clicked_events": 0.7776078266202627,
+        "clicked_candidate_top1_with_fractional_ties": 0.35698610095098754,
+        "mean_clicked_rank_with_average_ties": 3.0015295604176364,
+        "note": "choice diagnostics, not the competition's global row AUC"
+      }
+    },
+    "history_20": {
+      "events": 15638,
+      "rows": 156380,
+      "clicks": 10443,
+      "auc": 0.8137694432796031,
+      "actual_click_rate": 0.06677963934006906,
+      "mean_prediction": 0.06239290883026281,
+      "log_loss": 0.2021858970346354,
+      "choice_diagnostics": {
+        "clicked_events": 10443,
+        "within_event_auc_clicked_events": 0.8051539042633556,
+        "clicked_candidate_top1_with_fractional_ties": 0.39327779373743177,
+        "mean_clicked_rank_with_average_ties": 2.7536148616297997,
+        "note": "choice diagnostics, not the competition's global row AUC"
+      }
+    },
+    "activity_1_5": {
+      "events": 31684,
+      "rows": 316840,
+      "clicks": 20098,
+      "auc": 0.7822715435306937,
+      "actual_click_rate": 0.06343264739300593,
+      "mean_prediction": 0.05896550877294988,
+      "log_loss": 0.2034447936834776,
+      "choice_diagnostics": {
+        "clicked_events": 20098,
+        "within_event_auc_clicked_events": 0.7727800444488673,
+        "clicked_candidate_top1_with_fractional_ties": 0.35167678375957806,
+        "mean_clicked_rank_with_average_ties": 3.044979599960195,
+        "note": "choice diagnostics, not the competition's global row AUC"
+      }
+    },
+    "activity_6_15": {
+      "events": 9262,
+      "rows": 92620,
+      "clicks": 5840,
+      "auc": 0.8115836140515932,
+      "actual_click_rate": 0.0630533362124811,
+      "mean_prediction": 0.05955193271780954,
+      "log_loss": 0.19455546176062655,
+      "choice_diagnostics": {
+        "clicked_events": 5840,
+        "within_event_auc_clicked_events": 0.8025304414003044,
+        "clicked_candidate_top1_with_fractional_ties": 0.39486301369863014,
+        "mean_clicked_rank_with_average_ties": 2.77722602739726,
+        "note": "choice diagnostics, not the competition's global row AUC"
+      }
+    },
+    "activity_16_plus": {
+      "events": 1573,
+      "rows": 15730,
+      "clicks": 1002,
+      "auc": 0.828130675097388,
+      "actual_click_rate": 0.06369993642720916,
+      "mean_prediction": 0.06314300699406356,
+      "log_loss": 0.19073684335966518,
+      "choice_diagnostics": {
+        "clicked_events": 1002,
+        "within_event_auc_clicked_events": 0.8215790640940341,
+        "clicked_candidate_top1_with_fractional_ties": 0.42614770459081835,
+        "mean_clicked_rank_with_average_ties": 2.6057884231536925,
+        "note": "choice diagnostics, not the competition's global row AUC"
+      }
+    },
+    "horizon_0_24h": {
+      "events": 35112,
+      "rows": 351120,
+      "clicks": 22329,
+      "auc": 0.7933042060735607,
+      "actual_click_rate": 0.06359364319890635,
+      "mean_prediction": 0.05970898616696191,
+      "log_loss": 0.20082174555363191,
+      "choice_diagnostics": {
+        "clicked_events": 22329,
+        "within_event_auc_clicked_events": 0.7837092769243784,
+        "clicked_candidate_top1_with_fractional_ties": 0.3699225222804425,
+        "mean_clicked_rank_with_average_ties": 2.9466165076805946,
+        "note": "choice diagnostics, not the competition's global row AUC"
+      }
+    },
+    "horizon_24_48h": {
+      "events": 8780,
+      "rows": 87800,
+      "clicks": 5565,
+      "auc": 0.768619939645498,
+      "actual_click_rate": 0.06338268792710706,
+      "mean_prediction": 0.05886636259740305,
+      "log_loss": 0.20645017495613543,
+      "choice_diagnostics": {
+        "clicked_events": 5565,
+        "within_event_auc_clicked_events": 0.759508834980533,
+        "clicked_candidate_top1_with_fractional_ties": 0.33315363881401616,
+        "mean_clicked_rank_with_average_ties": 3.164420485175202,
+        "note": "choice diagnostics, not the competition's global row AUC"
+      }
+    },
+    "horizon_48_72h": {
+      "events": 4065,
+      "rows": 40650,
+      "clicks": 2576,
+      "auc": 0.7440590418560521,
+      "actual_click_rate": 0.06337023370233702,
+      "mean_prediction": 0.058681094604561695,
+      "log_loss": 0.21069916775052197,
+      "choice_diagnostics": {
+        "clicked_events": 2576,
+        "within_event_auc_clicked_events": 0.7311939268461007,
+        "clicked_candidate_top1_with_fractional_ties": 0.31288819875776397,
+        "mean_clicked_rank_with_average_ties": 3.419254658385093,
+        "note": "choice diagnostics, not the competition's global row AUC"
+      }
+    },
+    "horizon_72_96h": {
+      "events": 2165,
+      "rows": 21650,
+      "clicks": 1398,
+      "auc": 0.7341142166640247,
+      "actual_click_rate": 0.06457274826789838,
+      "mean_prediction": 0.057296428115755686,
+      "log_loss": 0.21578546806466306,
+      "choice_diagnostics": {
+        "clicked_events": 1398,
+        "within_event_auc_clicked_events": 0.7131616595135909,
+        "clicked_candidate_top1_with_fractional_ties": 0.3147353361945637,
+        "mean_clicked_rank_with_average_ties": 3.5815450643776825,
+        "note": "choice diagnostics, not the competition's global row AUC"
+      }
+    },
+    "horizon_96_120h": {
+      "events": 1366,
+      "rows": 13660,
+      "clicks": 857,
+      "auc": 0.7335755157297493,
+      "actual_click_rate": 0.06273792093704246,
+      "mean_prediction": 0.05650378909849276,
+      "log_loss": 0.21262925882407246,
+      "choice_diagnostics": {
+        "clicked_events": 857,
+        "within_event_auc_clicked_events": 0.7185271619343966,
+        "clicked_candidate_top1_with_fractional_ties": 0.26721120186697783,
+        "mean_clicked_rank_with_average_ties": 3.5332555425904317,
+        "note": "choice diagnostics, not the competition's global row AUC"
+      }
+    }
+  },
+  "member_metrics": {
+    "dim8_seed42": {
+      "events": 51488,
+      "rows": 514880,
+      "clicks": 32725,
+      "auc": 0.7692800799415794,
+      "actual_click_rate": 0.06355849906774394,
+      "mean_prediction": 0.059234432498970736,
+      "log_loss": 0.2060443302737422,
+      "choice_diagnostics": {
+        "clicked_events": 32725,
+        "within_event_auc_clicked_events": 0.7596706561412444,
+        "clicked_candidate_top1_with_fractional_ties": 0.33735676088617267,
+        "mean_clicked_rank_with_average_ties": 3.1629640947288005,
+        "note": "choice diagnostics, not the competition's global row AUC"
+      }
+    },
+    "dim8_seed43": {
+      "events": 51488,
+      "rows": 514880,
+      "clicks": 32725,
+      "auc": 0.7661652802263748,
+      "actual_click_rate": 0.06355849906774394,
+      "mean_prediction": 0.05974388622298726,
+      "log_loss": 0.20667612790269385,
+      "choice_diagnostics": {
+        "clicked_events": 32725,
+        "within_event_auc_clicked_events": 0.7562923351158646,
+        "clicked_candidate_top1_with_fractional_ties": 0.3360427807486631,
+        "mean_clicked_rank_with_average_ties": 3.1933689839572192,
+        "note": "choice diagnostics, not the competition's global row AUC"
+      }
+    },
+    "dim8_seed44": {
+      "events": 51488,
+      "rows": 514880,
+      "clicks": 32725,
+      "auc": 0.7673421632740183,
+      "actual_click_rate": 0.06355849906774394,
+      "mean_prediction": 0.0602885499897208,
+      "log_loss": 0.2063923921088476,
+      "choice_diagnostics": {
+        "clicked_events": 32725,
+        "within_event_auc_clicked_events": 0.7574535268652917,
+        "clicked_candidate_top1_with_fractional_ties": 0.33732620320855616,
+        "mean_clicked_rank_with_average_ties": 3.182918258212376,
+        "note": "choice diagnostics, not the competition's global row AUC"
+      }
+    },
+    "dim16_seed42": {
+      "events": 51488,
+      "rows": 514880,
+      "clicks": 32725,
+      "auc": 0.7533455248213634,
+      "actual_click_rate": 0.06355849906774394,
+      "mean_prediction": 0.05833667900439999,
+      "log_loss": 0.20938121357740885,
+      "choice_diagnostics": {
+        "clicked_events": 32725,
+        "within_event_auc_clicked_events": 0.7433969951617011,
+        "clicked_candidate_top1_with_fractional_ties": 0.3229946524064171,
+        "mean_clicked_rank_with_average_ties": 3.3094270435446904,
+        "note": "choice diagnostics, not the competition's global row AUC"
+      }
+    },
+    "dim16_seed43": {
+      "events": 51488,
+      "rows": 514880,
+      "clicks": 32725,
+      "auc": 0.7539837056827066,
+      "actual_click_rate": 0.06355849906774394,
+      "mean_prediction": 0.058426819697724924,
+      "log_loss": 0.209268838759388,
+      "choice_diagnostics": {
+        "clicked_events": 32725,
+        "within_event_auc_clicked_events": 0.743770477888125,
+        "clicked_candidate_top1_with_fractional_ties": 0.32400305576776167,
+        "mean_clicked_rank_with_average_ties": 3.3060656990068753,
+        "note": "choice diagnostics, not the competition's global row AUC"
+      }
+    }
+  },
+  "population": {
+    "users": 51488,
+    "first_event_per_user_verified": true,
+    "unseen_user_fraction": 0.17419592914853946,
+    "empty_history_fraction": 0.018645121193287758,
+    "horizon_hours_p50_p90_max": [
+      16.4,
+      64.36666666666666,
+      119.98333333333333
+    ]
+  },
+  "sampling_unit": "whole first event per user, preserving all 10 candidates",
+  "data_and_saved_combiner_checks_passed": true,
+  "candidate_comparison_performed": false,
+  "baseline_established": true,
+  "submission_created": false,
+  "runtime_seconds": 69.75
+}

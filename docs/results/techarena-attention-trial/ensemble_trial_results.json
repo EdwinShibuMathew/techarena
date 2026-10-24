@@ -1,0 +1,99 @@
+{
+  "protocol": {
+    "experiment": "standalone candidate-conditioned attention history expert",
+    "neural_model": {
+      "architecture": "candidate_attention_history_v1",
+      "dimension": 16,
+      "hidden_units": 32,
+      "seed": 2027,
+      "initialization": "same-cutoff dim16 seed42 preference item vectors",
+      "pretraining_epochs": 16,
+      "pretraining_learning_rate": 0.002,
+      "negative_items": 31,
+      "event_epochs": 8,
+      "event_learning_rate": 0.001,
+      "batch_size": 2048,
+      "anchor_regularization": 0.01,
+      "neural_early_stopping": false
+    },
+    "v5_weight": 0.85,
+    "attention_expert_weight": 0.15,
+    "empty_history_rule": "retain V5 unchanged",
+    "v5_members_and_combiners_unchanged": true,
+    "new_expert_calibration": {
+      "trees": 545,
+      "depth": 6,
+      "learning_rate": 0.05,
+      "l2_leaf_reg": 20,
+      "seed": 42,
+      "early_stopping": false
+    },
+    "calibration_feature_count": 14,
+    "primary_check": "first event per user across Jan25-26; calibration trained on Jan24",
+    "secondary_check": "first event per user on Jan26; calibration trained on Jan25",
+    "bootstrap_resamples": 300,
+    "bootstrap_seed": 2026,
+    "support_rule": "primary paired gain interval entirely positive and secondary AUC change nonnegative",
+    "next_gate": "longer-window paired stress check before full-data promotion or submission",
+    "status": "retrospective development experiment; reused validation dates; interval not selection-adjusted"
+  },
+  "two_day_primary": {
+    "events": 43964,
+    "baseline_v5_auc": 0.8183722315263706,
+    "attention_raw_auc": 0.7676373776625923,
+    "attention_calibrated_auc": 0.7777398872301252,
+    "candidate_auc": 0.8172037101953765,
+    "auc_change": -0.001168521330994099,
+    "empty_history_predictions_unchanged": true
+  },
+  "jan26_secondary": {
+    "events": 35138,
+    "baseline_v5_auc": 0.8269940935263442,
+    "attention_raw_auc": 0.7742102139362399,
+    "attention_calibrated_auc": 0.78525958304825,
+    "candidate_auc": 0.8257139794407395,
+    "auc_change": -0.0012801140856046889,
+    "empty_history_predictions_unchanged": true
+  },
+  "primary_paired_gain_95_percentile_interval": [
+    -0.0014038228743676134,
+    -0.0009297700774244332
+  ],
+  "primary_groups": {
+    "activity_1_5": {
+      "events": 16587,
+      "baseline_auc": 0.7935267809090032,
+      "candidate_auc": 0.7925575497643557,
+      "auc_change": -0.000969231144647531
+    },
+    "unseen_with_history": {
+      "events": 1278,
+      "baseline_auc": 0.7533950342181915,
+      "candidate_auc": 0.7548450720372186,
+      "auc_change": 0.0014500378190270835
+    },
+    "history_1_5": {
+      "events": 5841,
+      "baseline_auc": 0.7513552348432412,
+      "candidate_auc": 0.7509489141031201,
+      "auc_change": -0.0004063207401210356
+    },
+    "activity_16_plus": {
+      "events": 8452,
+      "baseline_auc": 0.8449689123065495,
+      "candidate_auc": 0.8434359109237543,
+      "auc_change": -0.0015330013827952182
+    },
+    "horizon_24_48h": {
+      "events": 8734,
+      "baseline_auc": 0.8039556107046674,
+      "candidate_auc": 0.803103614491104,
+      "auc_change": -0.0008519962135633552
+    }
+  },
+  "v5_reproduction_passed": true,
+  "supported_for_long_window_check": false,
+  "sampling_unit": "whole first event per user, preserving all 10 candidates",
+  "submission_created": false,
+  "runtime_seconds": 25.39
+}

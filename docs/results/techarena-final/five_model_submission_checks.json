@@ -1,0 +1,38 @@
+{
+  "rows": 529390,
+  "header": [
+    "rowid",
+    "predicted_probability"
+  ],
+  "unique_rowids": 529390,
+  "same_rowids_and_order_as_example": true,
+  "all_probabilities_finite_and_in_range": true,
+  "minimum_probability": 0.0009497083353604474,
+  "maximum_probability": 0.8161978899973337,
+  "mean_probability": 0.06130925523247711,
+  "submission_ready": true,
+  "submission_path": "/home/edwin/projects/techarena-final/outputs/techarena_submission_v5.csv",
+  "submission_bytes": 31166154,
+  "submission_sha256": "8e7f50e5dd7ff083d60adc4759a7a734d4613128f4878182b59f9ef5cecc1b67",
+  "version": "v5",
+  "members": [
+    "finetuned_dim8_seed42",
+    "finetuned_dim8_seed43",
+    "finetuned_dim8_seed44",
+    "dim16_seed42",
+    "dim16_seed43"
+  ],
+  "weights": [
+    0.2222222222222222,
+    0.2222222222222222,
+    0.2222222222222222,
+    0.16666666666666666,
+    0.16666666666666666
+  ],
+  "validation_pipeline_check_passed": true,
+  "full_data_seed44_checked": true,
+  "reused_v4_predictions_verified": true,
+  "primary_validation_auc": 0.8183722315263706,
+  "secondary_validation_auc": 0.8269940935263441,
+  "runtime_seconds": 9.56
+}

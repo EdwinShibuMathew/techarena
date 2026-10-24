@@ -1,0 +1,220 @@
+{
+  "protocol": {
+    "experiment": "time-of-day bilinear interaction in V6 seed42 only",
+    "recipe": {
+      "architecture": "additive_event_plus_time_bilinear_v1",
+      "seed": 42,
+      "dimension": 8,
+      "time_buckets": 4,
+      "new_parameters": 256,
+      "interaction": "user_vector.T @ delta[time_bucket] @ item_vector",
+      "initial_delta": 0.0,
+      "interaction_regularization": 0.05,
+      "day_type": "original additive effects retained; bilinear matrices pooled across day types",
+      "preference_epoch": 260,
+      "preference_reused": true,
+      "event_epochs": 8,
+      "event_learning_rate": 0.0015,
+      "anchor_regularization": 0.1,
+      "effect_regularization": 0.05,
+      "early_stopping": false,
+      "posthoc_exposure_power": 0.5,
+      "updated_member": "dim8_seed42",
+      "integration": "replace seed42 only at original weight 2/9"
+    },
+    "event_objective": {
+      "objective": "half_event_ce_half_global_row_pair_v1",
+      "event_ce_weight": 0.5,
+      "pairwise_weight": 0.5,
+      "sampled_negative_rows_per_positive": 16,
+      "pair_score": "log odds of original softmax candidate marginal",
+      "negative_pool": "all unclicked candidate rows in current fitting minibatch, across users",
+      "pair_sampling_seed_offset": 3000,
+      "event_epochs": 8,
+      "event_learning_rate": 0.0015,
+      "anchor_regularization": 0.1,
+      "effect_regularization": 0.05,
+      "early_stopping": false
+    },
+    "v6_member_weights": [
+      0.2222222222222222,
+      0.2222222222222222,
+      0.2222222222222222,
+      0.16666666666666666,
+      0.16666666666666666
+    ],
+    "unchanged_members": [
+      "dim8_seed43",
+      "dim8_seed44",
+      "dim16_seed42",
+      "dim16_seed43"
+    ],
+    "preference_training_performed": false,
+    "inference": "original softmax, exposure adjustment, ridge history fallback and 37 features; extended event model only",
+    "combiner": {
+      "trees": 545,
+      "depth": 6,
+      "learning_rate": 0.05,
+      "l2_leaf_reg": 20,
+      "seed": 42,
+      "early_stopping": false
+    },
+    "primary_check": "Jan24 meta-training; Jan25 prefix; first-user Jan25-26 evaluation",
+    "secondary_check": "Jan25 meta-training; Jan26 prefix; first-user Jan26 evaluation",
+    "support_rule": "global primary paired gain interval entirely positive and global secondary AUC change nonnegative",
+    "next_gate": "identical fixed recipe versus V6 in five-day paired comparison before full-data training or submission",
+    "bootstrap_resamples": 300,
+    "bootstrap_seed": 2026,
+    "weight_search_performed": false,
+    "status": "retrospective development experiment; reused dates; intervals not selection-adjusted",
+    "research_context": "https://doi.org/10.1145/1864708.1864727; motivation only, not a replication or predicted lift",
+    "v6_replay": {
+      "two_day": {
+        "auc": 0.8184592533262289,
+        "member_max_abs_differences": {
+          "42": 0.0,
+          "43": 0.0
+        },
+        "passed": true
+      },
+      "jan26": {
+        "auc": 0.8271277122502162,
+        "member_max_abs_differences": {
+          "42": 0.0,
+          "43": 0.0
+        },
+        "passed": true
+      }
+    },
+    "folds": {
+      "jan24": {
+        "n_users": 53003,
+        "n_items": 50000,
+        "fitting_events": 392831,
+        "fitting_time_bucket_events": [
+          39069,
+          78345,
+          118101,
+          157316
+        ],
+        "preference_sha256": "3882884195d0685cad39bae4ee94a814d200f60619f25238f55761f20ca5bad0"
+      },
+      "jan25": {
+        "n_users": 53003,
+        "n_items": 50000,
+        "fitting_events": 490420,
+        "fitting_time_bucket_events": [
+          48715,
+          97811,
+          147465,
+          196429
+        ],
+        "preference_sha256": "12925eb94054e5ac9e9bc977f9153528302b8f7c3b66527201a9ee8c61cc50df"
+      },
+      "jan26": {
+        "n_users": 53003,
+        "n_items": 50000,
+        "fitting_events": 588873,
+        "fitting_time_bucket_events": [
+          58714,
+          117509,
+          176759,
+          235891
+        ],
+        "preference_sha256": "9a1b230196890b450f2d314f7f0965d9606387fdf0c3d33166753d971b1ca406"
+      }
+    }
+  },
+  "two_day_primary": {
+    "events": 43964,
+    "baseline_v6_auc": 0.8184592533262289,
+    "candidate_auc": 0.8183632222506271,
+    "auc_change": -9.603107560185453e-05,
+    "original_seed42_auc": 0.8107534671504074,
+    "time_bilinear_seed42_auc": 0.8102941656844335,
+    "time_bilinear_neural_pipeline_auc": 0.7952019429262553,
+    "time_buckets_exploratory": {
+      "0": {
+        "events": 9517,
+        "baseline_auc": 0.8271712805432243,
+        "candidate_auc": 0.8270565232740684,
+        "auc_change": -0.00011475726915588513
+      },
+      "1": {
+        "events": 12590,
+        "baseline_auc": 0.8237685538135591,
+        "candidate_auc": 0.8237145287205685,
+        "auc_change": -5.402509299057279e-05
+      },
+      "2": {
+        "events": 11804,
+        "baseline_auc": 0.8141373997461102,
+        "candidate_auc": 0.8141047897421796,
+        "auc_change": -3.261000393062208e-05
+      },
+      "3": {
+        "events": 10053,
+        "baseline_auc": 0.8082987273885089,
+        "candidate_auc": 0.808086448869501,
+        "auc_change": -0.0002122785190079579
+      }
+    }
+  },
+  "jan26_secondary": {
+    "events": 35138,
+    "baseline_v6_auc": 0.8271277122502162,
+    "candidate_auc": 0.8270485856317966,
+    "auc_change": -7.912661841957824e-05,
+    "original_seed42_auc": 0.8210802248633071,
+    "time_bilinear_seed42_auc": 0.8205277184371808,
+    "time_bilinear_neural_pipeline_auc": 0.8077407383697606,
+    "time_buckets_exploratory": {
+      "0": {
+        "events": 8065,
+        "baseline_auc": 0.8364667962696503,
+        "candidate_auc": 0.8363348111115275,
+        "auc_change": -0.00013198515812273826
+      },
+      "1": {
+        "events": 10335,
+        "baseline_auc": 0.8320656664715891,
+        "candidate_auc": 0.8319600164683129,
+        "auc_change": -0.00010565000327622531
+      },
+      "2": {
+        "events": 9366,
+        "baseline_auc": 0.8245959191943492,
+        "candidate_auc": 0.8245702607054147,
+        "auc_change": -2.5658488934432455e-05
+      },
+      "3": {
+        "events": 7372,
+        "baseline_auc": 0.8125136039330522,
+        "candidate_auc": 0.8124545614469347,
+        "auc_change": -5.9042486117433235e-05
+      }
+    }
+  },
+  "primary_paired_gain_95_percentile_interval": [
+    -0.00014988929249872273,
+    -3.628352884356701e-05
+  ],
+  "valid_bootstrap_resamples": 300,
+  "v6_reproduction_passed": true,
+  "saved_combiners_reproduced": true,
+  "unchanged_four_members_reused_exactly": true,
+  "v5_files_unchanged": true,
+  "v6_files_unchanged": true,
+  "supported_for_five_day_check": false,
+  "sampling_unit": "whole first event per user, preserving all ten candidates; global row AUC",
+  "submission_created": false,
+  "upload_performed": false,
+  "runtime_seconds": 33.98,
+  "artifact_sha256": {
+    "work/combiner_jan24.cbm": "f276a42de2d7233ce569e43910774afe5f81edd098a97ed1e058f18342cc6eaa",
+    "work/combiner_jan25.cbm": "085f00e48aa12d5a63699a2df221161e5acd3e32f3ee906cffffb27ef3ba0b7f",
+    "outputs/training_results.json": "516b92afc53528f1d8374fc54a20ce83afb185b2b467510c6d625855a942c0d6",
+    "work/two_day_ensemble_predictions.npz": "b3e1efe61128b8b9ca3e00b4bf55c30526e727c5f7881de9eecd736ec202db5d",
+    "work/jan26_ensemble_predictions.npz": "89aa2253054ec082682333ff5fdba94e2625bea4d21315b8f0122fcd3453eb88"
+  }
+}

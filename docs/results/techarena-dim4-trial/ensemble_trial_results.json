@@ -1,0 +1,55 @@
+{
+  "protocol": {
+    "dimension": 4,
+    "neural_seed": 42,
+    "preference_epochs": 196,
+    "event_epochs": 8,
+    "combiner_trees": 545,
+    "combiner_seed": 42,
+    "combiner_early_stopping": false,
+    "baseline": "public v3: dim8 seeds42/43 plus dim16 seeds42/43",
+    "candidate_baseline_weight": 0.8,
+    "candidate_dim4_weight": 0.2,
+    "planned_candidate_members": [
+      "dim8_seed42",
+      "dim8_seed43",
+      "dim16_seed42",
+      "dim16_seed43",
+      "dim4_seed42"
+    ],
+    "planned_candidate_weights": [
+      0.26666666666666666,
+      0.26666666666666666,
+      0.13333333333333333,
+      0.13333333333333333,
+      0.2
+    ],
+    "primary_check": "first event per user across Jan25-26; combiner trained on Jan24",
+    "secondary_check": "first event per user on Jan26; combiner trained on Jan25",
+    "support_rule": "primary paired-gain interval entirely above zero and secondary AUC change nonnegative",
+    "bootstrap_resamples": 300,
+    "bootstrap_seed": 2026,
+    "status": "retrospective development experiment; reused validation dates"
+  },
+  "two_day_primary": {
+    "events": 43964,
+    "baseline_four_model_auc": 0.8162401445033456,
+    "dim4_single_model_auc": 0.7270506359092586,
+    "candidate_five_model_auc": 0.813599275144985,
+    "auc_change": -0.002640869358360609
+  },
+  "jan26_secondary": {
+    "events": 35138,
+    "baseline_four_model_auc": 0.8256163176107802,
+    "dim4_single_model_auc": 0.7384303376597997,
+    "candidate_five_model_auc": 0.8224670801354393,
+    "auc_change": -0.0031492374753409047
+  },
+  "primary_paired_gain_95_percentile_interval": [
+    -0.00301723796677473,
+    -0.002245960626088059
+  ],
+  "sampling_unit": "whole first event per user, preserving all 10 candidates",
+  "supported_for_further_confirmation": false,
+  "runtime_seconds": 65.85
+}

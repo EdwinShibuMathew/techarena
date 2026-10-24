@@ -1,0 +1,264 @@
+{
+  "protocol": {
+    "experiment": "five-day paired test of the frozen global row-ranking recipe versus unchanged V5",
+    "event_objective": {
+      "objective": "half_event_ce_half_global_row_pair_v1",
+      "event_ce_weight": 0.5,
+      "pairwise_weight": 0.5,
+      "sampled_negative_rows_per_positive": 16,
+      "pair_score": "log odds of original softmax candidate marginal",
+      "negative_pool": "all unclicked candidate rows in current fitting minibatch, across users",
+      "pair_sampling_seed_offset": 3000,
+      "event_epochs": 8,
+      "event_learning_rate": 0.0015,
+      "anchor_regularization": 0.1,
+      "effect_regularization": 0.05,
+      "early_stopping": false
+    },
+    "updated_members": [
+      "dim8_seed42",
+      "dim8_seed43"
+    ],
+    "unchanged_members": [
+      "dim8_seed44",
+      "dim16_seed42",
+      "dim16_seed43"
+    ],
+    "member_weights": [
+      0.2222222222222222,
+      0.2222222222222222,
+      0.2222222222222222,
+      0.16666666666666666,
+      0.16666666666666666
+    ],
+    "preference_epoch": 260,
+    "preference_checkpoints_reused": true,
+    "meta_neural_cutoff": "2025-01-21T00:00:00+00:00",
+    "combiner_fitting_day": "2025-01-21",
+    "target_neural_cutoff": "2025-01-22T00:00:00+00:00",
+    "target_window": "Jan22 through Jan26 inclusive; first event per user across the entire window",
+    "target_events": 51488,
+    "meta_events": 35156,
+    "temporal_rule": "weights, pairs, ridge and aggregates fit strictly before their prefix cutoff; targets only query frozen models",
+    "combiner": {
+      "trees": 545,
+      "depth": 6,
+      "learning_rate": 0.05,
+      "l2_leaf_reg": 20,
+      "seed": 42,
+      "features": 37,
+      "early_stopping": false
+    },
+    "bootstrap_resamples": 1000,
+    "bootstrap_seed": 2026,
+    "support_rule": "overall five-day paired gain interval entirely positive AND pooled 48-120h global AUC change nonnegative; all reproduction checks pass",
+    "late_window": "first-user events 48 through 120 hours after Jan22 cutoff, i.e. Jan24-26",
+    "daily_and_subgroup_interpretation": "exploratory diagnostics; no subgroup selection, no per-day promotion thresholds",
+    "next_gate": "review the paired stress results before deciding on full-data training; this script never promotes or exports",
+    "weight_or_objective_search_performed": false,
+    "status": "retrospective stress test; dates reused; smaller fitting set; intervals not selection-adjusted or independent confirmation",
+    "baseline_report_reconciliation": {
+      "status": "report_hash_mismatch_resolved_by_exact_model_replay",
+      "training_report_references": {
+        "current_report_sha256": "2ba534116092bc39462c4f427e9a6a22547c9f4307a2ef016b215c08e0659f25",
+        "cached_report_sha256_by_member": {
+          "dim8_seed42": "3baf818ab6c1112d1c7c0efe32135cfcc136f3914404c6bf65b97a52bdb78acc",
+          "dim8_seed43": "3baf818ab6c1112d1c7c0efe32135cfcc136f3914404c6bf65b97a52bdb78acc",
+          "dim8_seed44": "3baf818ab6c1112d1c7c0efe32135cfcc136f3914404c6bf65b97a52bdb78acc",
+          "dim16_seed42": "3baf818ab6c1112d1c7c0efe32135cfcc136f3914404c6bf65b97a52bdb78acc",
+          "dim16_seed43": "3baf818ab6c1112d1c7c0efe32135cfcc136f3914404c6bf65b97a52bdb78acc"
+        },
+        "mismatched_members": [
+          "dim8_seed42",
+          "dim8_seed43",
+          "dim8_seed44",
+          "dim16_seed42",
+          "dim16_seed43"
+        ]
+      },
+      "replayed_members": {
+        "dim8_seed42": 0.0,
+        "dim8_seed43": 0.0,
+        "dim8_seed44": 0.0,
+        "dim16_seed42": 0.0,
+        "dim16_seed43": 0.0
+      },
+      "input_fingerprint": "41f3349476bfaabd1878d3cbed2863b3cd141cda5cbbc98ac9b9c2d7aa42f6ed"
+    }
+  },
+  "five_day_overall": {
+    "events": 51488,
+    "rows": 514880,
+    "clicks": 32725,
+    "baseline_v5_auc": 0.7817113213682659,
+    "candidate_auc": 0.7818190858952342,
+    "auc_change": 0.000107764526968257,
+    "baseline_log_loss": 0.2035038239747814,
+    "candidate_log_loss": 0.20346481324923107,
+    "paired_gain_95_percentile_interval": [
+      2.3195989265065167e-05,
+      0.00019356317308335811
+    ],
+    "valid_resamples": 1000
+  },
+  "late_48_120h": {
+    "events": 7596,
+    "rows": 75960,
+    "clicks": 4831,
+    "baseline_v5_auc": 0.739232963624893,
+    "candidate_auc": 0.7394713810595162,
+    "auc_change": 0.00023841743462316156,
+    "baseline_log_loss": 0.2124959482384874,
+    "candidate_log_loss": 0.2124487639994537,
+    "paired_gain_95_percentile_interval": [
+      -2.2663316777421497e-05,
+      0.0005161633972839613
+    ],
+    "valid_resamples": 1000
+  },
+  "per_day_exploratory": {
+    "2025-01-22": {
+      "events": 35112,
+      "rows": 351120,
+      "clicks": 22329,
+      "baseline_v5_auc": 0.7933042060735607,
+      "candidate_auc": 0.7933831490878424,
+      "auc_change": 7.894301428168493e-05,
+      "baseline_log_loss": 0.20082174555363191,
+      "candidate_log_loss": 0.2007934763128299
+    },
+    "2025-01-23": {
+      "events": 8780,
+      "rows": 87800,
+      "clicks": 5565,
+      "baseline_v5_auc": 0.768619939645498,
+      "candidate_auc": 0.7687352164055951,
+      "auc_change": 0.00011527676009703836,
+      "baseline_log_loss": 0.20645017495613543,
+      "candidate_log_loss": 0.20637527937818612
+    },
+    "2025-01-24": {
+      "events": 4065,
+      "rows": 40650,
+      "clicks": 2576,
+      "baseline_v5_auc": 0.7440590418560521,
+      "candidate_auc": 0.7443329853404143,
+      "auc_change": 0.0002739434843621602,
+      "baseline_log_loss": 0.21069916775052197,
+      "candidate_log_loss": 0.21067114984095672
+    },
+    "2025-01-25": {
+      "events": 2165,
+      "rows": 21650,
+      "clicks": 1398,
+      "baseline_v5_auc": 0.7341142166640247,
+      "candidate_auc": 0.734402112778137,
+      "auc_change": 0.0002878961141123959,
+      "baseline_log_loss": 0.21578546806466306,
+      "candidate_log_loss": 0.2156807084405053
+    },
+    "2025-01-26": {
+      "events": 1366,
+      "rows": 13660,
+      "clicks": 857,
+      "baseline_v5_auc": 0.7335755157297493,
+      "candidate_auc": 0.7336028576295429,
+      "auc_change": 2.7341899793587032e-05,
+      "baseline_log_loss": 0.21262925882407246,
+      "candidate_log_loss": 0.21261629096827755
+    }
+  },
+  "groups_exploratory": {
+    "seen_users": {
+      "events": 42519,
+      "rows": 425190,
+      "clicks": 26940,
+      "baseline_v5_auc": 0.7906270311230789,
+      "candidate_auc": 0.7907192639848334,
+      "auc_change": 9.22328617545265e-05,
+      "baseline_log_loss": 0.20103827899289678,
+      "candidate_log_loss": 0.20099890140879664
+    },
+    "unseen_with_history": {
+      "events": 8276,
+      "rows": 82760,
+      "clicks": 5450,
+      "baseline_v5_auc": 0.7431783253172323,
+      "candidate_auc": 0.7433775375914198,
+      "auc_change": 0.0001992122741875102,
+      "baseline_log_loss": 0.21699311371025293,
+      "candidate_log_loss": 0.21694976612144679
+    },
+    "history_empty": {
+      "events": 960,
+      "rows": 9600,
+      "clicks": 431,
+      "baseline_v5_auc": 0.5302341517455544,
+      "candidate_auc": 0.5297467837125955,
+      "auc_change": -0.0004873680329589014,
+      "baseline_log_loss": 0.1829824443523042,
+      "candidate_log_loss": 0.18305631732390953
+    },
+    "history_1_5": {
+      "events": 11205,
+      "rows": 112050,
+      "clicks": 6814,
+      "baseline_v5_auc": 0.7279132218489829,
+      "candidate_auc": 0.7279497896926441,
+      "auc_change": 3.656784366123933e-05,
+      "baseline_log_loss": 0.2075563174569542,
+      "candidate_log_loss": 0.20751607485461465
+    },
+    "activity_1_5": {
+      "events": 31684,
+      "rows": 316840,
+      "clicks": 20098,
+      "baseline_v5_auc": 0.7822715435306937,
+      "candidate_auc": 0.7823716536811185,
+      "auc_change": 0.00010011015042477034,
+      "baseline_log_loss": 0.2034447936834776,
+      "candidate_log_loss": 0.20340020851991034
+    },
+    "activity_16_plus": {
+      "events": 1573,
+      "rows": 15730,
+      "clicks": 1002,
+      "baseline_v5_auc": 0.828130675097388,
+      "candidate_auc": 0.8282424829862275,
+      "auc_change": 0.0001118078888394658,
+      "baseline_log_loss": 0.19073684335966518,
+      "candidate_log_loss": 0.19073601939781182
+    }
+  },
+  "member_checks": {
+    "dim8_seed42": {
+      "original_v5_max_abs_difference": 0.0,
+      "new_saved_combiner_reproduced": true
+    },
+    "dim8_seed43": {
+      "original_v5_max_abs_difference": 0.0,
+      "new_saved_combiner_reproduced": true
+    }
+  },
+  "baseline_ensemble_and_original_members_reproduced": true,
+  "unchanged_three_members_reused_exactly": true,
+  "overall_gain_gate_passed": true,
+  "late_window_gate_passed": true,
+  "supported_for_full_data_review": true,
+  "sampling_unit": "whole first event per user across Jan22-26, preserving all ten candidates; same draw for both models",
+  "submission_created": false,
+  "automatic_promotion_performed": false,
+  "runtime_seconds": 45.52,
+  "artifact_sha256": {
+    "outputs/training_results.json": "386c3342204f02dcafc545c42ac3c6c627094780eb8b60cb5dff50f84167178a",
+    "dim8_seed42/jan21/work/event_best.pt": "91d99f7b5a465d3b6b636cb1c2d99609ead6f815ca67175b4f0a483966a236b6",
+    "dim8_seed42/jan22/work/event_best.pt": "de6657649051ad69072181c4f4520ac4560b004db71219bdfc940094e57a94be",
+    "dim8_seed43/jan21/work/event_best.pt": "6440414037c940f1e19f9d2931dc07a92e0020f9cbb55db4709786c1b15d8e9a",
+    "dim8_seed43/jan22/work/event_best.pt": "b12b56c0f933a6c8004e8ba8b5e25a640fe2d3ce015cab0b918c10adfc318aff",
+    "work/dim8_seed42_predictions.npz": "ed1685d98d2a8d356eebad457e9105d966b57ea8e5f4dcf5043ac99a92d6ba81",
+    "work/dim8_seed42_combiner_jan21.cbm": "b8e27aa8f7476d8d9fc6afca8bf25d7b19826569b2b6bfbe678e1e4c991ea4f0",
+    "work/dim8_seed43_predictions.npz": "ee2276a646001670a49b53c29f490827225ac123de3245b42488ad7163962420",
+    "work/dim8_seed43_combiner_jan21.cbm": "9e1952845dd10f3244e116e1020e38e4a7bdcf7b85e49c40b14562d1e0c49e9b",
+    "work/five_day_paired_predictions.npz": "f854b8980f6455c6f33de4684d4692c5540652bf1cce7398d06e5e5dbe5be446"
+  }
+}

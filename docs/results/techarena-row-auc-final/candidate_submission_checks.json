@@ -1,0 +1,69 @@
+{
+  "rows": 529390,
+  "header": [
+    "rowid",
+    "predicted_probability"
+  ],
+  "unique_rowids": 529390,
+  "same_rowids_and_order_as_example": true,
+  "all_probabilities_finite_and_in_range": true,
+  "minimum_probability": 0.0009449406902645919,
+  "maximum_probability": 0.8192380058406423,
+  "mean_probability": 0.061204205866395925,
+  "submission_ready": true,
+  "submission_path": "/home/edwin/projects/techarena-row-auc-final/outputs/techarena_submission_v6_candidate.csv",
+  "submission_bytes": 31164893,
+  "submission_sha256": "c386d545b3746e05dd515020c6185afda06cefdbcdf7d48df022454762fb378c",
+  "version": "v6_candidate_row_ranking",
+  "weights": [
+    0.2222222222222222,
+    0.2222222222222222,
+    0.2222222222222222,
+    0.16666666666666666,
+    0.16666666666666666
+  ],
+  "updated_seeds": [
+    42,
+    43
+  ],
+  "validation_pipeline_check_passed": true,
+  "validation_replay": {
+    "two_day": {
+      "auc": 0.8184592533262289,
+      "member_max_abs_differences": {
+        "42": 0.0,
+        "43": 0.0
+      },
+      "passed": true
+    },
+    "jan26": {
+      "auc": 0.8271277122502162,
+      "member_max_abs_differences": {
+        "42": 0.0,
+        "43": 0.0
+      },
+      "passed": true
+    }
+  },
+  "unchanged_three_members_reused_exactly": true,
+  "v5_files_unchanged": true,
+  "mean_absolute_change_from_v5": 0.0015730101509379467,
+  "maximum_absolute_change_from_v5": 0.07513152636064246,
+  "upload_performed": false,
+  "evaluation_labels_used": false,
+  "runtime_seconds": 14.76,
+  "artifact_sha256": {
+    "outputs/training_results.json": "2379c9c63ef59247ee5901b3f62f7abae02405500575ebd6a367f80271b069d5",
+    "seed42/work/event_best.pt": "340c7f24f0cbcd8e6e66d1156d30a39fb679922892b23b47289618656436f431",
+    "seed43/work/event_best.pt": "f07ee52e4ce52bf07c27de36fedc1a51713910d9e8dbfbfdb1d757debc3cdae5",
+    "seed42/work/evaluation_predictions.npz": "3b74c7dcbfd1fea0fd7c598de6e9a9e6db40be8b776a61af8542d3d26e8b4bab",
+    "seed42/work/combiner_used.cbm": "0382bc46dc70ce3e817e10736291a3d1ab5af88a068994fce1c7d489ca5cdebc",
+    "seed42/work/history_encoder.npz": "9cdb25d99f4a1d32efc739aa4d629f80b91089fa3d33f1ea6780a4038237fdf2",
+    "seed43/work/evaluation_predictions.npz": "929da1627fc1c911fa576389280144c1a40ce33de502b314129a04a7d27e617c",
+    "seed43/work/combiner_used.cbm": "a007c2331f1af9712afb8af150a1e24950eb7e3ea19d26158121002fc2e4a321",
+    "seed43/work/history_encoder.npz": "8dc7ac6215d908be8b36f5d4c514d022f6c1be147bc06b4a602b6635058d70b0",
+    "work/candidate_evaluation.npz": "430bbd5b72c5ca4e477c8656843e7972a9e6a0bcd4cdaff0cd586087c3104c1a",
+    "outputs/techarena_submission_v6_candidate.csv": "c386d545b3746e05dd515020c6185afda06cefdbcdf7d48df022454762fb378c",
+    "outputs/candidate_submission_manifest.json": "41dd06fd726347c53cabef66d5617942dee4630b3ed71d676b8a7b091a8559f1"
+  }
+}

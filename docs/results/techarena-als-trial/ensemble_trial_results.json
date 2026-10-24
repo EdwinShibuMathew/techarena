@@ -1,0 +1,131 @@
+{
+  "protocol": {
+    "experiment": "independent implicit-ALS initialized event expert added to unchanged V5",
+    "als_model": {
+      "algorithm": "implicit_als_v1",
+      "dimension": 16,
+      "iterations": 30,
+      "confidence_alpha": 40.0,
+      "confidence_rule": "1 + alpha * log1p(click_count)",
+      "regularization": 0.1,
+      "seed": 2028,
+      "initial_item_std": 0.01,
+      "edge_chunk_size": 32768,
+      "score_multiplier_before_event_training": 8.0,
+      "event_epochs": 8,
+      "event_learning_rate": 0.0015,
+      "early_stopping": false
+    },
+    "v5_weight": 0.85,
+    "expert_weight": 0.15,
+    "blend_rule": "85% V5 plus 15% ALS expert for every candidate row, including empty histories",
+    "v5_member_weights": [
+      0.2222222222222222,
+      0.2222222222222222,
+      0.2222222222222222,
+      0.16666666666666666,
+      0.16666666666666666
+    ],
+    "original_v5_members_unchanged": true,
+    "combiner": {
+      "trees": 545,
+      "depth": 6,
+      "learning_rate": 0.05,
+      "l2_leaf_reg": 20,
+      "seed": 42,
+      "features": 37,
+      "early_stopping": false,
+      "fitting_selection": "first event per user on the meta-training day"
+    },
+    "primary_check": "ALS prefix Jan25, combiner trained on Jan24, first-user Jan25-26 evaluation",
+    "secondary_check": "ALS prefix Jan26, combiner trained on Jan25, first-user Jan26 evaluation",
+    "feature_fitting_rule": "each prefix fits ALS, event parameters, ridge encoder and aggregate statistics strictly before that prefix cutoff; Jan24 meta features use the Jan24 prefix",
+    "bootstrap_resamples": 300,
+    "bootstrap_seed": 2026,
+    "support_rule": "primary paired gain interval entirely positive and secondary AUC change nonnegative",
+    "next_gate": "five-day paired check before full-data training, promotion or submission",
+    "status": "retrospective development experiment; reused validation dates; interval not selection-adjusted",
+    "source_sizes": {
+      "jan24": {
+        "click_examples": 814475,
+        "allocated_users": 53003,
+        "allocated_items": 50000,
+        "fitting_events": 392831
+      },
+      "jan25": {
+        "click_examples": 881351,
+        "allocated_users": 53003,
+        "allocated_items": 50000,
+        "fitting_events": 490420
+      },
+      "jan26": {
+        "click_examples": 946233,
+        "allocated_users": 53003,
+        "allocated_items": 50000,
+        "fitting_events": 588873
+      }
+    }
+  },
+  "two_day_primary": {
+    "events": 43964,
+    "baseline_v5_auc": 0.8183722315263706,
+    "als_expert_auc": 0.774735870380731,
+    "candidate_auc": 0.8181425027115407,
+    "auc_change": -0.00022972881482996588
+  },
+  "jan26_secondary": {
+    "events": 35138,
+    "baseline_v5_auc": 0.8269940935263442,
+    "als_expert_auc": 0.7884535106384428,
+    "candidate_auc": 0.8267473706701115,
+    "auc_change": -0.0002467228562327284
+  },
+  "primary_paired_gain_95_percentile_interval": [
+    -0.0004577968491651457,
+    6.427721522369559e-05
+  ],
+  "primary_groups": {
+    "activity_1_5": {
+      "events": 16587,
+      "baseline_auc": 0.7935267809090032,
+      "candidate_auc": 0.7932875505707704,
+      "auc_change": -0.00023923033823280981
+    },
+    "activity_16_plus": {
+      "events": 8452,
+      "baseline_auc": 0.8449689123065495,
+      "candidate_auc": 0.8444489743913741,
+      "auc_change": -0.0005199379151753503
+    },
+    "unseen_with_history": {
+      "events": 1278,
+      "baseline_auc": 0.7533950342181915,
+      "candidate_auc": 0.7554684032307583,
+      "auc_change": 0.002073369012566717
+    },
+    "history_empty": {
+      "events": 361,
+      "baseline_auc": 0.5592610983855437,
+      "candidate_auc": 0.5595974805156435,
+      "auc_change": 0.00033638213009978823
+    },
+    "history_1_5": {
+      "events": 5841,
+      "baseline_auc": 0.7513552348432412,
+      "candidate_auc": 0.7517623879595333,
+      "auc_change": 0.000407153116292136
+    },
+    "horizon_24_48h": {
+      "events": 8734,
+      "baseline_auc": 0.8039556107046674,
+      "candidate_auc": 0.8039386819883602,
+      "auc_change": -1.692871630720738e-05
+    }
+  },
+  "v5_cached_ensemble_reproduction_passed": true,
+  "saved_expert_combiners_reproduced": true,
+  "supported_for_long_window_check": false,
+  "sampling_unit": "whole first event per user, preserving all 10 candidate rows",
+  "submission_created": false,
+  "runtime_seconds": 30.01
+}

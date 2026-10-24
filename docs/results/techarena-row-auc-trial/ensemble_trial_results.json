@@ -1,0 +1,110 @@
+{
+  "protocol": {
+    "experiment": "replace two V5 dim8 event members with mixed event CE and global row-pair ranking training",
+    "updated_members": [
+      "dim8_seed42",
+      "dim8_seed43"
+    ],
+    "unchanged_members": [
+      "dim8_seed44",
+      "dim16_seed42",
+      "dim16_seed43"
+    ],
+    "event_objective": {
+      "objective": "half_event_ce_half_global_row_pair_v1",
+      "event_ce_weight": 0.5,
+      "pairwise_weight": 0.5,
+      "sampled_negative_rows_per_positive": 16,
+      "pair_score": "log odds of original softmax candidate marginal",
+      "negative_pool": "all unclicked candidate rows in current fitting minibatch, across users",
+      "pair_sampling_seed_offset": 3000,
+      "event_epochs": 8,
+      "event_learning_rate": 0.0015,
+      "anchor_regularization": 0.1,
+      "effect_regularization": 0.05,
+      "early_stopping": false
+    },
+    "preference_epoch": 260,
+    "preference_checkpoints_reused": true,
+    "dimension": 8,
+    "seeds": [
+      42,
+      43
+    ],
+    "member_weights": [
+      0.2222222222222222,
+      0.2222222222222222,
+      0.2222222222222222,
+      0.16666666666666666,
+      0.16666666666666666
+    ],
+    "candidate": "replace dim8 seed42/43 only; retain seed44 and both dim16 members, with the same V5 weights",
+    "inference": "original 11-outcome softmax, exposure adjustment, cold-history ridge fallback and 37 feature formulas",
+    "combiner": {
+      "trees": 545,
+      "depth": 6,
+      "learning_rate": 0.05,
+      "l2_leaf_reg": 20,
+      "seed": 42,
+      "early_stopping": false,
+      "fitting_selection": "first event per user on preceding meta day"
+    },
+    "temporal_rule": "event updates, negative-row sampling, ridge and aggregate fitting strictly before each prefix cutoff",
+    "primary_check": "Jan24 meta-training, Jan25 prefix, first-user Jan25-26 evaluation",
+    "secondary_check": "Jan25 meta-training, Jan26 prefix, first-user Jan26 evaluation",
+    "bootstrap_resamples": 300,
+    "bootstrap_seed": 2026,
+    "support_rule": "primary global paired gain interval entirely positive and secondary global AUC change nonnegative",
+    "next_gate": "same fixed recipe versus V5 in earlier-cutoff five-day paired test before full-data promotion",
+    "weight_search_performed": false,
+    "status": "retrospective development experiment; reused validation dates; intervals not selection-adjusted"
+  },
+  "two_day_primary": {
+    "events": 43964,
+    "baseline_v5_auc": 0.8183722315263706,
+    "candidate_row_ranking_auc": 0.8184592533262289,
+    "auc_change": 8.702179985831116e-05,
+    "new_dim8_seed42_auc": 0.8107534671504074,
+    "new_dim8_seed43_auc": 0.8116280540700682
+  },
+  "jan26_secondary": {
+    "events": 35138,
+    "baseline_v5_auc": 0.8269940935263442,
+    "candidate_row_ranking_auc": 0.8271277122502162,
+    "auc_change": 0.00013361872387196438,
+    "new_dim8_seed42_auc": 0.8210802248633071,
+    "new_dim8_seed43_auc": 0.8214178348980904
+  },
+  "primary_paired_gain_95_percentile_interval": [
+    2.6027399376690742e-05,
+    0.00015425811166236701
+  ],
+  "member_checks": {
+    "dim8_seed42": {
+      "primary_v5_max_abs_difference": 0.0,
+      "secondary_v5_max_abs_difference": 0.0,
+      "saved_combiners_reproduced": true
+    },
+    "dim8_seed43": {
+      "primary_v5_max_abs_difference": 0.0,
+      "secondary_v5_max_abs_difference": 0.0,
+      "saved_combiners_reproduced": true
+    }
+  },
+  "cached_v5_ensemble_and_updated_members_reproduction_passed": true,
+  "unchanged_three_members_reused_exactly": true,
+  "supported_for_five_day_check": true,
+  "sampling_unit": "whole first event per user, preserving all ten candidates; global row AUC",
+  "submission_created": false,
+  "runtime_seconds": 59.07,
+  "artifact_sha256": {
+    "work/dim8_seed42_predictions.npz": "2f1c4031c661cba873f3796f805c3601906b16a18a19216ad7920d20041f8bb2",
+    "work/dim8_seed42_jan24.cbm": "813544ab4ae8a7a702ed4ef20180f34d231946ef31a890435a6303e8d20341a4",
+    "work/dim8_seed42_jan25.cbm": "0382bc46dc70ce3e817e10736291a3d1ab5af88a068994fce1c7d489ca5cdebc",
+    "work/dim8_seed43_predictions.npz": "d15bed5b626fdb6d42ac7ce55aaabf14505e491ca85d05c165605a5d9ed2a78e",
+    "work/dim8_seed43_jan24.cbm": "8a8fc5c2d128429e760a835f82271a05e368223e419f33bdb4e72a35cc004fc9",
+    "work/dim8_seed43_jan25.cbm": "a007c2331f1af9712afb8af150a1e24950eb7e3ea19d26158121002fc2e4a321",
+    "work/two_day_ensemble_predictions.npz": "a84d3ee0775b33ec6be78cf8f9a5e2a9695d020920d2647a0e52fc1a92649c12",
+    "work/jan26_ensemble_predictions.npz": "507b3c0a24574283fee9291540ce00e248e98b3704376f0b0eb51039012adeb2"
+  }
+}

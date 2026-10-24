@@ -1,0 +1,48 @@
+{
+  "protocol": {
+    "model_inputs": [
+      "dim8_seed42",
+      "dim8_seed43",
+      "dim16_seed42",
+      "dim16_seed43"
+    ],
+    "common_features_included_once": 16,
+    "model_specific_features_per_model": 21,
+    "joint_feature_count": 100,
+    "combiner_trees": 545,
+    "combiner_depth": 6,
+    "combiner_learning_rate": 0.05,
+    "combiner_l2_leaf_reg": 20,
+    "combiner_seed": 42,
+    "combiner_early_stopping": false,
+    "candidate_current_ensemble_weight": 0.5,
+    "candidate_joint_combiner_weight": 0.5,
+    "fitting_features": "neural features from models trained before fitting day; no fitted-combiner predictions",
+    "primary_check": "first event per user across Jan25-26; combiner trained on Jan24",
+    "secondary_check": "first event per user on Jan26; combiner trained on Jan25",
+    "support_rule": "primary paired-gain interval entirely above zero and secondary AUC change nonnegative",
+    "bootstrap_resamples": 300,
+    "bootstrap_seed": 2026,
+    "status": "retrospective development experiment"
+  },
+  "two_day_primary": {
+    "events": 43964,
+    "baseline_four_model_auc": 0.8162401445033456,
+    "joint_combiner_auc": 0.8152130730304137,
+    "candidate_blend_auc": 0.8162182826336273,
+    "auc_change": -2.186186971830928e-05
+  },
+  "jan26_secondary": {
+    "events": 35138,
+    "baseline_four_model_auc": 0.8256163176107802,
+    "joint_combiner_auc": 0.8255153023659005,
+    "candidate_blend_auc": 0.8259680244335548,
+    "auc_change": 0.00035170682277452237
+  },
+  "primary_paired_gain_95_percentile_interval": [
+    -0.00016908570434969182,
+    0.00017194521954606295
+  ],
+  "supported_for_further_confirmation": false,
+  "runtime_seconds": 85.62
+}

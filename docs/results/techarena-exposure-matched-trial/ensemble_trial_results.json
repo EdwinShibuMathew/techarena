@@ -1,0 +1,153 @@
+{
+  "protocol": {
+    "experiment": "exposure-matched preference sampling expert added to unchanged V6",
+    "recipe": {
+      "architecture": "original_dim8_preference_and_event",
+      "seed": 42,
+      "dimension": 8,
+      "comparison_distribution": "(past_candidate_displays + 20) / (total_displays + 20*n_items)",
+      "display_smoothing": 20,
+      "comparisons_per_click": 31,
+      "sampling_with_replacement": true,
+      "positive_collisions_retained": true,
+      "importance_log_q_correction": false,
+      "preference_initial_epochs": 196,
+      "preference_extra_epochs": 64,
+      "preference_initial_learning_rate": 0.012,
+      "preference_fine_tuning_learning_rate": 0.003,
+      "preference_regularization": 0.02,
+      "preference_batch_size": 4096,
+      "adam_moments_reused": true,
+      "fine_tuning_sampling_seed": 1042,
+      "event_epochs": 8,
+      "posthoc_exposure_power": 0,
+      "baseline_weight": 0.85,
+      "expert_weight": 0.15
+    },
+    "event_objective": {
+      "objective": "half_event_ce_half_global_row_pair_v1",
+      "event_ce_weight": 0.5,
+      "pairwise_weight": 0.5,
+      "sampled_negative_rows_per_positive": 16,
+      "pair_score": "log odds of original softmax candidate marginal",
+      "negative_pool": "all unclicked candidate rows in current fitting minibatch, across users",
+      "pair_sampling_seed_offset": 3000,
+      "event_epochs": 8,
+      "event_learning_rate": 0.0015,
+      "anchor_regularization": 0.1,
+      "effect_regularization": 0.05,
+      "early_stopping": false
+    },
+    "v6_member_weights": [
+      0.2222222222222222,
+      0.2222222222222222,
+      0.2222222222222222,
+      0.16666666666666666,
+      0.16666666666666666
+    ],
+    "preference_positive_examples": "same prefix-only initial histories and observed clicks as V5/V6",
+    "sampling_rule": "all prefix candidate displays; independent draws with replacement; no log-q score correction",
+    "warmup_limit": "warm-up impressions unavailable; observed-period exposure is an approximation",
+    "inference": "unchanged event softmax, power0 exposure step, original ridge fallback and 37 features",
+    "combiner": {
+      "trees": 545,
+      "depth": 6,
+      "learning_rate": 0.05,
+      "l2_leaf_reg": 20,
+      "seed": 42,
+      "early_stopping": false
+    },
+    "blend_rule": "85% V6 plus 15% expert for all candidate rows, including empty histories",
+    "primary_check": "Jan24 meta-training; Jan25 prefix; first-user Jan25-26 evaluation",
+    "secondary_check": "Jan25 meta-training; Jan26 prefix; first-user Jan26 evaluation",
+    "bootstrap_resamples": 300,
+    "bootstrap_seed": 2026,
+    "support_rule": "global primary paired gain interval entirely positive and global secondary AUC change nonnegative",
+    "next_gate": "identical recipe versus V6 in five-day paired comparison before full-data fitting or submission",
+    "early_stopping": false,
+    "weight_search_performed": false,
+    "status": "retrospective development; reused dates; intervals not selection-adjusted",
+    "v6_replay": {
+      "two_day": {
+        "auc": 0.8184592533262289,
+        "member_max_abs_differences": {
+          "42": 0.0,
+          "43": 0.0
+        },
+        "passed": true
+      },
+      "jan26": {
+        "auc": 0.8271277122502162,
+        "member_max_abs_differences": {
+          "42": 0.0,
+          "43": 0.0
+        },
+        "passed": true
+      }
+    },
+    "sampling": {
+      "jan24": {
+        "fitting_events": 392831,
+        "total_candidate_displays": 3928310,
+        "minimum_sampling_probability": 6.49309803969312e-06,
+        "maximum_sampling_probability": 0.00020757622795643943,
+        "n_users": 53003,
+        "n_items": 50000
+      },
+      "jan25": {
+        "fitting_events": 490420,
+        "total_candidate_displays": 4904200,
+        "minimum_sampling_probability": 6.266725381931506e-06,
+        "maximum_sampling_probability": 0.00021611734019850277,
+        "n_users": 53003,
+        "n_items": 50000
+      },
+      "jan26": {
+        "fitting_events": 588873,
+        "total_candidate_displays": 5888730,
+        "minimum_sampling_probability": 5.95175017746377e-06,
+        "maximum_sampling_probability": 0.00022108574439700786,
+        "n_users": 53003,
+        "n_items": 50000
+      }
+    }
+  },
+  "two_day_primary": {
+    "events": 43964,
+    "baseline_v6_auc": 0.8184592533262289,
+    "exposure_matched_expert_auc": 0.7997611290089852,
+    "expert_neural_pipeline_auc": 0.7846512308496194,
+    "candidate_auc": 0.818354483100567,
+    "auc_change": -0.00010477022566190985
+  },
+  "jan26_secondary": {
+    "events": 35138,
+    "baseline_v6_auc": 0.8271277122502162,
+    "exposure_matched_expert_auc": 0.8158564663108975,
+    "expert_neural_pipeline_auc": 0.8024952109362149,
+    "candidate_auc": 0.827260266571208,
+    "auc_change": 0.00013255432099179565
+  },
+  "primary_paired_gain_95_percentile_interval": [
+    -0.0002941104782564874,
+    9.50952473539518e-05
+  ],
+  "valid_bootstrap_resamples": 300,
+  "v6_reproduction_passed": true,
+  "saved_expert_combiners_reproduced": true,
+  "v5_files_unchanged": true,
+  "v6_files_unchanged": true,
+  "all_five_v6_members_unchanged": true,
+  "supported_for_five_day_check": false,
+  "sampling_unit": "whole first event per user, preserving all ten candidates; global row AUC",
+  "submission_created": false,
+  "upload_performed": false,
+  "runtime_seconds": 32.28,
+  "artifact_sha256": {
+    "work/combiner_jan24.cbm": "6852b130017656533aaa098acab82c1308148d3f9771a9b2b73769403df238ec",
+    "work/combiner_jan25.cbm": "3bea5b343625a929f08e6c7f1c890accb061fb7af3a935256e6cb5a24236692d",
+    "outputs/training_results.json": "b8a628bdb63ea3a7bca85203dd835c7dcdaa24f4ef92fd53a85d534c09e16c9c",
+    "work/two_day_ensemble_predictions.npz": "513d1a249d75d14cdfdbb4152e9996967504521bfa8b7dbef4a5dff92e1ca6ee",
+    "work/jan26_ensemble_predictions.npz": "49a19c425bd92c40a7a23ee3c939b5f98beed166e49c02be953d9994643b5994"
+  }
+}

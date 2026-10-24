@@ -1,0 +1,135 @@
+{
+  "protocol": {
+    "experiment": "pooled history correction as one extra feature in all five V5 combiners",
+    "history_model": {
+      "architecture": "pooled_history_correction_v1",
+      "dimension": 8,
+      "hidden_units": 32,
+      "pools": [
+        "mean",
+        "recency_weighted_mean",
+        "last"
+      ],
+      "recency_decay_hours": 24.0,
+      "maximum_age_feature_hours": 720.0,
+      "trainable_history_embeddings": true,
+      "base_model_frozen": true,
+      "epochs": 8,
+      "batch_size": 2048,
+      "learning_rate": 0.001,
+      "history_anchor_regularization": 0.02,
+      "correction_regularization": 0.01,
+      "seed": 2026,
+      "early_stopping": false
+    },
+    "base_neural_member": "fine-tuned dim8 seed42",
+    "combiner_trees": 545,
+    "combiner_seed": 42,
+    "combiner_early_stopping": false,
+    "extra_feature": "history_correction_probability",
+    "feature_count_per_combiner": 38,
+    "members": [
+      "dim8_seed42",
+      "dim8_seed43",
+      "dim8_seed44",
+      "dim16_seed42",
+      "dim16_seed43"
+    ],
+    "weights": [
+      0.2222222222222222,
+      0.2222222222222222,
+      0.2222222222222222,
+      0.16666666666666666,
+      0.16666666666666666
+    ],
+    "primary_check": "first event per user across Jan25-26; combiners trained on Jan24",
+    "secondary_check": "first event per user on Jan26; combiners trained on Jan25",
+    "bootstrap_resamples": 300,
+    "bootstrap_seed": 2026,
+    "support_rule": "primary paired gain interval entirely positive and secondary AUC change nonnegative",
+    "next_gate": "pass a longer-window paired stress check before full-data promotion or submission",
+    "status": "retrospective development experiment; reused validation dates"
+  },
+  "two_day_primary": {
+    "events": 43964,
+    "baseline_v5_auc": 0.8183722315263706,
+    "candidate_history_auc": 0.8162607261970515,
+    "auc_change": -0.002111505329319141,
+    "history_network_alone_auc": 0.7876979060638003
+  },
+  "jan26_secondary": {
+    "events": 35138,
+    "baseline_v5_auc": 0.8269940935263442,
+    "candidate_history_auc": 0.8260768507580324,
+    "auc_change": -0.0009172427683118434,
+    "history_network_alone_auc": 0.8026388946127836
+  },
+  "primary_paired_gain_95_percentile_interval": [
+    -0.0026034496332002165,
+    -0.0016064753692484762
+  ],
+  "primary_groups": {
+    "activity_1_5": {
+      "events": 16587,
+      "v5_auc": 0.7935267809090032,
+      "candidate_auc": 0.7917279045296103,
+      "auc_change": -0.0017988763793929108
+    },
+    "history_1_5": {
+      "events": 5841,
+      "v5_auc": 0.7513552348432412,
+      "candidate_auc": 0.7495902865367516,
+      "auc_change": -0.0017649483064895444
+    },
+    "unseen_with_history": {
+      "events": 1278,
+      "v5_auc": 0.7533950342181915,
+      "candidate_auc": 0.7504828540905822,
+      "auc_change": -0.0029121801276092985
+    },
+    "history_empty": {
+      "events": 361,
+      "v5_auc": 0.5592610983855437,
+      "candidate_auc": 0.5497551885608718,
+      "auc_change": -0.009505909824671921
+    },
+    "activity_16_plus": {
+      "events": 8452,
+      "v5_auc": 0.8449689123065495,
+      "candidate_auc": 0.8435004069479116,
+      "auc_change": -0.0014685053586378505
+    },
+    "horizon_24_48h": {
+      "events": 8734,
+      "v5_auc": 0.8039556107046674,
+      "candidate_auc": 0.8017119193095875,
+      "auc_change": -0.00224369139507985
+    }
+  },
+  "member_auc": {
+    "dim8_seed42": {
+      "primary_auc": 0.8106258919257645,
+      "secondary_auc": 0.8207270981543827
+    },
+    "dim8_seed43": {
+      "primary_auc": 0.8120369088234924,
+      "secondary_auc": 0.822234132972329
+    },
+    "dim8_seed44": {
+      "primary_auc": 0.8136866542640979,
+      "secondary_auc": 0.8234457820719021
+    },
+    "dim16_seed42": {
+      "primary_auc": 0.8130083015336352,
+      "secondary_auc": 0.8230437131633123
+    },
+    "dim16_seed43": {
+      "primary_auc": 0.8129286870892305,
+      "secondary_auc": 0.823517551346567
+    }
+  },
+  "v5_reproduction_passed": true,
+  "supported_for_long_window_check": false,
+  "submission_created": false,
+  "runtime_seconds": 127.31
+}
