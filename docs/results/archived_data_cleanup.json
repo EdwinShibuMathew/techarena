@@ -1,0 +1,19 @@
+{
+  "id": "793c275b804b48cd9f6be06be857d4fa",
+  "started_at": "2026-10-24T22:15:42.694808+00:00",
+  "passed": true,
+  "removed": [
+    "local/archive/techarena-final/data/cache/evaluation_events.npz",
+    "local/archive/techarena-final/data/cache/evaluation_rowids.npy",
+    "local/archive/techarena-final/data/cache/preference_training.npz",
+    "local/archive/techarena/data/cache/train_events.npz",
+    "local/archive/techarena/data/raw/evaluation.zip",
+    "local/archive/techarena/data/raw/example_submission.csv",
+    "local/archive/techarena/data/raw/train.zip"
+  ],
+  "finished_at": "2026-10-24T22:15:49.581054+00:00",
+  "estimated_bytes_reclaimed": 1016672256,
+  "models_predictions_reports_code_unchanged": true,
+  "active_data_and_v6_bundle_verified": true,
+  "note": "Only archived data copies removed; restore recreates them from verified active data. No model or experiment evidence removed."
+}
