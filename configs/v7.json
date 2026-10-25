@@ -1,0 +1,36 @@
+{
+  "version": "v7_calibrated_event_scale_ranking",
+  "baseline": "v6_candidate_row_ranking",
+  "evaluation_events": 52939,
+  "evaluation_rows": 529390,
+  "submission_sha256": "9aebf08df53b9b1d0661479151c37118859831b3b4c9d371d533c3bf203b141a",
+  "method": "Within-event calibrated power sharpening (gamma=1.12) preserving exact event click sums",
+  "sharpening_gamma": 1.12,
+  "validation_evidence": {
+    "primary_first_user_jan25_26": {
+      "events": 43964,
+      "candidate_auc": 0.8187017004,
+      "v6_baseline_auc": 0.8184592533,
+      "auc_change": 0.000242447,
+      "paired_95_ci": [0.0001509391, 0.0003354438],
+      "promotion_gate_passed": true
+    },
+    "secondary_first_user_jan26": {
+      "events": 35138,
+      "candidate_auc": 0.8274042529,
+      "v6_baseline_auc": 0.8271277123,
+      "auc_change": 0.0002765406,
+      "paired_95_ci": [0.0001768461, 0.0003696035],
+      "promotion_gate_passed": true
+    },
+    "five_day_first_user_jan22_26": {
+      "events": 51488,
+      "candidate_auc": 0.7820860888,
+      "v6_baseline_auc": 0.7818190859,
+      "auc_change": 0.0002670029,
+      "paired_95_ci": [0.0001555146, 0.0003699263],
+      "promotion_gate_passed": true
+    }
+  },
+  "status": "ready for portal submission; passes all primary, secondary, and 5-day promotion gates"
+}

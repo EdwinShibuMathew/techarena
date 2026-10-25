@@ -69,6 +69,39 @@ class EvaluationMetrics:
     unclicked_pairs_auc: Optional[float] = None
 
 
+class FastAuc:
+    """Exact, tie-aware global row AUC with event multiplicities.
+    
+    Sorting once makes 1,000 whole-event bootstrap resamples run in milliseconds
+    instead of minutes without pair matrices.
+    """
+
+    def __init__(self, labels: np.ndarray, scores: np.ndarray, event_ids: np.ndarray):
+        y = np.asarray(labels, dtype=bool).ravel()
+        p = np.asarray(scores, dtype=np.float64).ravel()
+        ids = np.asarray(event_ids, dtype=np.int64).ravel()
+        order = np.argsort(p, kind="stable")
+        p = p[order]
+        self.y = y[order]
+        self.ids = ids[order]
+        self.starts = None
+        if len(p) > 1 and np.any(p[1:] == p[:-1]):
+            self.starts = np.r_[0, np.flatnonzero(p[1:] != p[:-1]) + 1]
+
+    def value(self, counts: np.ndarray) -> float:
+        weight = counts[self.ids].astype(np.float64)
+        positive = weight * self.y
+        negative = weight * (~self.y)
+        if self.starts is not None:
+            positive = np.add.reduceat(positive, self.starts)
+            negative = np.add.reduceat(negative, self.starts)
+        total_pos = positive.sum()
+        total_neg = negative.sum()
+        if total_pos == 0 or total_neg == 0:
+            return 0.5
+        return float(np.sum(positive * (np.cumsum(negative) - 0.5 * negative)) / (total_pos * total_neg))
+
+
 class PairedBootstrapEvaluator:
     """Performs whole-user paired bootstrap evaluation against baseline predictions."""
 
@@ -100,37 +133,24 @@ class PairedBootstrapEvaluator:
         
         n_rows = len(labels)
         n_events = n_rows // candidates_per_event
+        event_ids = np.repeat(np.arange(n_events, dtype=np.int64), candidates_per_event)
         
-        # Reshape to events x 10
-        cand_events = candidate_scores.reshape(n_events, candidates_per_event)
-        base_events = baseline_scores.reshape(n_events, candidates_per_event)
-        label_events = labels.reshape(n_events, candidates_per_event)
+        # Sort-once fast AUC oracles
+        cand_order = FastAuc(labels, candidate_scores, event_ids)
+        base_order = FastAuc(labels, baseline_scores, event_ids)
         
-        # Point estimate AUCs
-        cand_point_auc = compute_roc_auc(labels, candidate_scores)
-        base_point_auc = compute_roc_auc(labels, baseline_scores)
+        counts_full = np.ones(n_events, dtype=np.int64)
+        cand_point_auc = cand_order.value(counts_full)
+        base_point_auc = base_order.value(counts_full)
         point_diff = cand_point_auc - base_point_auc
         
-        # Identify clicked vs unclicked events
-        event_has_click = (label_events.sum(axis=1) > 0)
-        
-        # Evaluate subset AUCs if both partitions exist
-        clicked_pairs_auc = None
-        unclicked_pairs_auc = None
-        
-        # Resample at the event level (preserving all 10 candidates per event)
+        # Event-level bootstrap sampling with replacement via multinomial draws
         rng = np.random.default_rng(self.seed)
         diff_samples = np.empty(self.n_resamples, dtype=np.float64)
         
         for b in range(self.n_resamples):
-            indices = rng.integers(0, n_events, size=n_events)
-            b_cand = cand_events[indices].ravel()
-            b_base = base_events[indices].ravel()
-            b_labels = label_events[indices].ravel()
-            
-            b_cand_auc = compute_roc_auc(b_labels, b_cand)
-            b_base_auc = compute_roc_auc(b_labels, b_base)
-            diff_samples[b] = b_cand_auc - b_base_auc
+            counts = rng.multinomial(n_events, np.full(n_events, 1.0 / n_events))
+            diff_samples[b] = cand_order.value(counts) - base_order.value(counts)
         
         lower_pct = 100.0 * (self.alpha / 2.0)
         upper_pct = 100.0 * (1.0 - self.alpha / 2.0)
@@ -146,9 +166,7 @@ class PairedBootstrapEvaluator:
             ci_lower=ci_lower,
             ci_upper=ci_upper,
             gate_passed=gate_passed,
-            resamples=self.n_resamples,
-            clicked_pairs_auc=clicked_pairs_auc,
-            unclicked_pairs_auc=unclicked_pairs_auc
+            resamples=self.n_resamples
         )
 
 

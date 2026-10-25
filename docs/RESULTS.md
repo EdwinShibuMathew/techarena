@@ -10,6 +10,19 @@ its entire model family is ineffective.
 V5 public: 0.819402. V6 public: 0.819451. Last reported V6 rank: 27; tenth-place
 score in that snapshot: 0.826331. These are historical, not live standings.
 
+## Promoted candidate: V7 (Calibrated Event-Scale Ranking)
+
+| Evaluation | Metric / Change vs V6 | Paired 95% Bootstrap Interval | Gate Status |
+|---|---:|---|---|
+| **Primary (Jan25–26, 43,964 events)** | **+0.0002424470** | **[+0.0001509391, +0.0003354438]** | **PASSED** (Lower > 0) |
+| **Secondary (Jan26, 35,138 events)** | **+0.0002765406** | **[+0.0001768461, +0.0003696035]** | **PASSED** (Nonnegative) |
+| **Five-Day Stress (Jan22–26, 51,488 events)** | **+0.0002670029** | **[+0.0001555146, +0.0003699263]** | **PASSED** (Lower > 0) |
+
+- **Method**: Within-event power sharpening ($\gamma=1.12$) preserving exact event click sums.
+- **Submission Artifact**: `artifacts/submissions/v7_candidate.csv` (529,390 rows).
+- **Candidate SHA256**: `9aebf08df53b9b1d0661479151c37118859831b3b4c9d371d533c3bf203b141a`.
+- **Status**: Passes all primary, secondary, and five-day stress gates; promoted for competition upload.
+
 Our successful steps included preference learning, event training, exposure
 adjustment, cold-history fallback, CatBoost combiners, longer preference
 training, lower-rate fine-tuning, dimension/seed diversity and the small V6
