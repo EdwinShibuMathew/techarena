@@ -1,0 +1,36 @@
+# Agent and CLI Search Exclusions
+# Prevents excessive token usage by excluding large data, archives, caches, and models from search/indexing
+
+# Massive local archives (11+ GB)
+/local/
+local/
+
+# Large binary datasets (970+ MB)
+/data/
+data/
+
+# Model checkpoints, submissions, and predictions (370+ MB)
+/artifacts/
+artifacts/
+
+# Historical frozen codebase (SHA256-locked, not active pipeline)
+/legacy/
+legacy/
+
+# Binary and cache files
+*.npz
+*.npy
+*.pt
+*.pth
+*.cbm
+*.csv
+*.zip
+*.tar
+*.tar.gz
+*.log
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+.env
+.env.*
