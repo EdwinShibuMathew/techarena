@@ -1,10 +1,14 @@
-# Reclaim redundant archived competition-data copies
+# How I removed redundant archive data copies
 
-The archive-only hardlink check excludes the independent active bundle. A zero
-result from that check therefore does not mean there are no data copies shared
-in content between `local/archive/` and the active `data/` folder.
+My archive-only duplicate check found no savings because it excluded the active
+bundle. I then checked archived data files against the verified copies in `data/`.
 
-This separate cleanup removes only regular archived files under a data directory
+I removed seven exact data copies, reclaiming approximately 0.947 GiB. All 29
+active assets verified afterward, and my models, predictions, reports and source
+code stayed unchanged. The [saved cleanup report](results/archived_data_cleanup.json)
+records the exact paths. The commands below document the process and recovery.
+
+I limited this cleanup to regular archived files under a data directory
 whose basename, SHA256 and size match one of these verified active assets:
 
 - `data/raw/train.zip`, `evaluation.zip`, `example_submission.csv`
@@ -12,8 +16,8 @@ whose basename, SHA256 and size match one of these verified active assets:
   `evaluation_rowids.npy`, `preference_training.npz`
 
 No model checkpoint, combiner, prediction array, submission CSV, experiment
-report, source, unknown cache or symbolic link is removed. All unique V5 assets
-remain archived. Every live model/data asset is verified through the successful
+report, source, unknown cache or symbolic link is removed. I kept all unique V5
+assets in the archive. Every live model/data asset is verified through the successful
 V6 relocation receipt before/after cleanup. Existing shared inodes are excluded
 unless all their names are proposed archive copies, so estimated savings do not
 count data still occupying storage through another filename.

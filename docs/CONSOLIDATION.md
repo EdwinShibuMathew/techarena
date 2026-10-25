@@ -1,9 +1,15 @@
-# Consolidation and rollback
+# How I consolidated the project and recover old files
 
-## What is protected
+## What I preserved
 
-The repository is a new source copy. Original Windows sources, WSL studies,
-V5/V6 checkpoints and submission CSVs are not edited during preparation.
+I created a separate source repository, collected the verified V6 assets, and
+moved 34 old experiment folders into `local/archive/`. The migration preserved
+my original sources, studies, V5/V6 checkpoints and submission CSVs.
+
+I later removed seven archived data copies that matched the active bundle,
+reclaiming about 0.947 GiB. Models and experiment results stayed unchanged;
+[the data-copy cleanup guide](ARCHIVED_DATA_COPIES.md) explains how I can recreate
+those data copies before restoring the old folder layout.
 
 `bundle` copies V6 event/preference checkpoints, combiner/prediction assets, shared caches,
 available original archives, example submission and the V5/V6 submitted CSVs.
@@ -14,7 +20,7 @@ The new manifest uses repository-relative paths. It records original locations
 for provenance without changing the old frozen reports. Saved symbolic-link
 targets are dereferenced only when copying specific required assets.
 
-## Required order
+## The migration order I used
 
 1. `inventory`: record the actual WSL `~/projects/techarena*` folders and sizes.
 2. `bundle`: collect the known benchmark assets without moving original folders.
@@ -24,9 +30,9 @@ targets are dereferenced only when copying specific required assets.
 6. `archive --apply`: move old plain experiment folders inside `local/archive`.
 7. `publish_private.py`: publish code and reports privately, excluding local assets.
 
-Archive is a reversible directory rename on the same filesystem. It is not a
-deletion or a backup on another device. Disk reclamation/deduplication is not
-performed automatically. Keep separate backups for protection against disk loss.
+I used directory renames on the same filesystem to archive the studies. That
+made the folder moves reversible, but did not create a backup on another device
+or reclaim disk space. My later data-copy cleanup was a separate verified step.
 
 Folders containing a Git checkout are excluded from automatic relocation. The
 tool blocks active user processes whose working directory is under a candidate
@@ -38,10 +44,12 @@ absolute paths. Their bytes are preserved as evidence. They are not the new
 active pipeline; restore the original layout before using those old runners.
 The current V6 pipeline uses the independent collected asset paths instead.
 
-## Recovery
+## How I recover the original layout
 
-Archive moves are journaled before the first rename and after each completed
-rename. An interrupted archive can resume with the same command. Restore with:
+The migration journals each folder move so I can resume an interrupted archive.
+After the data-copy cleanup, I first recreate the removed archive data files with
+`python tools/clean_archived_data_copies.py restore`. I can then preview and
+reverse the folder moves with:
 
 ```bash
 python tools/consolidate.py restore

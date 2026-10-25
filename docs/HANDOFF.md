@@ -1,30 +1,33 @@
-# Consolidation addendum — read first
+# My current workspace
 
-This repository is the new team-facing source location:
+I consolidated the project into this repository for the team:
 
 - Windows: `C:\Users\Edwin\Documents\Codex\techarena-team`
-- Intended WSL working copy: `/home/edwin/projects/techarena-team`
-- Intended private GitHub repository: `EdwinShibuMathew/techarena`
+- My active WSL working copy: `/home/edwin/projects/techarena-team`
+- Our private GitHub repository: `EdwinShibuMathew/techarena`
 
-Preparation alone does not prove publication, asset migration or archiving.
-Check the actual Git remote, `local/v6_relocation_check.json`, and
-`local/archive_journal.json` before assuming those steps completed.
-See `README.md` and `docs/CONSOLIDATION.md` for the current workflow.
+I completed publication and migration, reproduced V6 exactly, and archived 34
+old experiment folders. My receipts are `local/v6_relocation_check.json` and
+`local/archive_journal.json`. I also removed seven verified duplicate data copies
+(about 0.947 GiB) and prepared the five private transfer files for teammates.
+See [the README](../README.md), [my consolidation notes](CONSOLIDATION.md), and
+[the teammate setup guide](REPRODUCE_V6_WSL.md) for the current workflow.
 
-Once migration completes, current data are under `data/`, V6 assets under
+My current data are under `data/`, V6 assets under
 `artifacts/v6/`, and V5/V6 submission backups under `artifacts/submissions/`.
 Old experiments are retained inside `local/archive/`. Historical frozen files
 keep their original paths as evidence and require restoration before using
-the old runners. Do not silently rewrite their hashes or original metadata.
+the old runners. I recreate removed data copies before restoring the old
+layout, and keep the recorded hashes and metadata unchanged.
 
-The original handoff below is retained for research context. Its old absolute
-paths are historical references, not guaranteed active workspace paths.
+I retain the original research handoff below for context. Its old absolute
+paths are historical references, not my current workspace layout.
 
 ---
 
 # TechArena project handoff
 
-Prepared from Edwin's conversation and reported runs on October 24, 2026.
+My research handoff from October 24, 2026; workspace status updated after consolidation.
 
 ## Request for the next conversation
 
@@ -388,7 +391,7 @@ This experiment changed sampling and the expert's post-hoc exposure treatment to
 - Workspace: `/home/edwin/projects/techarena-time-bilinear-trial`.
 - Report: `outputs/ensemble_trial_results.json` within that workspace.
 
-Latest user-pasted report is also accessible on Windows at:
+I also saved the latest report on Windows at:
 
 ```text
 C:\Users\Edwin\.codex\attachments\5a60a37b-2070-4f0f-805f-c73b632c434a\Pasted text.txt
@@ -402,7 +405,7 @@ C:\Users\Edwin\.codex\attachments\ff6aba15-f456-46dc-89d4-e841d53ffcca\Pasted te
 
 The time-bilinear run showed a Triton compiler warning that `_POSIX_C_SOURCE` was redefined between Ubuntu headers (`202405L`) and conda Python headers (`200809L`). CPU/CUDA self-tests, training and evaluation all completed successfully. Do not reinstall the working environment or edit headers because of that warning alone.
 
-## Your first task
+## What I want us to review next
 
 **Do not immediately generate another model trial.**
 

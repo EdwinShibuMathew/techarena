@@ -1,10 +1,10 @@
 # Current model: V6
 
-Predict a click probability for every candidate row. Each event contains ten
-candidates and at most one click; the neural event model includes an eleventh
-no-click outcome. The official metric is global row ROC AUC.
+I use V6 to predict a click probability for every candidate row. Each event
+contains ten candidates and at most one click, so our neural event model includes
+an eleventh no-click outcome. The official metric is global row ROC AUC.
 
-## Members and weights
+## Our ensemble members and weights
 
 | Member | Preference epochs | Event objective | Weight |
 |---|---:|---|---:|
@@ -48,7 +48,9 @@ V6 has 529,390 evaluation rows. Its submitted CSV SHA256 is:
 c386d545b3746e05dd515020c6185afda06cefdbcdf7d48df022454762fb378c
 ```
 
-The portable wrapper checks every member against saved predictions before
-checking the ensemble and export. It accepts a relocation only if the new CSV
-is byte-identical to the submitted V6. Until that test passes in Edwin's WSL,
-the wrapper is prepared code, not verified reproduction of the real artifacts.
+I check every member against its saved predictions before checking the ensemble
+and exported CSV. I have reproduced all five members from the consolidated assets
+in my WSL environment, with a CSV that matches the submitted V6 byte for byte.
+
+Teammates need to pass the same checks on their machines. Matching asset hashes
+alone does not establish exact numerical reproduction on different hardware.

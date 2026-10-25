@@ -1,17 +1,18 @@
 # Teammate guide: reproduce V6 in WSL
 
-Your goal is to run the five saved V6 models and recreate the submitted CSV.
-You do not need to retrain them or download the old experiment archive.
+I put this guide together so you can run our five saved V6 models and recreate
+the submitted CSV on your own machine. You don't need to retrain them or download
+my old experiment archive.
 
 There are three parts: get repository access, install the supplied environment,
 and run the saved models against the supplied data. A Git clone alone is not
 enough because large assets are deliberately excluded from the repository.
 
-## 1. Get these from Edwin first
+## 1. Get the downloads from me
 
 Accept the GitHub invitation and confirm you can open
 [EdwinShibuMathew/techarena](https://github.com/EdwinShibuMathew/techarena).
-Ask Edwin for these five files from one matching export:
+Ask me for these five files from one matching export:
 
 ```text
 techarena-v6-assets.tar.gz
@@ -23,8 +24,8 @@ runtime_versions.json
 
 The assets contain the competition archives, example CSV, processed caches,
 model checkpoints, combiners, reference predictions, V5/V6 submission backups,
-and the asset manifest. Download them only from the private team transfer Edwin
-supplies. No public asset-download URL is configured in this repository.
+and the asset manifest. I share them through our private team transfer. No public
+asset-download URL is configured in this repository.
 
 The packed environment includes Python and the model libraries; you do not need
 to install Miniconda, PyTorch or the unpinned `requirements.txt` separately for
@@ -32,13 +33,13 @@ this route. It does not include a Windows NVIDIA display driver.
 
 ## 2. Check your computer
 
-The reference setup is Windows with Ubuntu WSL2 on x86_64, Python 3.12.15,
+My reference setup is Windows with Ubuntu WSL2 on x86_64, Python 3.12.15,
 approximately 15 GiB available WSL memory, and an NVIDIA RTX 4070 Laptop GPU
 with 8 GiB VRAM. Those are measured reference specifications, not tested minimums.
 Allow space for both compressed downloads and extracted assets/environment;
 25 GiB free is a practical initial budget, not a measured requirement.
 
-The supplied environment was built on Ubuntu 26.04.1 LTS. Prefer a matching
+I built the supplied environment on Ubuntu 26.04.1 LTS. Prefer a matching
 Ubuntu release for the closest setup; other Linux releases/system libraries and
 GPU models require verification rather than an assumption of compatibility.
 ARM computers and non-NVIDIA GPUs are outside this verified CUDA setup.
@@ -131,8 +132,8 @@ Verify the downloads before extracting them:
 cd ~/techarena-downloads && sha256sum -c SHA256SUMS
 ```
 
-All four listed checks must report `OK`. The checksum file is supplied by Edwin;
-obtain it through the same trusted private team transfer. A mismatch means stop
+All four listed checks must report `OK`. I supply the checksum file with the
+downloads; get it through the same trusted private team transfer. A mismatch means stop
 and obtain the correct file, rather than editing the recorded checksum.
 
 Use the code revision recorded with this export:
@@ -188,7 +189,7 @@ if torch.cuda.is_available():
 PY
 ```
 
-The recorded environment, fetched from the repository on 2026-10-25, is:
+These are the package versions recorded from my working environment on 2026-10-25:
 
 | Component | Recorded version |
 |---|---|
@@ -202,7 +203,7 @@ The recorded environment, fetched from the repository on 2026-10-25, is:
 | Triton | 3.8.0 |
 
 The export's `runtime_versions.json` and repository `docs/runtime_versions.json`
-are the records to compare against. These versions describe Edwin's installation;
+are the records to compare against. These versions describe my installation;
 they are not a claim that all matching packages are currently available from
 public installers. This is why the packed working environment is the recommended
 route. Do not replace its packages with the latest versions before the first run.
@@ -237,7 +238,7 @@ locations do not have to exist on your machine. The portable replay uses the
 relative paths in this layout. Keep all 29 manifest assets, including the
 preference checkpoints and V5 backup required by the verifier.
 
-The export may include Edwin's previous `artifacts/reproduced_v6.csv`. To ensure
+The export may include my previous `artifacts/reproduced_v6.csv`. To ensure
 your run creates a fresh CSV, the command below uses a separate output name.
 
 ## 7. Verify and reproduce
@@ -264,7 +265,7 @@ The generated CSV must have 529,390 prediction rows, with header
 c386d545b3746e05dd515020c6185afda06cefdbcdf7d48df022454762fb378c
 ```
 
-The success receipt is `local/v6_relocation_check.json`. Send Edwin the final
+The success receipt is `local/v6_relocation_check.json`. Send me the final
 success message, CSV hash, recorded commit and GPU name. No competition upload
 is performed by these commands.
 
@@ -278,7 +279,7 @@ is performed by these commands.
 | Asset/source fingerprint mismatch | Stop; check the pinned commit and matching export |
 | Python imports fail | Check `which python` points into `~/envs/techarena-v6/` and `conda-unpack` completed |
 | CUDA unavailable or driver too old | Check Windows NVIDIA driver, WSL2 and the environment's CUDA runtime |
-| A member's predictions differ | Keep the error, package versions, Ubuntu version and GPU details; ask Edwin to investigate |
+| A member's predictions differ | Keep the error, package versions, Ubuntu version and GPU details; send them to me so we can investigate |
 | Existing output differs | Use another new output filename inside `artifacts/`; do not overwrite baseline files |
 
 Exact replay uses a strict per-member tolerance and exact final CSV hash. A
@@ -287,7 +288,7 @@ floating-point results across GPU/CPU models, drivers or system libraries.
 Do not loosen the checks to claim reproduction. `--device cpu` exists for
 diagnostics, but CPU replay has not been established as byte-identical.
 
-You do not need Edwin's old sibling projects or `local/archive/`. On a new clone,
+You don't need my old sibling projects or `local/archive/`. On a new clone,
 do not run inventory/bundle/archive/cleanup commands intended for his migration.
 Full-data training is not yet a single portable command; this guide reproduces
 the saved V6 inference pipeline. Put new experiments on a branch and keep the

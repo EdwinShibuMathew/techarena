@@ -1,6 +1,10 @@
-# Archive disk cleanup
+# My archive duplicate check
 
-The first cleanup shares storage for byte-identical archived binaries. It keeps
+I first checked whether byte-identical binaries inside the archive could share
+storage. The check found no eligible duplicates and estimated 0 GiB of savings,
+so I did not apply it. I kept the tool and its checks for future use.
+
+The tool shares storage for byte-identical archived binaries. It keeps
 every filename, every unique model, every dataset, every experiment report and
 all symbolic-link targets. It does not delete whole experiment folders.
 
@@ -10,7 +14,7 @@ and ownership, and be on the same filesystem. Existing hardlinks are counted
 once. Any inode linked outside the archive is excluded. Active `data/` and
 `artifacts/` copies are not linked to the archive.
 
-This deliberately retains unique V5 assets in the archive: the portable bundle
+I keep unique V5 assets in the archive: the portable bundle
 collects all V6 members, but does not independently collect every V5 event model.
 No rejected study's unique checkpoint or prediction array is discarded.
 

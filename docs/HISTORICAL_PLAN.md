@@ -1,8 +1,13 @@
-# TechArena: next experiment plan
+# My TechArena research notes
 
-Prepared 2026-10-24 from Edwin's WSL runs and latest leaderboard screenshot.
-This is a research plan, not a claim of an optimal model or a promised score.
-Edwin runs the experiments in WSL; the assistant prepares scripts and explains results.
+I keep these notes from my WSL runs and leaderboard snapshots as of 2026-10-24.
+They record the experiment sequence, including preparation and decisions at
+each stage. Earlier pending steps describe their status at the time; they are
+not a new instruction to repeat completed or rejected experiments. Our current
+setup and reproduction steps are in [the README](../README.md).
+
+I run experiments in WSL and review the evidence before choosing the next one.
+These notes are a research record, not a promise of an optimal model or score.
 
 ## Current baseline
 
@@ -16,7 +21,7 @@ Do not run the five-day comparison or full-data fitting for this recipe.
 The compiler's _POSIX_C_SOURCE redefinition warning did not stop this run:
 real CPU/CUDA model and loss self-tests passed, followed by completed fitting
 and reporting. Keep the working environment unchanged for this warning alone.
-V6 remains the strongest reported public submission (0.819451).
+V6 remains my strongest recorded public submission (0.819451).
 
 Earlier prepared screen (now completed and rejected): time_bilinear_model.py / run_time_bilinear_trial.py.
 New workspace techarena-time-bilinear-trial; actions self-test/setup/train/
@@ -49,9 +54,10 @@ V6/prediction tamper rejection. GPU/training/CatBoost and Windows symlinks were
 stand-ins. WSL self-test checks real CPU/CUDA zero-model identity/RNG, score
 oracle and finite-difference gradients, inactive users/day-type pooling, then
 runs the generated event8 trainer and cold/empty-history pipeline on a tiny
-fixture. Actual CUDA handoff, V6 replay and real fitting remain for Edwin.
+fixture. At that stage, I still needed to run the actual CUDA handoff, V6 replay
+and real fitting in WSL.
 
-Exposure-matched preference trial completed in Edwin's WSL and failed the
+I completed the exposure-matched preference trial in WSL and failed the
 declared promotion gate. Against V6: primary 0.8184592533 -> 0.8183544831,
 change -0.0001047702; paired 95% percentile interval
 [-0.0002941105, +0.0000950952]. Secondary 0.8271277123 -> 0.8272602666,
@@ -62,15 +68,15 @@ members retained, V5/V6 files unchanged. No submission or upload occurred.
 Do not advance this fixed 85/15 candidate to the five-day comparison or
 full-data training, and do not perform a post-hoc blend-weight sweep. This is
 an unsupported near-tie, not proof that all exposure-matched methods fail.
-V6 remains the best reported public submission at 0.819451.
+V6 remains my best recorded public submission at 0.819451.
 
-Latest user-reported public result: V6 candidate uploaded, AUC 0.819451,
+My latest recorded public result: V6 candidate uploaded, AUC 0.819451,
 rank 27 in the supplied screenshot. V5 was 0.819402: improvement 0.000049.
 Screenshot tenth is 0.826331, leaving a 0.006880 public gap. Other teams'
 improvements explain why a higher score accompanies a worse rank. This is a
 snapshot, not a verified live cutoff or a prediction of private ranking.
 
-Actual full-data V6 checks passed in Edwin's WSL: 529,390 unique example IDs
+My full-data V6 checks passed in WSL: 529,390 unique example IDs
 in order, valid probabilities, both validation replays exact, three retained
 members reused exactly, and protected V5 files unchanged. Candidate SHA256:
 c386d545b3746e05dd515020c6185afda06cefdbcdf7d48df022454762fb378c.
@@ -131,8 +137,8 @@ meta fitting, completed resume and protected-file/prediction tamper rejection.
 GPU/training/CatBoost and Windows symlinks were stand-ins locally. The WSL
 self-test checks actual CPU/CUDA sampling and row-ranking gradients, executes
 all generated stages on a tiny fixture using the full fixed epoch schedule,
-and checks compatible cold/empty history inference. Real training and historical
-prediction reproduction remain for Edwin's WSL run.
+and checks compatible cold/empty history inference. At that stage, I still needed
+to run real training and reproduce the historical predictions in WSL.
 
 Five-day global row-ranking check completed and passed: overall V5 0.7817113214
 -> candidate 0.7818190859, gain 0.0001077645, paired interval
@@ -142,7 +148,7 @@ point-estimate gate. All five daily point gains were positive. All five original
 baseline members replayed exactly after the report-hash reconciliation, and
 new combiners reproduced after reload. Reused dates/selection limitations remain.
 
-Edwin explicitly authorized full-data training and candidate CSV creation while
+I decided to proceed with full-data training and candidate CSV creation while
 keeping V5 intact; he continues to execute commands in WSL and upload himself.
 Prepared row_auc_final_utils.py and run_row_auc_final.py. CLI actions:
 self-test, setup, train, build. New workspace techarena-row-auc-final. Reuses
@@ -172,8 +178,8 @@ example. Synthetic final lifecycle covered V5 reconstruction, frozen setup,
 two separate fits, retained members, export/manifest verification, completed
 and interrupted-export resume, protected V5 bytes and CSV tamper rejection.
 CUDA/training/inference/prior-study checks and Windows symlinks were stand-ins
-in that local workflow. Actual full training and validation replay are left to
-Edwin's WSL run. The candidate is an incremental update, not a predicted
+in that local workflow. I still needed to complete full training and validation
+replay in WSL at that stage. The candidate is an incremental update, not a predicted
 top-ten score; no new public result has been reported.
 
 Five-day setup initially stopped at the cached training-report SHA comparison,
@@ -193,7 +199,7 @@ frozen proof. No original report/cache hash is overwritten or relabeled.
 Local regression passed for a runtime-only rewritten report, exact replay of
 all five members/both dimensions, rejection of missing/stale proof, changed
 dim8/dim16 predictions and changed combiner bytes. GPU inference was a stand-in.
-Edwin should copy the corrected script and rerun self-test/setup/train/evaluate;
+I needed to copy the corrected script and rerun self-test/setup/train/evaluate;
 no deletion or rerun of the original baseline trainer is needed.
 
 The short global row-ranking trial passed its declared development gates:
@@ -203,7 +209,7 @@ to AUC 0.8271277123. Old-member reproduction differences were zero and new
 combiners reproduced after reload. Dates are reused and intervals are not
 selection-adjusted; this supports the next stress test, not promotion.
 
-Prepared run_row_auc_five_day.py for Edwin's WSL run. It reuses the completed
+Prepared run_row_auc_five_day.py for my WSL run. It reuses the completed
 techarena-v5-long-window preference epoch260 checkpoints for dim8 seeds42/43
 at Jan21 and Jan22, and copies the successful short trial's generated trainers.
 Only monitoring-split names and checkpoint cutoff metadata change; restoration
@@ -230,7 +236,7 @@ ties/explicit-duplication bootstrap oracle, report/cache resume and checkpoint
 tamper detection. CUDA/training/CatBoost and Windows symlinks were stand-ins.
 A Windows/WSL line-ending mismatch found in testing was fixed by comparing
 normalized Python text while freezing each input's original bytes separately.
-Actual model training and V5 prediction reproduction remain for Edwin's WSL.
+At that stage, I still needed to train the models and reproduce V5 predictions in WSL.
 
 Next prepared experiment: row_auc_objective.py / run_row_auc_trial.py changes
 the event-stage data objective for dim8 seeds42/43 to 0.5 original eleven-way
@@ -295,8 +301,8 @@ future labels cannot alter them; exact cutoff, recent-window boundary, empty
 recent activity, unknown keys, repeated targets and fitting/target order are
 covered. A synthetic filesystem run checked three cutoffs, five members, ten
 meta fits, saved-model predictions, fixed blend, bootstrap, resume and changed
-output detection. GPU/CatBoost were stand-ins in that local workflow; actual
-fitting and prediction reproduction remain for Edwin's WSL run. The general
+output detection. GPU/CatBoost were stand-ins in that local workflow; I still
+needed to run actual fitting and reproduce predictions in WSL. The general
 motivation for examining observed non-clicks is discussed in Lin, Kamar and
 Horvitz, "Signals in the Silence":
 https://www.microsoft.com/en-us/research/wp-content/uploads/2016/11/LinKamarHorvitzCorrected.pdf
@@ -337,8 +343,8 @@ The actual competition run has now completed and failed as recorded above.
 - Gap to 0.82: 0.000598. To exceed 0.82, the gain must be greater than this.
 - Leader in the screenshot: 0.831991; gap 0.012589.
 - Tenth place in the screenshot: 0.826112; gap 0.006710.
-- Qualification objective, supplied by Edwin: finish in the top ten.
-- Phase 1 deadline, supplied by Edwin: November 3, 2026, end of day.
+- My qualification objective: finish in the top ten.
+- The Phase 1 deadline I was working toward: November 3, 2026, end of day.
   The deadline's official timezone and the qualification selection rule still
   need to be checked in the competition portal. Plan completion before that day.
 - V5 has three fine-tuned dim8 seeds (42, 43, 44), each with weight 2/9,
@@ -358,7 +364,7 @@ each model idea through defined stages. The final competition ranking uses priva
 the public and private sets are random partitions of evaluation rows. The
 supplied INSTRUCTIONS.md limits submissions to ten per day.
 
-Use Edwin's current techarena conda environment in WSL. Hardware: RTX 4070
+I use my existing techarena conda environment in WSL. Hardware: RTX 4070
 Laptop GPU with 8 GB VRAM, about 15 GiB WSL RAM. No new downloads are planned
 for the first experiment; NumPy, SciPy, PyTorch and CatBoost are already available.
 Keep experiments in a separate WSL project folder and leave V5 intact.
@@ -502,8 +508,8 @@ AUC or predict a finishing rank from the development checks.
 ## Schedule to the November 3 deadline
 
 These are work windows and priorities, not runtime estimates. Available daily
-time has not yet been specified. Edwin remains responsible for running WSL
-commands and uploading selected submissions.
+time has not yet been specified. I run the WSL
+commands and upload selected submissions myself.
 
 | Dates | Priority | Exit criterion |
 | --- | --- | --- |
@@ -532,9 +538,9 @@ integration before inspecting its outcome; avoid an open-ended parameter sweep.
   whether one targeted repair is justified. Do not sweep unrelated models.
 - If the history component has no supported benefit, revisit explicit sparse
   item-pair features only when their coverage diagnostic supports a trial.
-- The November 3 EOD deadline is user supplied; confirm its timezone and how
+- My stated deadline is November 3 EOD; confirm its timezone and how
   the qualifying/final submission is selected in the portal. Keep the workload
-  modular until Edwin's available daily time is known. If little time remains,
+  modular until I know how much time I can spend each day. If little time remains,
   prioritize a reproducible strongest submission and a single cheap screen
   over rebuilding a large evaluation suite.
 - A full 50,000-by-50,000 float64 matrix alone is 20 GB (about 18.6 GiB), before
@@ -562,7 +568,7 @@ members stay intact. Primary positive paired interval and nonnegative Jan26
 change are required before an earlier-cutoff five-day test. This is a new
 representation objective, not a promised leaderboard gain. CPU algebra/source
 and synthetic orchestration checks passed; actual CUDA solves and an
-end-to-end preference/event/feature self-test are included for Edwin's WSL run.
+end-to-end preference/event/feature self-test are included for my WSL run.
 
 Matched comparison completed: later-cutoff V5 AUC 0.758884 versus 0.733914
 on the same 3,531 late-arriving events, gain 0.024970 with paired interval
@@ -586,7 +592,7 @@ supported primary paired gain and nonnegative secondary change advance to
 the existing five-day check (combiner trained on Jan21). This is a test of
 better use of existing supervised data, not a proven consequence of the
 matched-cutoff result. No new models have been trained and no submission files
-have changed; Edwin continues to run prepared experiments in WSL.
+have changed; I continue to run experiments in WSL.
 
 Prepared implementation: expanded_combiner_features.py and
 run_expanded_combiner_trial.py. The extension keeps the original 37 formulas
@@ -599,10 +605,10 @@ cold users and empty histories. The trial freezes source/checkpoint hashes,
 checks first-event feature equivalence and original member predictions, fits
 ten new 545-tree combiners, and applies the original primary/secondary gate.
 It supports resuming completed member results and displaying an existing final
-report. Actual GPU self-test and real fitting remain for Edwin's WSL runs;
-local numeric, adaptation and synthetic orchestration checks passed.
+report. At that stage, I still needed to run the GPU self-test and real fitting
+in WSL; local numeric, adaptation and synthetic orchestration checks passed.
 
-The user completed the five-day V5 baseline: AUC 0.781711 on 51,488 first-user
+I completed the five-day V5 baseline: AUC 0.781711 on 51,488 first-user
 events, with bootstrap interval [0.779203, 0.784061]. Later-day cohorts contain
 more unseen users and short histories, so daily AUC declines cannot be read as
 isolated time decay. Prepared compare_v5_matched_events.py for the 3,531 Jan25-26
@@ -634,7 +640,7 @@ comparison with the existing shorter-window AUC also changes fitting-set size.
 The pooled correction failed both main checks. Its all-five integration lost
 0.002112 primary AUC, and the fixed dim8-only follow-up lost 0.000503 with a
 wholly negative paired interval. Neither advances to the longer-window check.
-V5 remains the current submission baseline (user-reported public AUC 0.819402).
+V5 remains the current submission baseline (my recorded public AUC 0.819402).
 
 The next prepared, not yet executed experiment is a standalone candidate-specific
 attention history expert. It initializes item vectors from the corresponding
