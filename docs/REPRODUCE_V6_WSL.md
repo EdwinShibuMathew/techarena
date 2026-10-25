@@ -11,7 +11,7 @@ enough because large assets are deliberately excluded from the repository.
 
 Accept the GitHub invitation and confirm you can open
 [EdwinShibuMathew/techarena](https://github.com/EdwinShibuMathew/techarena).
-Ask Edwin for these six files from one matching export:
+Ask Edwin for these five files from one matching export:
 
 ```text
 techarena-v6-assets.tar.gz
@@ -110,7 +110,7 @@ If the repository appears missing, confirm that you accepted the invitation
 using the same account shown by `gh auth status`. See the
 [GitHub CLI sign-in reference](https://cli.github.com/manual/gh_auth_login).
 
-## 4. Copy and verify the six downloads
+## 4. Copy and verify the five downloads
 
 Put them together in `~/techarena-downloads`. You can copy them from Windows
 Downloads with Ubuntu's file browser or `cp`. For example, replace `Alice` with
