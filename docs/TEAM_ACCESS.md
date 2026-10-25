@@ -85,7 +85,7 @@ its directory. See [its official usage and caveats](https://conda.github.io/cond
 If it reports missing or modified package files, stop and share the error;
 do not bypass it with ignore flags or reinstall packages in `techarena` blindly.
 
-Send all six files in `local/team-export/` to each teammate privately. Keep the
+Send all five files in `local/team-export/` to each teammate privately. Keep the
 archives together with their own checksum and commit records. Downloads and
 extracted environments consume additional space; this export does not remove
 or change V5/V6 or the archived studies. Nothing here uploads the transfer files.
