@@ -1,0 +1,18 @@
+{
+  "project": "techarena-chaiscript",
+  "baseline": "v6",
+  "primary_metric": "global_row_roc_auc",
+  "active_entrypoints": {
+    "test": "pytest tests/",
+    "predict_v6": "python tools/predict_v6.py",
+    "verify_assets": "python tools/consolidate.py verify"
+  },
+  "exclude_paths": [
+    "local/",
+    "data/",
+    "artifacts/",
+    "legacy/",
+    ".pytest_cache/",
+    "__pycache__/"
+  ]
+}

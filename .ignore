@@ -1,0 +1,24 @@
+# CLI Tool Ignore File (ripgrep, fd, silver searcher, agent finders)
+# Excludes massive data, archives, models, and locked historical files to conserve context tokens
+
+/local/
+local/
+/data/
+data/
+/artifacts/
+artifacts/
+/legacy/
+legacy/
+*.npz
+*.npy
+*.pt
+*.pth
+*.cbm
+*.csv
+*.zip
+*.tar
+*.tar.gz
+*.log
+__pycache__/
+*.py[cod]
+.pytest_cache/
