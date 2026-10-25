@@ -6,6 +6,9 @@ reported screenshot. It is not a verified live ranking or a private score.
 
 ## Start here
 
+New teammate? Start with [Reproduce V6 in WSL](docs/REPRODUCE_V6_WSL.md).
+Edwin: [add teammates and prepare the private downloads](docs/TEAM_ACCESS.md).
+
 1. [Model and validation](docs/MODEL.md): what V6 does and how it was evaluated.
 2. [Experiment results](docs/RESULTS.md): successful and rejected changes.
 3. [Full handoff](docs/HANDOFF.md): personal environment, paths and research history.
@@ -87,19 +90,21 @@ team through GitHub's repository access settings.
 
 ## Teammates: reproduce inference
 
-Use Python 3.12 and a compatible CUDA PyTorch installation. The unpinned
-requirements list is a starting point, not the original environment lock.
-Edwin's bundle records observed package versions in `local/environment.json`
-and the shareable `docs/runtime_versions.json` (created when bundling).
-Transfer the ignored `data/` and `artifacts/` assets separately and run:
+Follow the [WSL reproduction guide](docs/REPRODUCE_V6_WSL.md) for repository access,
+downloads, a packed copy of Edwin's working environment, and verification.
+Edwin prepares the private asset/environment transfer using the
+[team access guide](docs/TEAM_ACCESS.md). A clone alone does not contain the models.
+After installing the supplied environment and assets, run:
 
 ```bash
 python tools/consolidate.py verify
-python tools/predict_v6.py
+python tools/predict_v6.py --output artifacts/teammate_reproduced_v6.csv
 ```
 
-The default prediction output is `artifacts/reproduced_v6.csv`. Existing output
-is validated rather than overwritten. There is no competition upload command.
+The default output without `--output` remains `artifacts/reproduced_v6.csv`.
+Existing output is validated rather than overwritten. The unpinned requirements
+file is not a reproduction lock; cross-hardware numerical identity must pass
+the replay checks. There is no competition upload command.
 
 ## Preservation and limits
 
