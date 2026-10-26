@@ -8,7 +8,7 @@ import time
 
 from consolidate import write_json
 from .storage import read
-from .contracts import require, canonical
+from .contracts import require
 
 
 class Budget:
@@ -44,6 +44,10 @@ class Budget:
             except ProcessLookupError:pass
             child.wait(timeout=10)
             raise
+        finally:
+            # A completed/failed worker must not leave fitting subprocesses behind.
+            try:os.killpg(child.pid,signal.SIGKILL)
+            except ProcessLookupError:pass
 
     def __exit__(self,kind,error,tb):
         elapsed=min(self.limit,time.monotonic()-self.start)

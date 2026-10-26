@@ -7,6 +7,8 @@ import os
 from pathlib import Path
 import shutil
 import subprocess
+import signal
+import threading
 import sys
 import time
 
@@ -377,10 +379,17 @@ def _worker_lease(root,work,m,stage):
     attempt=state["attempts"][-1]
     require(claim["spec_sha256"]==m["spec_sha256"] and attempt["owner"]==m["run_id"]+"/"+stage
         and attempt["status"]=="running" and attempt["controller_pid"]==os.getppid(),"Worker requires active budget-owning controller")
+    return attempt["controller_pid"]
 
 
 def worker(root,work,stage):
-    m=load(root,work);_worker_lease(root,work,m,stage)
+    m=load(root,work);controller=_worker_lease(root,work,m,stage)
+    def watch_controller():
+        while True:
+            if os.getppid()!=controller:
+                os.killpg(os.getpgrp(),signal.SIGKILL)
+            time.sleep(.1)
+    threading.Thread(target=watch_controller,daemon=True).start()
     module=adapter(work,m);raw=events(root,m,"train")
     if stage=="develop":
         results={};eligible=[]
