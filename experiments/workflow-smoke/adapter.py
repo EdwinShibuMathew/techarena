@@ -7,7 +7,7 @@ from catboost import CatBoostClassifier,Pool
 
 sys.path.insert(0,str(Path(__file__).resolve().parent))
 from smoke_model import SmokeModel
-from smoke_extract import extract,inputs,FEATURE_NAMES
+from smoke_extract import extract, inputs, FEATURE_NAMES
 
 PURPOSES={"synthetic_validation"}
 EXTRACTOR_FILES=("experiments/workflow-smoke/smoke_extract.py","experiments/workflow-smoke/smoke_model.py")

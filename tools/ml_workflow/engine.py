@@ -18,6 +18,7 @@ from .contracts import (ExperimentSpec, CaseSpec, MEMBERS, STAGES, DAY, JAN20, V
     require, identifier, inside, digest, canonical, first_indices, validate_events, context, compose)
 from .storage import read, write_new, save_arrays, snapshot, verify_snapshot
 from .budget import Budget
+from .cache import request as cache_request, get_or_compute
 
 ROOT=Path(__file__).resolve().parents[2]
 
@@ -135,12 +136,20 @@ def _model(root,work,m,module,raw,candidate,member,cutoff):
     return path
 
 
-def _features(root,work,m,module,raw,indices,path,cutoff,training_raw=None):
+def _features(root,work,m,module,raw,indices,path,cutoff,training_raw=None,use_cache=True):
     training_raw=raw if training_raw is None else training_raw
     fitting=np.flatnonzero(training_raw["t"]<cutoff)
     require(len(indices)>0 and (raw["t"][indices]>=cutoff).all(),"Feature target precedes neural prefix")
     start=time.monotonic()
-    data=module.extract(context(training_raw,fitting,True),context(raw,indices,False),path)
+    prefix,target=context(training_raw,fitting,True),context(raw,indices,False)
+    if use_cache:
+        identity=cache_request(work/"source",module,path,prefix,target)
+        data,receipt=get_or_compute(root,identity,lambda:module.extract(prefix,target,path))
+        cache_log=work/"cache-receipts"/(receipt["key"]+".json")
+        # Each extraction gets a separate timing record; repeated keys never overwrite evidence.
+        write_new(cache_log.with_name(receipt["key"]+"-"+str(time.time_ns())+".json"),receipt)
+    else:
+        data=module.extract(prefix,target,path)
     require(set(data)=={"X","feature_names"} and data["X"].shape==(len(indices)*10,len(data["feature_names"]))
         and data["X"].dtype==np.float32 and np.isfinite(data["X"]).all(),"Invalid extracted features")
     return data,time.monotonic()-start
@@ -303,7 +312,7 @@ def finalize(root,work,m,module,raw,winner):
                     require(np.allclose(original[member],saved["combiner_predictions"].reshape(-1,10),rtol=0,atol=1e-15),"Evaluation baseline is not canonical V6")
         updated=dict(original)
         for member,p in paths.items():
-            features,_=_features(root,work,m,module,evaluation,np.arange(len(evaluation["u"])),p["model"],JAN20+7*DAY,raw)
+            features,_=_features(root,work,m,module,evaluation,np.arange(len(evaluation["u"])),p["model"],JAN20+7*DAY,raw,use_cache=False)
             require(features["feature_names"].tolist()==screen["results"]["secondary"]["models"][member]["feature_names"],"Final schema differs from validated combiner")
             result=module.predict(features,p["combiner"],evaluation["rowids"].copy())
             require(np.array_equal(result["rowids"],evaluation["rowids"]),"Final prediction order differs")
