@@ -19,3 +19,5 @@ Maximum event-sum error is 4.44e-16; within-event orders and ties are preserved.
 This uses reused development dates, not an independent holdout. No model was
 fitted, no parameters were tuned, and no competition upload was performed.
 See [the reproduction commands](../../../experiments/v7-validation/RUN_V7.md).
+
+**Note:** The original V7 candidate was said to be not promoted but when it was ran against huawei validation system, it was promoted in rank. 
