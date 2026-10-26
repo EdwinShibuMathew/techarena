@@ -151,3 +151,24 @@ a hit. Final independent extraction bypasses this cache.
 Each use records hit/miss and elapsed time in the run's `cache-receipts/`. Keep
 cache receipts with compact results under `docs/results/<experiment>/`; large
 features, models and CSVs remain ignored.
+
+## Minimal next-trial handoff
+
+For a reviewed research adapter, provide the verified 29-file V6 bundle, the
+schema-normalized event inputs and matching per-case V6 baseline matrices,
+same-cutoff preference initialization assets with their true dimension/epoch,
+and the latest closed compute decision. Record each reused asset's producer
+revision, cutoff and lineage in the committed experiment protocol alongside its
+hash. None of these inputs requires a complete predecessor campaign workspace.
+For example, after creating and committing `experiments/next-trial/experiment.json`
+and its adapter, prepare exactly with:
+
+```bash
+python tools/consolidate.py verify
+python tools/run_experiment.py prepare --run-id next-trial-01 --spec experiments/next-trial/experiment.json
+```
+
+Use `develop`, `screen`, `stress`, `finalize`, then `verify` with that run ID.
+Preparation itself never authorizes restarting a closed recipe or resetting the
+research budget. The supplied adapter is synthetic only; implementing and
+reviewing a scientific hypothesis remains a separate research change.
