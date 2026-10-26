@@ -1,10 +1,8 @@
-"""Hierarchical Event Scorer for TechArena ChaiScript.
+"""Separate event click scale from conditional candidate choice.
 
-Decouples event-level click propensity P(any click in event | e) from conditional
-candidate item choice P(item i | event has click, e).
-
-Mathematically preserves within-event candidate ranking (+47.8 bps lift on clicked events)
-while restoring the necessary cross-event scale discrimination on no-click events.
+Recomposition blends the original event sum with an estimated event scale.
+Positive rescaling retains within-event order; cross-event rankings can change.
+These utilities do not establish a measured improvement over V6.
 """
 
 from typing import Dict, Optional, Tuple
@@ -89,8 +87,9 @@ def compute_event_features(
 class HierarchicalEventCalibrator:
     """Calibrates and recomposes conditional choice probabilities with event click scale.
     
-    Recomposition: p_hat[e, i] = S(e) * q[e, i]
-    where S(e) is calibrated event click probability and q[e, i] is conditional choice.
+    Recomposition uses ((1-w) * raw_event_sum + w * calibrated_scale) * q[e, i].
+    Raw sums may exceed one; the resulting candidate probabilities must remain
+    in [0, 1]. Outputs use float64 to avoid unnecessary ranking ties.
     """
 
     def __init__(self, blend_weight: float = 0.5):
@@ -99,9 +98,21 @@ class HierarchicalEventCalibrator:
             blend_weight: Interpolation between raw V6 event sum and calibrated event scale.
                           0.0 = pure raw event sum, 1.0 = pure calibrated event scale.
         """
-        self.blend_weight = blend_weight
+        self.blend_weight = self._checked_weight(blend_weight)
         self.weights_: Optional[np.ndarray] = None
         self.bias_: float = 0.0
+
+    @staticmethod
+    def _checked_weight(value):
+        try:
+            if np.ndim(value) != 0:
+                raise ValueError
+            weight = float(value)
+        except (TypeError, ValueError, OverflowError) as error:
+            raise ValueError("blend_weight must be a finite scalar in [0, 1].") from error
+        if not np.isfinite(weight) or not 0 <= weight <= 1:
+            raise ValueError("blend_weight must be a finite scalar in [0, 1].")
+        return weight
 
     def fit_logistic_scale(
         self,
@@ -158,7 +169,7 @@ class HierarchicalEventCalibrator:
         event_propensity: Optional[np.ndarray] = None,
         candidates_per_event: int = 10
     ) -> np.ndarray:
-        """Recompose final probabilities: p_hat = S(e) * q[e, i].
+        """Blend event scales and recompose candidate probabilities in float64.
         
         Args:
             probs: Base model probabilities [N_events, 10].
@@ -166,20 +177,37 @@ class HierarchicalEventCalibrator:
             candidates_per_event: 10.
             
         Returns:
-            Calibrated candidate probabilities [N_events, 10].
+            Candidate probabilities in the input shape. Zero weight or omitted
+            propensity preserves original values exactly. Zero-sum events stay
+            zero; positive-sum events use the blended scale. Invalid inputs or
+            results outside [0, 1] raise ValueError rather than being clipped.
         """
-        n_rows = len(probs.flatten())
-        n_events = n_rows // candidates_per_event
-        p = np.asarray(probs, dtype=np.float64).reshape(n_events, candidates_per_event)
-        
-        # Conditional choice within event
-        q = p / np.maximum(p.sum(axis=1, keepdims=True), 1e-12)
-        
-        if event_propensity is not None:
-            s = np.asarray(event_propensity, dtype=np.float64).reshape(n_events, 1)
-        else:
-            s = p.sum(axis=1, keepdims=True)
-            
-        # Recompose
-        recomposed = s * q
-        return np.clip(recomposed, 0.0, 1.0).reshape(probs.shape).astype(np.float32)
+        weight = self._checked_weight(self.blend_weight)
+        if (isinstance(candidates_per_event, (bool, np.bool_))
+                or not isinstance(candidates_per_event, (int, np.integer))
+                or candidates_per_event <= 0):
+            raise ValueError("candidates_per_event must be a positive integer.")
+        original = np.asarray(probs, dtype=np.float64)
+        if (original.ndim not in (1, 2) or not original.size
+                or original.size % candidates_per_event
+                or (original.ndim == 2 and original.shape[1] != candidates_per_event)):
+            raise ValueError("Expected a nonempty vector or matrix of whole candidate events.")
+        if not np.isfinite(original).all() or np.any((original < 0) | (original > 1)):
+            raise ValueError("Candidate probabilities must be finite and in [0, 1].")
+        p = original.reshape(-1, candidates_per_event)
+        if event_propensity is None:
+            return original.copy()
+        calibrated = np.asarray(event_propensity, dtype=np.float64)
+        if calibrated.shape not in ((len(p),), (len(p), 1)):
+            raise ValueError("Expected one event scale per event, as a vector or column.")
+        if not np.isfinite(calibrated).all() or np.any(calibrated < 0):
+            raise ValueError("Event scales must be finite and nonnegative.")
+        if weight == 0:
+            return original.copy()
+        event_sum = p.sum(axis=1, keepdims=True)
+        choice = np.divide(p, event_sum, out=np.zeros_like(p), where=event_sum > 0)
+        scale = (1 - weight) * event_sum + weight * calibrated.reshape(-1, 1)
+        recomposed = scale * choice
+        if not np.isfinite(recomposed).all() or np.any((recomposed < 0) | (recomposed > 1)):
+            raise ValueError("Recomposition produced probabilities outside [0, 1].")
+        return recomposed.reshape(original.shape)

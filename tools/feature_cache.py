@@ -35,12 +35,16 @@ class CombinerFeatureCache:
         raw_probs: np.ndarray,
         labels: Optional[np.ndarray] = None
     ):
-        """Save feature matrix and prediction vectors to compressed .npz archive."""
+        """Store features as float32 and probabilities in their supplied dtypes.
+
+        Probability rounding can introduce ranking ties, so its precision is
+        independent of the deliberate feature-matrix conversion.
+        """
         path = self._cache_path(member_key, split_name)
         payload = {
             "X": np.asarray(X, dtype=np.float32),
-            "probs": np.asarray(probs, dtype=np.float32),
-            "raw_probs": np.asarray(raw_probs, dtype=np.float32),
+            "probs": np.asarray(probs),
+            "raw_probs": np.asarray(raw_probs),
             "feature_names": np.asarray(feature_names, dtype="U")
         }
         if labels is not None:
@@ -49,7 +53,12 @@ class CombinerFeatureCache:
         np.savez_compressed(path, **payload)
 
     def load(self, member_key: str, split_name: str) -> Dict[str, Any]:
-        """Load feature matrix and prediction vectors from cache."""
+        """Load arrays in their stored dtypes, including older float32 archives.
+
+        Old caches that rounded float64 inputs must be regenerated from the
+        originals before precision-sensitive comparisons. Widening a stored
+        float32 array cannot restore its original values.
+        """
         path = self._cache_path(member_key, split_name)
         if not path.is_file():
             raise FileNotFoundError(f"No feature cache found at {path}")

@@ -95,7 +95,9 @@ python tools/predict_v6.py --device cpu --output artifacts/reproduced_v6_cpu.csv
 
 Both modes must pass the same strict reproduction checks; matching asset hashes
 alone does not establish numerical identity on different hardware. Existing
-output is validated and a different file is never overwritten. The unpinned
+output is validated and a different file is never overwritten. New V6 output is
+validated in a private staging directory before atomic publication; a destination
+created by another run is preserved and publication fails. The unpinned
 `requirements.txt` is a package inventory, not an inference environment lock.
 
 ## Repository layout
