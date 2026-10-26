@@ -46,7 +46,7 @@ class SourceReadinessTests(unittest.TestCase):
 
     def test_clean_source_archive_is_exact_and_receipt_excludes_model_claims(self):
         output = Path(self.temporary.name) / "release"
-        report = readiness.package(self.root, output, "success", "success", self.base)
+        report = readiness.package(self.root, output, "success", "success", self.base, model_test_result="success")
         self.assertEqual(report["git_commit"], self.base)
         self.assertEqual(report["frozen_source_files_verified"], 1)
         self.assertFalse(report["model_inference_performed"])
@@ -58,15 +58,20 @@ class SourceReadinessTests(unittest.TestCase):
             self.assertEqual(expected, readiness.sha256((output / name).read_bytes()))
         readiness.validate_archive(self.root, output / report["archive"]["filename"], readiness.tracked_files(self.root))
         with self.assertRaises(FileExistsError):
-            readiness.package(self.root, output, "success", "success")
+            readiness.package(self.root, output, "success", "success", model_test_result="success")
 
     def test_all_failed_cancelled_or_skipped_prerequisites_block_packaging(self):
         output = Path(self.temporary.name) / "release"
         for result in ("failure", "cancelled", "skipped", ""):
             for tests, integrity in ((result, "success"), ("success", result)):
                 with self.subTest(tests=tests, integrity=integrity), self.assertRaises(ValueError):
-                    readiness.package(self.root, output, tests, integrity)
+                    readiness.package(self.root, output, tests, integrity, model_test_result="success")
         self.assertFalse(output.exists())
+
+    def test_model_contract_failure_or_missing_result_blocks_release(self):
+        for result in (None,"failure","cancelled","skipped",""):
+            with self.subTest(result=result), self.assertRaises(ValueError):
+                readiness.package(self.root,Path(self.temporary.name)/"release","success","success",model_test_result=result)
 
     def test_uncommitted_changes_are_not_certified(self):
         self.write("README.md", b"not committed\n")

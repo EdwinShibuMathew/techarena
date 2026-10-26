@@ -102,6 +102,25 @@ class V6PublicationTests(unittest.TestCase):
         self.assertEqual(v6.digest(self.output), self.fingerprint)
         self.assert_clean()
 
+    def test_two_valid_exports_can_publish_the_shared_receipt(self):
+        import consolidate
+        barrier=threading.Barrier(2)
+        replace=Path.replace
+        def coordinated(source,target):
+            barrier.wait(timeout=10)
+            return replace(source,target)
+        def producer(index):
+            output=self.root/"outputs"/(str(index)+".csv")
+            v6.export_verified_submission(self.ids,self.probabilities,self.example,output,20,
+                self.fingerprint,verify_inputs=self.verify_inputs)
+            receipt={"passed":True,"output_relative":str(output.relative_to(self.root)),"submission_sha256":v6.digest(output)}
+            consolidate.write_json(self.root/"receipt.json",receipt)
+            return receipt
+        with patch.object(Path,"replace",coordinated), ThreadPoolExecutor(2) as pool:
+            results=list(pool.map(producer,range(2)))
+        self.assertIn(consolidate.read_json(self.root/"receipt.json"),results)
+        for result in results:self.assertEqual(v6.digest(self.root/result["output_relative"]),self.fingerprint)
+
     def test_failed_fingerprint_never_publishes(self):
         with self.assertRaisesRegex(RuntimeError, "fingerprint"):
             self.publish(expected_sha256="0" * 64)

@@ -3,6 +3,7 @@
     "strict": true,
     "checks": [
       {"context": "cpu-tests", "app_id": 15368},
+      {"context": "model-contracts", "app_id": 15368},
       {"context": "source-integrity", "app_id": 15368},
       {"context": "release-readiness", "app_id": 15368}
     ]

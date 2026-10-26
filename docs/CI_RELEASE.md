@@ -13,8 +13,9 @@ GitHub Actions checks apply to administrators too:
 | Check | What it verifies |
 |---|---|
 | `cpu-tests` | `pytest tests/` on Ubuntu 24.04 and Python 3.12 with the CPU-only dependencies in `requirements-ci.txt` |
+| `model-contracts` | Locked CPU Torch/CatBoost tests: dim8/dim16 gradients and reload, loss oracle, empty-history masks, and the full synthetic workflow; any skipped model test fails the job |
 | `source-integrity` | Frozen source hashes and unchanged V6 baseline paths; no tracked private assets, binary content, symlinks or files larger than 2 MiB |
-| `release-readiness` | Both prerequisite jobs succeeded and the exact tested commit produces a complete, byte-verified source archive |
+| `release-readiness` | All three prerequisite jobs succeeded and the exact tested commit produces a complete, byte-verified source archive |
 
 The initial solo-friendly policy requires a PR but zero external approvals.
 Force pushes and deletion of `main` are disabled. Required checks are bound to
@@ -71,12 +72,12 @@ python tools/predict_v6.py
 
 The source receipt explicitly records `model_inference_performed: false`,
 `private_assets_verified: false`, and `competition_submission_created: false`.
-The CI dependency pins are not a lock for the inference environment.
+`requirements-model-ci.txt` locks the separate Python 3.12 CPU model test environment. It does not replace the CUDA inference environment. Run `python tools/check_model_contracts.py` after installing that lock; source-only tests may skip unavailable model dependencies, while this entry point treats any skip as failure.
 
 ## Applying repository protection
 
 The desired policy lives in `configs/github_branch_protection.json`. After the
-workflow has produced all three successful checks, an authenticated repository
+workflow has produced all four successful checks, an authenticated repository
 admin can apply it and verify the result:
 
 ```bash
@@ -85,9 +86,9 @@ gh api --method PUT repos/EdwinShibuMathew/techarena/branches/main/protection \
 gh api repos/EdwinShibuMathew/techarena/branches/main/protection
 ```
 
-Confirm that all three check runs came from `github-actions` (app ID 15368)
+Confirm that all four check runs came from `github-actions` (app ID 15368)
 before applying the configuration. Read back `strict: true`, admin enforcement,
-the three app-bound checks, zero required approvals, conversation resolution,
+the four app-bound checks, zero required approvals, conversation resolution,
 and disabled force pushes/deletion. The bootstrap workflow PR is merged while
 `main` is unprotected, then protection is enabled after the first green main run.
 

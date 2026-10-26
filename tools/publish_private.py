@@ -47,8 +47,13 @@ def main():
     old = run(["git", "remote", "get-url", "origin"])
     if old not in [url, repo["url"], f"git@github.com:{full_name}.git"]:
         raise SystemExit(f"Origin points elsewhere ({old}). No remote was changed.")
-    run(["git", "add", "README.md", ".gitignore", ".gitattributes", ".github",
-         "requirements.txt", "requirements-ci.txt", "docs", "configs", "tools", "tests", "legacy"])
+    paths = ["README.md", ".gitignore", ".gitattributes", ".github", "requirements.txt", "requirements-ci.txt",
+             "docs", "configs", "tools", "tests", "legacy"]
+    if (ROOT / "experiments").exists():
+        paths.append("experiments")
+    # Include future explicit environment locks without staging arbitrary files.
+    paths.extend(p.name for p in sorted(ROOT.glob("requirements-*.txt")) if p.name not in paths)
+    run(["git", "add", *paths])
     try:
         validate_files(ROOT, list(filter(None, run(["git", "ls-files", "-z"]).split("\0"))))
     except ValueError as error:

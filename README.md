@@ -121,11 +121,12 @@ and cleanup operations are documented separately; they are not onboarding steps.
 
 Create a feature branch from current `main`, commit the intended changes, and
 open a PR. Protected `main` requires an up-to-date branch, resolved conversations,
-and all three GitHub Actions checks, including for administrators:
+and all four GitHub Actions checks, including for administrators:
 
 | Required check | What it establishes |
 |---|---|
 | `cpu-tests` | Regression tests on Ubuntu 24.04 with Python 3.12 and the CPU test dependencies. |
+| `model-contracts` | Actual CPU model fitting, numerical contracts and the full synthetic experiment workflow; skips fail this check. |
 | `source-integrity` | Frozen baseline/source integrity and checks against tracked private assets, binary files, and oversized files. |
 | `release-readiness` | Successful prerequisite jobs and a verified source archive from the tested commit. |
 
@@ -148,6 +149,8 @@ paired 95% interval strictly above zero and nonnegative secondary Jan26 change,
 then perform the fixed five-day comparison and its declared stress checks.
 Record results under `docs/results/`. Do not tune against the public leaderboard
 or relabel reused dates as independent holdout data.
+
+Use the [standalone ML workflow](docs/ML_WORKFLOW.md) for new work: committed source snapshots, explicit input fingerprints, shared verified features, chronological development and promotion, persistent compute limits, and two saved-model replays. The public synthetic adapter validates this machinery; production model adapters and measured V8 improvement remain separate research work.
 
 The feature cache, enrichment, event-scale, recency-history, and evaluation tools
 are research building blocks. They do not change the frozen V6 inference recipe.

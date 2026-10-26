@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "purpose": "pr17_review_fixes",
+  "reviewed_revision": "ea2806fa9ca63fa2a1c77b6c552bacc1f1242e14",
+  "review_comment": "https://github.com/EdwinShibuMathew/techarena/pull/17#issuecomment-6428253067",
+  "validated_source_sha256": {
+    "tools/ml_workflow/engine.py": "b66354f7fee7a4221b621edccb70851fd4232e0fd2d7734184ffff025532d576",
+    "tests/test_model_contracts.py": "c6b4fbb0db98d73f0dbc709103e3a9293aebbad369212b4b84c9ea85f3cbc35b",
+    "tests/test_workflow_contracts.py": "e680bc3bc247fe8d27d030a4d8e08e400705552672456ac95fab82b53dd7361b",
+    "tests/test_workflow_integration.py": "507ef5ae8fab118d9725ded09e73cfe97add3abcd27189b63c17690ac81e9c4b",
+    "requirements-model-ci.txt": "b69f48ecf0b87ea016e5989208792a88d341e01f0171ffcc35752d42dcb00974"
+  },
+  "findings": {
+    "P1_metadata_mutation": {
+      "reproduced_before_fix": true,
+      "expected_metadata_independent": true,
+      "adapter_inputs_deep_copied": true,
+      "invalid_fields_rejected": [
+        "cutoff",
+        "dimension",
+        "preference_epoch"
+      ],
+      "tested_member_roles": [
+        "dim8_seed42",
+        "dim16_seed42"
+      ],
+      "nested_parameter_mutations_isolated": true,
+      "invalid_checkpoint_success_receipt_created": false
+    },
+    "P2_budget_contention": {
+      "reproduced_before_fix": true,
+      "claim_created_only_after_budget_acquisition": true,
+      "denied_phase_worker_launched": false,
+      "denied_phase_marker_created": false,
+      "contended_ledger_unchanged": true,
+      "same_phase_succeeded_after_release": true,
+      "subsequent_retry_blocked": true
+    }
+  },
+  "validation": {
+    "locked_cpu_full_suite": {
+      "passed": 129,
+      "skipped_optional_private_artifact": 1,
+      "seconds": 23.33
+    },
+    "required_model_contracts": {
+      "passed": 20,
+      "skipped": 0,
+      "seconds": 21.457
+    },
+    "source_only_suite": {
+      "passed": 119,
+      "skipped_optional_dependencies_or_private_artifacts": 11,
+      "subtests_passed": 88,
+      "seconds": 1.71
+    },
+    "dependency_consistency": "passed",
+    "existing_asset_bundle": {
+      "verified_files": 29,
+      "passed": true
+    },
+    "frozen_baseline_diff_empty": true,
+    "private_cuda_replay_rerun": false,
+    "new_candidate_trained_or_promoted": false
+  },
+  "evidence_scope": "Tests ran against the listed source hashes; CLI integration fixtures committed independent copies of that source. Prior snapshots, receipts and CUDA evidence were preserved."
+}
