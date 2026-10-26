@@ -6,7 +6,6 @@ are CPU. All new files live in the isolated experiment. No submission export.
 
 import argparse
 import json
-import os
 import sys
 import time
 from pathlib import Path
@@ -79,22 +78,29 @@ def clock(used=0.):
     return start, check
 
 
-def locate_split(repo, row_trial, expected):
+def locate_split(source_root, expected):
+    source_root = Path(source_root).resolve(strict=True)
     name = "split_jan24.npz"
-    preferred = [row_trial / "dim8_seed42/jan24/data/cache" / name,
-                 repo / "local/archive/techarena-check-jan24/data/cache" / name,
-                 repo / "local/archive/techarena-confirm-jan24/data/cache" / name]
+    preferred = [source_root / "dim8_seed42/jan24/data/cache" / name,
+                 source_root / "data/cache" / name]
     for path in preferred:
-        if path.is_file() and path.resolve().is_relative_to(repo) and audit.sha256(path) == expected:
+        if path.is_file() and path.resolve().is_relative_to(source_root) and audit.sha256(path) == expected:
             return path.resolve()
-    # Search this small filename only, never hash all data/model archives.
-    for directory, subdirs, files in os.walk(repo, followlinks=False):
-        subdirs[:] = sorted(x for x in subdirs if x not in {".git", "team-export", "node_modules", ".venv"})
-        if name in files:
-            path = Path(directory) / name
-            if path.is_file() and path.resolve().is_relative_to(repo) and audit.sha256(path) == expected:
-                return path.resolve()
-    raise FileNotFoundError(f"Missing original Jan24 split matching SHA256 {expected}; do not restore deleted data or synthesize a replacement")
+    raise FileNotFoundError(
+        f"Missing staged {name} under {source_root}; expected SHA256 {expected}. "
+        "Stage the original file at a documented path; archive discovery is disabled."
+    )
+
+
+def input_layout(repo, source_dir):
+    """Staged inputs are siblings of generated outputs, never inside them."""
+    repo = Path(repo).resolve(strict=True)
+    source_root = audit.inside(Path(source_dir).resolve(strict=True),
+                               repo / "artifacts/experiments/v6-pairlogit-v1-inputs")
+    audit.require(source_root.is_dir(), "Staged source directory is not a directory")
+    work = audit.inside(repo / "artifacts/experiments" / EXPERIMENT, repo)
+    audit.require(not work.exists(), f"Verification already exists; preserve it: {work}")
+    return source_root, work
 
 
 def assert_combiner(model, wanted_names=None):
@@ -134,8 +140,7 @@ def verify(args):
     from catboost import CatBoostClassifier
     start, check = clock()
     repo = args.repo.resolve(strict=True)
-    work = audit.inside(repo / "artifacts/experiments" / EXPERIMENT, repo)
-    audit.require(not work.exists(), f"Verification already exists; preserve it: {work}")
+    source_root, work = input_layout(repo, args.source_dir)
     source = audit.inside(__file__, repo)
     inputs = {str(source): audit.sha256(source), str(source.with_name("pairlogit_core.py")): audit.sha256(source.with_name("pairlogit_core.py"))}
     for name, want in HELPERS.items():
@@ -145,7 +150,7 @@ def verify(args):
     raw_path = repo / "data/cache/train_events.npz"
     full_path = repo / "data/cache/preference_training.npz"
     inputs[str(raw_path)], inputs[str(full_path)] = prefix.TRAIN_SHA, FULL_POSITIVE_SHA
-    row = repo / "local/archive/techarena-row-auc-trial"
+    row = source_root
     row_protocol_path = row / "outputs/frozen_protocol.json"
     inputs[str(row_protocol_path)] = ROW_PROTOCOL_SHA
     prefix.verify_hashes(inputs, check)
@@ -162,7 +167,7 @@ def verify(args):
             break
     if expected_split is None:
         expected_split = "d8d15491975388917a8a68273c68c674c9b5d14900f05d10ad553a262c6e3ea7"
-    split_path = locate_split(repo, row, expected_split)
+    split_path = locate_split(row, expected_split)
     inputs[str(split_path)] = expected_split
     models, v6_paths, cb_paths, stored_params, target_params, smoke_params = {}, {}, {}, {}, {}, {}
     names = None
@@ -277,7 +282,8 @@ def verify(args):
         data_paths[key] = str(path)
     prefix.verify_hashes(inputs, check)
     check()
-    report = {"verified": True, "experiment": EXPERIMENT, "repo": str(repo), "inputs_sha256": inputs,
+    report = {"verified": True, "experiment": EXPERIMENT, "repo": str(repo),
+              "source_dir": str(source_root), "inputs_sha256": inputs,
               "data_paths": data_paths, "feature_names": names, "feature_count": 37,
               "original_combiner_parameters": stored_params, "ranker_parameters": target_params,
               "synthetic_ranker_resolved_parameters": smoke_params, "original_replay": replay,
@@ -441,7 +447,10 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     commands = parser.add_subparsers(dest="action", required=True)
     for action in ("verify", "prepare"):
-        commands.add_parser(action).add_argument("--repo", type=Path, required=True)
+        command = commands.add_parser(action)
+        command.add_argument("--repo", type=Path, required=True)
+        if action == "verify":
+            command.add_argument("--source-dir", type=Path, required=True)
     commands.add_parser("run").add_argument("--manifest", type=Path, required=True)
     args = parser.parse_args()
     {"verify": verify, "prepare": prepare, "run": run}[args.action](args)

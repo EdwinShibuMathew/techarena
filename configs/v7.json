@@ -9,28 +9,47 @@
   "validation_evidence": {
     "primary_first_user_jan25_26": {
       "events": 43964,
-      "candidate_auc": 0.8187017004,
-      "v6_baseline_auc": 0.8184592533,
-      "auc_change": 0.000242447,
-      "paired_95_ci": [0.0001509391, 0.0003354438],
+      "candidate_auc": 0.8187017003697403,
+      "v6_baseline_auc": 0.8184592533262289,
+      "auc_change": 0.00024244704351139568,
+      "paired_95_ci": [
+        0.0001509390964680002,
+        0.0003354438075246546
+      ],
       "promotion_gate_passed": true
     },
     "secondary_first_user_jan26": {
       "events": 35138,
-      "candidate_auc": 0.8274042529,
-      "v6_baseline_auc": 0.8271277123,
-      "auc_change": 0.0002765406,
-      "paired_95_ci": [0.0001768461, 0.0003696035],
+      "candidate_auc": 0.827404252852057,
+      "v6_baseline_auc": 0.8271277122502162,
+      "auc_change": 0.0002765406018407912,
+      "paired_95_ci": [
+        0.00017684608854500461,
+        0.00036960347686171014
+      ],
       "promotion_gate_passed": true
     },
     "five_day_first_user_jan22_26": {
       "events": 51488,
-      "candidate_auc": 0.7820860888,
-      "v6_baseline_auc": 0.7818190859,
-      "auc_change": 0.0002670029,
-      "paired_95_ci": [0.0001555146, 0.0003699263],
+      "candidate_auc": 0.7820860887805409,
+      "v6_baseline_auc": 0.7818190858952342,
+      "auc_change": 0.0002670028853066775,
+      "paired_95_ci": [
+        0.00015551462068170153,
+        0.0003699262614644261
+      ],
       "promotion_gate_passed": true
+    },
+    "five_day_late_48_120h": {
+      "events": 7596,
+      "candidate_auc": 0.7393037851795764,
+      "v6_baseline_auc": 0.7394713810595162,
+      "auc_change": -0.00016759587993975256,
+      "promotion_gate_passed": false
     }
   },
-  "status": "ready for portal submission; passes all primary, secondary, and 5-day promotion gates"
+  "status": "research candidate; NOT promoted: five-day late-window AUC declined",
+  "promotion_supported": false,
+  "validation_report": "docs/results/v7-validation/validation.json",
+  "validation_report_sha256": "45a07e04783b52bc0791f1f7a876f96c6049d022349155a053ee9abd38947ead"
 }

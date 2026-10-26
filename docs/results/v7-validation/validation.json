@@ -1,0 +1,127 @@
+{
+  "complete": true,
+  "protocol": {
+    "experiment": "v7-validation",
+    "gamma": 1.12,
+    "hypothesis": "Fixed power sharpening improves global row AUC while preserving V6 event sums and within-event order",
+    "comparator": "Unchanged hash-verified V6 candidate arrays, first event per user",
+    "method": "p**gamma / sum(p**gamma, axis=1) * sum(p, axis=1)",
+    "bootstrap": {
+      "resamples": 1000,
+      "seed": 2026,
+      "unit": "whole user",
+      "sampling": "multinomial user multiplicities, shared by candidate and V6",
+      "interval": "95% percentile",
+      "minimum_valid_fraction": 0.99
+    },
+    "gates": "primary CI lower > 0; secondary change >= 0; five-day CI lower > 0; late 48-120h change >= 0",
+    "stop": "One fixed recipe; hash mismatch or failed gate does not permit tuning gamma, seeds, weights or cohorts",
+    "status": "reused retrospective development dates; not independent holdout or selection-adjusted evidence",
+    "model_fitting": false,
+    "competition_upload": false
+  },
+  "protocol_sha256": "af80e4974b0737f4006c193ed5160bb55ee4f0dbf30f925f04770ae170d0c97d",
+  "inputs_sha256": {
+    "experiments/v7-validation/validate_v7.py": "68bb17e876a2b8fa6870c71a12cff6adeeba0ee193105102e8108a1534ef1194",
+    "tools/experiment_runner.py": "7e1270f87a8d94f31a6c80c60b2ee5d102086bba264b0b97e6f9f49b0fda932e",
+    "tools/predict_v7.py": "04b040a3055d5c082d93a38805107802ddb2a5539445c2e812770c88d8bf55f5",
+    "configs/v6.json": "a6e7a3a1ab67b7e1fa234851831c88ca68c18d2e9eab22914b2b2cfbb47c3e68",
+    "configs/source_manifest.json": "72421f9519e72229bbc905bad7db671e9d58f4141f5f00bfb304178fc105649f",
+    "experiments/v6-pairlogit-v1-api-fix/event_scale_diagnostic.py": "0007bc7db9fda6ab689bed23d44b4b06bb0502ff3eee0c0bd3da04f8902293d5",
+    "data/cache/train_events.npz": "a8fcada9cf0d08f900824594302b2ac45b90254d1780c9d915206ec96cc062b8",
+    "data/cache/evaluation_rowids.npy": "38a19089ef8dc812b1a0abf0d7d5b2266dd01341e6d222de1aebe1e614c17e51",
+    "data/raw/example_submission.csv": "573ab520d363c4fd3fa85be37b324e5af96b7c3b97bf2a830a470a14b8dff185",
+    "artifacts/submissions/v6.csv": "c386d545b3746e05dd515020c6185afda06cefdbcdf7d48df022454762fb378c",
+    "artifacts/experiments/v7-validation/source/two_day_ensemble_predictions.npz": "a84d3ee0775b33ec6be78cf8f9a5e2a9695d020920d2647a0e52fc1a92649c12",
+    "artifacts/experiments/v7-validation/source/jan26_ensemble_predictions.npz": "507b3c0a24574283fee9291540ce00e248e98b3704376f0b0eb51039012adeb2",
+    "artifacts/experiments/v7-validation/source/five_day_paired_predictions.npz": "f854b8980f6455c6f33de4684d4692c5540652bf1cce7398d06e5e5dbe5be446"
+  },
+  "manifest_sha256": "341a9b0d3fd0b3126d726b85972fd29f37ac23cbce4d90d3519e0d6e37eaa468",
+  "results": {
+    "primary": {
+      "events": 43964,
+      "rows": 439640,
+      "candidate_auc": 0.8187017003697403,
+      "baseline_auc": 0.8184592533262289,
+      "auc_diff": 0.00024244704351139568,
+      "ci_lower": 0.0001509390964680002,
+      "ci_upper": 0.0003354438075246546,
+      "gate_passed": true,
+      "resamples": 1000,
+      "clicked_pairs_auc": null,
+      "unclicked_pairs_auc": null,
+      "maximum_event_sum_error": 4.440892098500626e-16,
+      "within_event_order_preserved": true,
+      "candidate_minimum": 0.0005620233983093631,
+      "candidate_maximum": 0.7780872129083214
+    },
+    "secondary": {
+      "events": 35138,
+      "rows": 351380,
+      "candidate_auc": 0.827404252852057,
+      "baseline_auc": 0.8271277122502162,
+      "auc_diff": 0.0002765406018407912,
+      "ci_lower": 0.00017684608854500461,
+      "ci_upper": 0.00036960347686171014,
+      "gate_passed": true,
+      "resamples": 1000,
+      "clicked_pairs_auc": null,
+      "unclicked_pairs_auc": null,
+      "maximum_event_sum_error": 4.440892098500626e-16,
+      "within_event_order_preserved": true,
+      "candidate_minimum": 0.00043252577254189494,
+      "candidate_maximum": 0.8569794257170594
+    },
+    "five_day": {
+      "events": 51488,
+      "rows": 514880,
+      "candidate_auc": 0.7820860887805409,
+      "baseline_auc": 0.7818190858952342,
+      "auc_diff": 0.0002670028853066775,
+      "ci_lower": 0.00015551462068170153,
+      "ci_upper": 0.0003699262614644261,
+      "gate_passed": true,
+      "resamples": 1000,
+      "clicked_pairs_auc": null,
+      "unclicked_pairs_auc": null,
+      "maximum_event_sum_error": 4.440892098500626e-16,
+      "within_event_order_preserved": true,
+      "candidate_minimum": 0.0009547718318411557,
+      "candidate_maximum": 0.8373681281494606,
+      "late_48_120h": {
+        "events": 7596,
+        "baseline_auc": 0.7394713810595162,
+        "candidate_auc": 0.7393037851795764,
+        "auc_diff": -0.00016759587993975256
+      }
+    }
+  },
+  "decision_checks": {
+    "primary_ci_lower_positive": true,
+    "secondary_change_nonnegative": true,
+    "five_day_ci_lower_positive": true,
+    "five_day_late_change_nonnegative": false
+  },
+  "promotion_supported": false,
+  "submission_verification": {
+    "version": "v7",
+    "submission_sha256": "9aebf08df53b9b1d0661479151c37118859831b3b4c9d371d533c3bf203b141a",
+    "baseline_sha256": "c386d545b3746e05dd515020c6185afda06cefdbcdf7d48df022454762fb378c",
+    "gamma": 1.12,
+    "rows": 529390,
+    "evaluation_rowids_sha256": "38a19089ef8dc812b1a0abf0d7d5b2266dd01341e6d222de1aebe1e614c17e51",
+    "created_at": "2026-10-26T01:18:58.917651+00:00",
+    "min_probability": 0.0005096180203678173,
+    "max_probability": 0.8878081689494569,
+    "mean_probability": 0.06120420586639921,
+    "fingerprint_verified": true,
+    "output_relative": "artifacts/experiments/v7-validation/v7_candidate.csv"
+  },
+  "runtime": {
+    "python": "3.12.15",
+    "numpy": "2.5.4",
+    "seconds": 45.194
+  },
+  "model_fitting_performed": false,
+  "competition_upload_performed": false
+}

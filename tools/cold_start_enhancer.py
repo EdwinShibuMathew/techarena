@@ -4,7 +4,7 @@ Improves user embedding inference for cold users (unseen in training events, 16.
 by replacing unweighted arithmetic mean of history item embeddings with an exponential recency decay weighting.
 """
 
-from typing import Tuple
+from typing import Optional, Tuple
 import numpy as np
 
 
@@ -26,20 +26,38 @@ def compute_recency_weighted_profile(
         profiles: Shape [N_users, dimension] float32 array of inferred profile vectors.
         has_history: Shape [N_users] boolean mask of users with >= 1 valid history item.
     """
-    n_users, max_history = history_items.shape
-    dimension = item_embeddings.shape[1]
+    history_items = np.asarray(history_items)
+    history_ages_hours = np.asarray(history_ages_hours, dtype=np.float64)
+    item_embeddings = np.asarray(item_embeddings)
+    if (history_items.ndim != 2 or history_items.dtype.kind not in "iu"
+            or history_ages_hours.shape != history_items.shape or history_items.shape[1] == 0
+            or item_embeddings.ndim != 2 or len(item_embeddings) == 0):
+        raise ValueError("Expected aligned history matrices, integer item IDs, and a nonempty embedding matrix.")
+    if np.any(history_items < -1) or np.any(history_items >= len(item_embeddings)):
+        raise ValueError("History item IDs must be -1 or valid embedding indices.")
+    if not np.isfinite(half_life_hours) or half_life_hours <= 0:
+        raise ValueError("The decay parameter must be finite and positive.")
+    if not np.isfinite(item_embeddings).all():
+        raise ValueError("Item embeddings must be finite.")
     
     # Valid history mask: item_id >= 0
     valid_mask = (history_items >= 0)
     has_history = (valid_mask.sum(axis=1) > 0)
+    if not np.isfinite(history_ages_hours[valid_mask]).all() or np.any(history_ages_hours[valid_mask] < 0):
+        raise ValueError("Valid history ages must be finite and nonnegative.")
     
     # Calculate exponential decay weights: exp(-age / half_life)
     # Clipped age between 0 and 720 hours (30 days)
-    clipped_ages = np.clip(history_ages_hours, 0.0, 720.0)
-    weights = np.exp(-clipped_ages / half_life_hours) * valid_mask.astype(np.float64)
+    clipped_ages = np.clip(np.where(valid_mask, history_ages_hours, 0.0), 0.0, 720.0)
+    youngest = np.min(np.where(valid_mask, clipped_ages, np.inf), axis=1, keepdims=True)
+    youngest = np.where(has_history[:, None], youngest, 0.0)
+    # Relative ages preserve the original decay formula without shrinking old profiles.
+    with np.errstate(over="ignore"):
+        weights = np.exp(-(clipped_ages - youngest) / half_life_hours)
+    weights = np.where(valid_mask, weights, 0.0)
     
     weight_sums = weights.sum(axis=1, keepdims=True)
-    normalized_weights = weights / np.maximum(weight_sums, 1e-8)
+    normalized_weights = np.divide(weights, weight_sums, out=np.zeros_like(weights), where=weight_sums > 0)
     
     # Safe indexing for items
     safe_items = np.where(valid_mask, history_items, 0)

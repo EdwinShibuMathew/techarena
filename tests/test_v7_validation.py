@@ -1,6 +1,7 @@
 """Unit tests validating the V7 candidate model configuration, calibration mathematics, and submission CSV."""
 
 import csv
+import hashlib
 import json
 from pathlib import Path
 import unittest
@@ -13,7 +14,10 @@ sys.path.insert(0, str(ROOT / "tools"))
 from predict_v7 import calibrate_v7_probabilities
 
 CONFIG_PATH = ROOT / "configs/v7.json"
-V7_CSV_PATH = ROOT / "artifacts/submissions/v7_candidate.csv"
+V7_CSV_PATH = next((path for path in (
+    ROOT / "artifacts/submissions/v7_candidate.csv",
+    ROOT / "artifacts/experiments/v7-validation/v7_candidate.csv",
+) if path.is_file()), ROOT / "artifacts/submissions/v7_candidate.csv")
 
 
 class V7ValidationTests(unittest.TestCase):
@@ -27,15 +31,40 @@ class V7ValidationTests(unittest.TestCase):
         self.assertEqual(config.get("evaluation_rows"), 529390)
         self.assertAlmostEqual(config.get("sharpening_gamma", 0.0), 1.12)
 
-        evidence = config.get("validation_evidence", {})
-        for window in ["primary_first_user_jan25_26", "secondary_first_user_jan26", "five_day_first_user_jan22_26"]:
-            self.assertIn(window, evidence, f"Missing {window} in validation evidence")
-            report = evidence[window]
-            self.assertTrue(report.get("promotion_gate_passed"), f"Gate not passed for {window}")
-            self.assertGreater(report.get("auc_change", 0.0), 0.0)
-            ci = report.get("paired_95_ci", [])
-            self.assertEqual(len(ci), 2)
-            self.assertGreater(ci[0], 0.0, f"Lower bound of 95% CI must be strictly positive for {window}")
+        report_path = ROOT / config["validation_report"]
+        self.assertEqual(hashlib.sha256(report_path.read_bytes()).hexdigest(), config["validation_report_sha256"])
+        report = json.loads(report_path.read_text())
+        self.assertTrue(report["complete"])
+        self.assertEqual(report["protocol"]["gamma"], config["sharpening_gamma"])
+        self.assertEqual(report["protocol"]["bootstrap"]["resamples"], 1000)
+        self.assertEqual(report["protocol"]["bootstrap"]["seed"], 2026)
+        results = report["results"]
+        decisions = {"primary_ci_lower_positive": results["primary"]["ci_lower"] > 0,
+                     "secondary_change_nonnegative": results["secondary"]["auc_diff"] >= 0,
+                     "five_day_ci_lower_positive": results["five_day"]["ci_lower"] > 0,
+                     "five_day_late_change_nonnegative": results["five_day"]["late_48_120h"]["auc_diff"] >= 0}
+        self.assertEqual(report["decision_checks"], decisions)
+        self.assertEqual(report["promotion_supported"], all(decisions.values()))
+        self.assertEqual(config["promotion_supported"], report["promotion_supported"])
+        self.assertFalse(report["model_fitting_performed"])
+        self.assertFalse(report["competition_upload_performed"])
+        for relative, expected in report["inputs_sha256"].items():
+            if relative.endswith(".py") or relative in {"configs/v6.json", "configs/source_manifest.json"}:
+                self.assertEqual(hashlib.sha256((ROOT / relative).read_bytes()).hexdigest(), expected, relative)
+        mapping = {"primary_first_user_jan25_26": "primary", "secondary_first_user_jan26": "secondary",
+                   "five_day_first_user_jan22_26": "five_day"}
+        for window, key in mapping.items():
+            result = results[key]
+            evidence = config["validation_evidence"][window]
+            self.assertEqual(evidence["events"], result["events"])
+            self.assertEqual(evidence["candidate_auc"], result["candidate_auc"])
+            self.assertEqual(evidence["v6_baseline_auc"], result["baseline_auc"])
+            self.assertEqual(evidence["auc_change"], result["auc_diff"])
+            self.assertEqual(evidence["paired_95_ci"], [result["ci_lower"], result["ci_upper"]])
+        self.assertEqual(config["validation_evidence"]["five_day_late_48_120h"]["auc_change"],
+                         results["five_day"]["late_48_120h"]["auc_diff"])
+        self.assertTrue(report["submission_verification"]["fingerprint_verified"])
+        self.assertEqual(report["submission_verification"]["submission_sha256"], config["submission_sha256"])
 
     def test_v7_calibration_math(self):
         rng = np.random.default_rng(42)
