@@ -2,7 +2,9 @@
 
 import argparse
 import inspect
+import os
 import sys
+import tempfile
 from pathlib import Path
 
 from consolidate import ROOT, asset, digest, read_json, utc, verify_bundle, write_json
@@ -24,6 +26,43 @@ def portable_pipeline(original):
     return scope[original.__name__]
 
 
+def export_verified_submission(rowids, probabilities, example, output, expected_rows,
+                               expected_sha256, *, verify_inputs):
+    """Validate a private candidate before atomic, non-replacing publication.
+
+    Each producer owns its staging directory, including the frozen serializer's
+    temporary file. Existing correct output is verified without modification;
+    any destination created during publication causes FileExistsError.
+    """
+    sys.path.insert(0, str(ROOT / "legacy"))
+    from submission_export import export_submission, validate_csv
+    from row_auc_final_utils import verify_csv_probabilities
+
+    output = Path(output)
+
+    def check(candidate):
+        validate_csv(candidate, example, expected_rows)
+        verify_csv_probabilities(candidate, rowids, probabilities)
+        if digest(candidate) != expected_sha256:
+            raise RuntimeError("V6 output differs from the configured fingerprint; no output was published.")
+
+    if output.exists():
+        if digest(output) != expected_sha256:
+            raise FileExistsError(f"Existing output differs from V6; refusing to overwrite: {output}")
+        check(output)
+        verify_inputs()
+        return
+
+    output.parent.mkdir(parents=True, exist_ok=True)
+    with tempfile.TemporaryDirectory(prefix=".v6-", dir=output.parent) as temporary:
+        candidate = Path(temporary) / "candidate.csv"
+        export_submission(rowids, probabilities, example, candidate, expected_rows)
+        check(candidate)
+        verify_inputs()
+        # Both paths are on the same filesystem. Never replace a racing writer.
+        os.link(candidate, output)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--device", choices=["cuda", "cpu"], default="cuda")
@@ -41,8 +80,6 @@ def main():
     import torch
     sys.path.insert(0, str(ROOT / "legacy"))
     from build_submission import neural_pipeline, FIT_FIELDS, TARGET_FIELDS, predict_combiner, load_combiner
-    from submission_export import export_submission, validate_csv
-    from row_auc_final_utils import verify_csv_probabilities
     if args.device == "cuda" and not torch.cuda.is_available():
         raise RuntimeError("CUDA is unavailable. Activate the original techarena environment.")
     torch.set_num_threads(4)
@@ -89,17 +126,8 @@ def main():
         torch.cuda.empty_cache()
     p = (2 / 3) * ((members[0] + members[1] + members[2]) / 3) + (1 / 3) * (.5 * members[3] + .5 * members[4])
     example = ROOT / "data/raw/example_submission.csv"
-    if output.exists():
-        validate_csv(output, example, config["evaluation_rows"])
-        if digest(output) != config["submission_sha256"]:
-            raise FileExistsError(f"Existing output differs from V6; refusing to overwrite: {output}")
-    else:
-        export_submission(rowids, p, example, output, config["evaluation_rows"])
-    verify_csv_probabilities(output, rowids, p)
-    if digest(output) != config["submission_sha256"]:
-        raise RuntimeError("Reproduced CSV hash differs from submitted V6. No archive receipt written.")
-    # Recheck after inference so concurrent modifications do not validate a move.
-    verify_bundle()
+    export_verified_submission(rowids, p, example, output, config["evaluation_rows"],
+                               config["submission_sha256"], verify_inputs=verify_bundle)
     paths = ["tools/predict_v6.py", "tools/consolidate.py", "configs/v6.json", "configs/source_manifest.json"]
     paths += list(read_json(ROOT / "configs/source_manifest.json")["files"])
     report = {"passed": True, "created_at": utc(), "member_max_abs_differences": differences,
