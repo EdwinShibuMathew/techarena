@@ -20,6 +20,7 @@ and submission CSVs are distributed separately through private team access.
 | **V8 PairLogit** | Fixed trial; **not promoted**, no submission exported | Primary AUC improves by **0.00008029**, but its paired 95% interval includes zero. [Screen and stopping decision](docs/results/v8-pairlogit/README.md). |
 | **V8 enriched Logloss** | Fixed successor; **not promoted**, no submission exported | Primary AUC improves by **0.00004633**, but its paired 95% interval includes zero. [Screen and stopping decision](docs/results/v8-enriched-logloss/README.md). |
 | **V8 temporal search** | Selected B; **not promoted**, no submission exported | Fitting-only selection chose the regularized 43-feature combiner. Primary AUC changes by **−0.00001046**. [Selection and stopping decision](docs/results/v8-temporal-combiner-search/README.md). |
+| **V8 seed44 row ranking** | Screen passed; **not promoted**, no submission exported | Primary, Jan26 and late-window checks pass; the overall five-day confidence interval includes zero. [Screen, stress and stopping decision](docs/results/v8-seed44-row-auc/README.md). |
 
 V6 combines three dimension-8 preference models and two dimension-16 models,
 with event training, exposure adjustment, cold-user history fallback, and
@@ -168,7 +169,7 @@ The separate [V8 enriched Logloss successor](experiments/v8-enriched-logloss/RUN
 adds six checked relative features to one combiner. It also failed the primary
 gate, so no five-day test, final fit, or V8 submission was produced. Its guarded
 replay entrypoint, `tools/predict_v8_enriched.py`, requires a fully verified ready
-release; none currently exists. Both V8 recipes are closed, and PR #4 remains
+release; none currently exists. These V8 recipes are closed, and PR #4 remains
 draft pending a candidate that passes every promotion and release check.
 
 The separate [V8 temporal search](experiments/v8-temporal-combiner-search/RUN_V8_SEARCH.md)
@@ -177,6 +178,13 @@ before promotion. Selected recipe B failed the primary gate; no fallback was
 screened and no later fit/export ran. `tools/predict_v8_selected.py` is the guarded
 replay entrypoint for a future fully verified release of this experiment; none
 exists. Source CI passing does not promote a model.
+
+The [V8 seed44 row-ranking trial](experiments/v8-seed44-row-auc/RUN_V8_SEED44.md)
+extends V6's mixed event/row-ranking objective to seed44 from verified preference
+checkpoints. It passed the primary, secondary and late-window gates, but failed
+the overall five-day interval gate. Five prefix models completed eight epochs;
+no full-data event fit or submission export ran. `tools/predict_v8_seed44.py`
+requires a verified ready release, which this closed trial did not create.
 
 ## Documentation
 

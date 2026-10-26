@@ -79,6 +79,29 @@ was screened after failure; five-day testing, final fitting, and export did not
 run. V6 remains the benchmark and PR #4 remains draft. See the
 [selection protocol and evidence](results/v8-temporal-combiner-search/README.md).
 
+## V8 seed44 row-ranking extension (screen passed; not promoted)
+
+One fixed trial applies V6's existing half-event-CE/half-global-row-pair loss to
+seed44, starting from its epoch260 preference checkpoints. All five required
+prefix models completed eight event epochs; preferences were not retrained.
+The original 37 features, combiner settings, other members and 2/9 replacement
+weight remain unchanged. Final inference was specified to reuse the validated
+Jan25 combiner, matching V6, without a Jan26 refit.
+
+| Window | AUC change vs V6 | Paired 95% interval | Gate |
+|---|---:|---|---|
+| Primary Jan25–26 | +0.0000714876 | [+0.0000218718, +0.0001248046] | Passed |
+| Secondary Jan26 | +0.0000714093 | [+0.0000151797, +0.0001285389] | Passed |
+| Five-day Jan22–26 | +0.0000123114 | [−0.0000492575, +0.0000774763] | Failed |
+| Late 48–120h | +0.0001018467 | Point comparison | Passed |
+
+All 1,000 paired draws were valid in each bootstrap window. The five-day lower
+bound is not positive, closing the recipe. Actual finalization refused before
+training, no full-data seed44 event model or V8 CSV was produced, and PR #4
+remains draft. Cumulative V8 compute is 748.931 seconds, including 205.320 for
+this trial and refusal verification. V6 remains the submitted benchmark.
+See the [protocol, integrity checks and full evidence](results/v8-seed44-row-auc/README.md).
+
 ## Recent rejected candidates versus V6
 
 | Fixed experiment | Primary AUC change | Primary paired 95% interval | Jan26 change | Decision |
