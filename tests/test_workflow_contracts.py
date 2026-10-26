@@ -108,6 +108,36 @@ class WorkflowContractTests(unittest.TestCase):
                 with self.assertRaisesRegex(ValueError,"Phase attempted"):engine.run(root,"run","develop")
                 child.assert_called_once()
 
+    def test_final_accounting_write_failure_prevents_publication(self):
+        from ml_workflow import budget as budget_module
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp);work=root/"artifacts/experiments/run";work.mkdir(parents=True)
+            manifest={"spec_sha256":"f"*64,"spec":{"purpose":"research","release_name":"v8",
+                "budget":{"phase_seconds":1,"total_seconds":10}},
+                "carried_seconds":0.,"carry_identity":None,"source":{"commit":"fixture"}}
+            ledger=root/"artifacts/experiments/compute-ledger.json"
+            original_write=budget_module.write_json
+            def failing_accounting(path,value):
+                if path==ledger and value["attempts"][-1]["status"]=="complete":
+                    raise OSError("injected final accounting failure")
+                original_write(path,value)
+            with patch.object(engine,"locate",return_value=work), patch.object(engine,"load",return_value=manifest), \
+                 patch.object(engine,"checked",return_value={"passed":True}), \
+                 patch.object(Budget,"run",return_value=0) as child, \
+                 patch.object(budget_module,"write_json",side_effect=failing_accounting), \
+                 patch.object(engine,"publish") as publish:
+                with self.assertRaisesRegex(OSError,"final accounting failure"):
+                    engine.run(root,"run","finalize")
+                child.assert_called_once()
+                publish.assert_not_called()
+            self.assertEqual(read(ledger)["attempts"][-1]["status"],"running")
+            self.assertEqual(read(ledger)["used_seconds"],1.)
+            self.assertTrue((work/"finalize.attempt.json").exists())
+            self.assertFalse((work/"finalize.ledger.json").exists())
+            self.assertFalse((work/"published.json").exists())
+            self.assertFalse((root/"configs/v8.json").exists())
+            self.assertFalse((root/"artifacts/submissions").exists())
+
     def test_killed_controller_keeps_its_full_compute_reservation(self):
         with tempfile.TemporaryDirectory() as tmp:
             path=Path(tmp)/"compute.json"

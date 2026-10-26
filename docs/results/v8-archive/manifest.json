@@ -1,0 +1,196 @@
+{
+  "schema_version": 1,
+  "source_pr": "https://github.com/EdwinShibuMathew/techarena/pull/4",
+  "source_revision": "3a902173cf111dcb748140a31293425ae66b2142",
+  "source_branch": "feat/v8-pairlogit",
+  "historical_summaries_prefix": "> **Historical archive:** [PR #4](https://github.com/EdwinShibuMathew/techarena/pull/4), [reviewed source `3a90217`](https://github.com/EdwinShibuMathew/techarena/commit/3a902173cf111dcb748140a31293425ae66b2142).\n> This recipe is closed and not submission-ready. Its historical execution tooling has confirmed review defects and is unsupported.\n> Commands and validation claims below describe that revision. See the [archive and review dispositions](../v8-archive/README.md) and use the [shared workflow](../../ML_WORKFLOW.md) for new work.\n\n",
+  "files": {
+    "docs/results/v8-enriched-logloss/README.md": {
+      "source_sha256": "0a233e5d8e54c63ff225dbe04643a8583d34e7efcc818bffd17cf394b893262a",
+      "source_url": "https://github.com/EdwinShibuMathew/techarena/blob/3a902173cf111dcb748140a31293425ae66b2142/docs/results/v8-enriched-logloss/README.md",
+      "protocol_link": {
+        "original": "../../../experiments/v8-enriched-logloss/RUN_V8_ENRICHED.md",
+        "pinned": "https://github.com/EdwinShibuMathew/techarena/blob/3a902173cf111dcb748140a31293425ae66b2142/experiments/v8-enriched-logloss/RUN_V8_ENRICHED.md"
+      },
+      "archived_sha256": "9ebbcfaeacd7ae274cbaeadf579c0354abd2eb841fcb3160f4d1261ecd302ba8"
+    },
+    "docs/results/v8-enriched-logloss/decision.json": {
+      "source_sha256": "6beb5a40335b14c35a66741ba3149f40ec492645571a38d6e6e11203b3fcff20",
+      "source_url": "https://github.com/EdwinShibuMathew/techarena/blob/3a902173cf111dcb748140a31293425ae66b2142/docs/results/v8-enriched-logloss/decision.json",
+      "archived_sha256": "6beb5a40335b14c35a66741ba3149f40ec492645571a38d6e6e11203b3fcff20"
+    },
+    "docs/results/v8-enriched-logloss/preparation.json": {
+      "source_sha256": "bed6d59b7170cc97306917983de953de7c9f0f87e9ce73455253b84516466a16",
+      "source_url": "https://github.com/EdwinShibuMathew/techarena/blob/3a902173cf111dcb748140a31293425ae66b2142/docs/results/v8-enriched-logloss/preparation.json",
+      "archived_sha256": "bed6d59b7170cc97306917983de953de7c9f0f87e9ce73455253b84516466a16"
+    },
+    "docs/results/v8-enriched-logloss/screen.json": {
+      "source_sha256": "32b2d26690af2d013642e6deda5a0f9d41d4a5bd50abd2829dde1ee43add5efb",
+      "source_url": "https://github.com/EdwinShibuMathew/techarena/blob/3a902173cf111dcb748140a31293425ae66b2142/docs/results/v8-enriched-logloss/screen.json",
+      "archived_sha256": "32b2d26690af2d013642e6deda5a0f9d41d4a5bd50abd2829dde1ee43add5efb"
+    },
+    "docs/results/v8-pairlogit/README.md": {
+      "source_sha256": "b5128051043844bc3324b625bfc3e0cfd15f03c9b589459595cbcced2f4d4a0d",
+      "source_url": "https://github.com/EdwinShibuMathew/techarena/blob/3a902173cf111dcb748140a31293425ae66b2142/docs/results/v8-pairlogit/README.md",
+      "protocol_link": {
+        "original": "../../../experiments/v8-pairlogit/RUN_V8.md",
+        "pinned": "https://github.com/EdwinShibuMathew/techarena/blob/3a902173cf111dcb748140a31293425ae66b2142/experiments/v8-pairlogit/RUN_V8.md"
+      },
+      "archived_sha256": "0ad4aee61aa4d75721e7ea1f5b994bb0913614729e1ad5fe830302b784e5c307"
+    },
+    "docs/results/v8-pairlogit/decision.json": {
+      "source_sha256": "436e4e0da12faf7344e27e94f8bb73511dc50264a968ec765763114c7e5798d1",
+      "source_url": "https://github.com/EdwinShibuMathew/techarena/blob/3a902173cf111dcb748140a31293425ae66b2142/docs/results/v8-pairlogit/decision.json",
+      "archived_sha256": "436e4e0da12faf7344e27e94f8bb73511dc50264a968ec765763114c7e5798d1"
+    },
+    "docs/results/v8-pairlogit/diagnostics.json": {
+      "source_sha256": "d3ae1310eb7a6d07a630364ec3bc990dcfe5150c235233130208adbbfecf7d07",
+      "source_url": "https://github.com/EdwinShibuMathew/techarena/blob/3a902173cf111dcb748140a31293425ae66b2142/docs/results/v8-pairlogit/diagnostics.json",
+      "archived_sha256": "d3ae1310eb7a6d07a630364ec3bc990dcfe5150c235233130208adbbfecf7d07"
+    },
+    "docs/results/v8-pairlogit/preparation.json": {
+      "source_sha256": "ef60da15383f252154cee543838b8c8badbec4f740eb3627de10d7fa47e46f31",
+      "source_url": "https://github.com/EdwinShibuMathew/techarena/blob/3a902173cf111dcb748140a31293425ae66b2142/docs/results/v8-pairlogit/preparation.json",
+      "archived_sha256": "ef60da15383f252154cee543838b8c8badbec4f740eb3627de10d7fa47e46f31"
+    },
+    "docs/results/v8-pairlogit/screen.json": {
+      "source_sha256": "cbb2a54b1c7e4d213f08a388549e90012828506a0007a3bc9582934fc0ce9e12",
+      "source_url": "https://github.com/EdwinShibuMathew/techarena/blob/3a902173cf111dcb748140a31293425ae66b2142/docs/results/v8-pairlogit/screen.json",
+      "archived_sha256": "cbb2a54b1c7e4d213f08a388549e90012828506a0007a3bc9582934fc0ce9e12"
+    },
+    "docs/results/v8-residual-event/README.md": {
+      "source_sha256": "4168d806370296c126a7833a29c930853ddfcf35e3755f068834eb65df2850c5",
+      "source_url": "https://github.com/EdwinShibuMathew/techarena/blob/3a902173cf111dcb748140a31293425ae66b2142/docs/results/v8-residual-event/README.md",
+      "protocol_link": {
+        "original": "../../../experiments/v8-residual-event/RUN_V8_RESIDUAL.md",
+        "pinned": "https://github.com/EdwinShibuMathew/techarena/blob/3a902173cf111dcb748140a31293425ae66b2142/experiments/v8-residual-event/RUN_V8_RESIDUAL.md"
+      },
+      "archived_sha256": "a5ca5b347c8a4d4d8d86563a8409511ae2c59dcb492fef9195cee70287424e3e"
+    },
+    "docs/results/v8-residual-event/decision.json": {
+      "source_sha256": "15fac4ea051b87f1457742744eb4b1fb3452626509cfb1555b44e6c4702c3547",
+      "source_url": "https://github.com/EdwinShibuMathew/techarena/blob/3a902173cf111dcb748140a31293425ae66b2142/docs/results/v8-residual-event/decision.json",
+      "archived_sha256": "15fac4ea051b87f1457742744eb4b1fb3452626509cfb1555b44e6c4702c3547"
+    },
+    "docs/results/v8-residual-event/development.json": {
+      "source_sha256": "a6d3a0453d8c82d9eb5849bbf641c317c3796c9a2babb662ba27fda0491b0744",
+      "source_url": "https://github.com/EdwinShibuMathew/techarena/blob/3a902173cf111dcb748140a31293425ae66b2142/docs/results/v8-residual-event/development.json",
+      "archived_sha256": "a6d3a0453d8c82d9eb5849bbf641c317c3796c9a2babb662ba27fda0491b0744"
+    },
+    "docs/results/v8-residual-event/preparation.json": {
+      "source_sha256": "0c669305001d6157db132c1dfa1af4c52acead8bfbab7ea38aeffc35fa35a6e6",
+      "source_url": "https://github.com/EdwinShibuMathew/techarena/blob/3a902173cf111dcb748140a31293425ae66b2142/docs/results/v8-residual-event/preparation.json",
+      "archived_sha256": "0c669305001d6157db132c1dfa1af4c52acead8bfbab7ea38aeffc35fa35a6e6"
+    },
+    "docs/results/v8-residual-event/screen.json": {
+      "source_sha256": "afd310a0b37df7540ffcf5cada4eef98a570175ebb441a51104bef788bcbad56",
+      "source_url": "https://github.com/EdwinShibuMathew/techarena/blob/3a902173cf111dcb748140a31293425ae66b2142/docs/results/v8-residual-event/screen.json",
+      "archived_sha256": "afd310a0b37df7540ffcf5cada4eef98a570175ebb441a51104bef788bcbad56"
+    },
+    "docs/results/v8-residual-event/selected.json": {
+      "source_sha256": "4803f2cc82abd46590a9c57b53b0047302fdcb4c5d6a8bf8649700134f2ad120",
+      "source_url": "https://github.com/EdwinShibuMathew/techarena/blob/3a902173cf111dcb748140a31293425ae66b2142/docs/results/v8-residual-event/selected.json",
+      "archived_sha256": "4803f2cc82abd46590a9c57b53b0047302fdcb4c5d6a8bf8649700134f2ad120"
+    },
+    "docs/results/v8-robust-ensemble/README.md": {
+      "source_sha256": "f58890eb8ef8b782d9583b8b5e4ec7e844e2fb3738f41d7adfc14771841666cf",
+      "source_url": "https://github.com/EdwinShibuMathew/techarena/blob/3a902173cf111dcb748140a31293425ae66b2142/docs/results/v8-robust-ensemble/README.md",
+      "protocol_link": {
+        "original": "../../../experiments/v8-robust-ensemble/RUN_V8_ROBUST.md",
+        "pinned": "https://github.com/EdwinShibuMathew/techarena/blob/3a902173cf111dcb748140a31293425ae66b2142/experiments/v8-robust-ensemble/RUN_V8_ROBUST.md"
+      },
+      "archived_sha256": "6857e6d68a59ce614dcede8ef2e40793745f3fa2f08ce45c5927198c0e358d23"
+    },
+    "docs/results/v8-robust-ensemble/decision.json": {
+      "source_sha256": "08788c6ed867324411980bd6907a7248579b4ea12fcc51190467d6cedbb969ae",
+      "source_url": "https://github.com/EdwinShibuMathew/techarena/blob/3a902173cf111dcb748140a31293425ae66b2142/docs/results/v8-robust-ensemble/decision.json",
+      "archived_sha256": "08788c6ed867324411980bd6907a7248579b4ea12fcc51190467d6cedbb969ae"
+    },
+    "docs/results/v8-robust-ensemble/development.json": {
+      "source_sha256": "189d03c77fd5c390280ac27d2b24f609c53dca6de61e9a9ed6bb9abd5e73cba8",
+      "source_url": "https://github.com/EdwinShibuMathew/techarena/blob/3a902173cf111dcb748140a31293425ae66b2142/docs/results/v8-robust-ensemble/development.json",
+      "archived_sha256": "189d03c77fd5c390280ac27d2b24f609c53dca6de61e9a9ed6bb9abd5e73cba8"
+    },
+    "docs/results/v8-robust-ensemble/preparation.json": {
+      "source_sha256": "9e4ad9164853f189cfb2c9538c1c9414cbc681374b9a42d3c8951438517cb0f6",
+      "source_url": "https://github.com/EdwinShibuMathew/techarena/blob/3a902173cf111dcb748140a31293425ae66b2142/docs/results/v8-robust-ensemble/preparation.json",
+      "archived_sha256": "9e4ad9164853f189cfb2c9538c1c9414cbc681374b9a42d3c8951438517cb0f6"
+    },
+    "docs/results/v8-robust-ensemble/screen.json": {
+      "source_sha256": "d95b7828f17c58b22e5d26b538f039a2382bde05f7de1ae321290d706d39d69a",
+      "source_url": "https://github.com/EdwinShibuMathew/techarena/blob/3a902173cf111dcb748140a31293425ae66b2142/docs/results/v8-robust-ensemble/screen.json",
+      "archived_sha256": "d95b7828f17c58b22e5d26b538f039a2382bde05f7de1ae321290d706d39d69a"
+    },
+    "docs/results/v8-robust-ensemble/selected.json": {
+      "source_sha256": "0245e64189236c688089a224068a7fa7ce3f3cd807364e386479b4ec9fbf2c87",
+      "source_url": "https://github.com/EdwinShibuMathew/techarena/blob/3a902173cf111dcb748140a31293425ae66b2142/docs/results/v8-robust-ensemble/selected.json",
+      "archived_sha256": "0245e64189236c688089a224068a7fa7ce3f3cd807364e386479b4ec9fbf2c87"
+    },
+    "docs/results/v8-seed44-row-auc/README.md": {
+      "source_sha256": "93a0b2fe4192d7afd1fdef477fdf68a15f7bbd7daf47357eaaa7cb87f46cda31",
+      "source_url": "https://github.com/EdwinShibuMathew/techarena/blob/3a902173cf111dcb748140a31293425ae66b2142/docs/results/v8-seed44-row-auc/README.md",
+      "protocol_link": {
+        "original": "../../../experiments/v8-seed44-row-auc/RUN_V8_SEED44.md",
+        "pinned": "https://github.com/EdwinShibuMathew/techarena/blob/3a902173cf111dcb748140a31293425ae66b2142/experiments/v8-seed44-row-auc/RUN_V8_SEED44.md"
+      },
+      "archived_sha256": "5754e877b5c4bbdd7c727adcc189116ca00b252791682b2fbf23e1b6ebb6ec86"
+    },
+    "docs/results/v8-seed44-row-auc/decision.json": {
+      "source_sha256": "368109dedfaf212fd84519d0f7a7be5213fda773d3936c7aba05a90875e10e8e",
+      "source_url": "https://github.com/EdwinShibuMathew/techarena/blob/3a902173cf111dcb748140a31293425ae66b2142/docs/results/v8-seed44-row-auc/decision.json",
+      "archived_sha256": "368109dedfaf212fd84519d0f7a7be5213fda773d3936c7aba05a90875e10e8e"
+    },
+    "docs/results/v8-seed44-row-auc/preparation.json": {
+      "source_sha256": "c4e4be76bcb3f67da6d68de45972af8b6550d6129eb571e7e199ff53ff25bd95",
+      "source_url": "https://github.com/EdwinShibuMathew/techarena/blob/3a902173cf111dcb748140a31293425ae66b2142/docs/results/v8-seed44-row-auc/preparation.json",
+      "archived_sha256": "c4e4be76bcb3f67da6d68de45972af8b6550d6129eb571e7e199ff53ff25bd95"
+    },
+    "docs/results/v8-seed44-row-auc/screen.json": {
+      "source_sha256": "aee191c31decaa9d9bbf6f31d52e2a8428fa5461d4e78191335d460bafab9040",
+      "source_url": "https://github.com/EdwinShibuMathew/techarena/blob/3a902173cf111dcb748140a31293425ae66b2142/docs/results/v8-seed44-row-auc/screen.json",
+      "archived_sha256": "aee191c31decaa9d9bbf6f31d52e2a8428fa5461d4e78191335d460bafab9040"
+    },
+    "docs/results/v8-seed44-row-auc/stress.json": {
+      "source_sha256": "ebb715e6d3e4816a899a1ac1e1cc8b21f349a47446f16904bdcc3a6b9e733557",
+      "source_url": "https://github.com/EdwinShibuMathew/techarena/blob/3a902173cf111dcb748140a31293425ae66b2142/docs/results/v8-seed44-row-auc/stress.json",
+      "archived_sha256": "ebb715e6d3e4816a899a1ac1e1cc8b21f349a47446f16904bdcc3a6b9e733557"
+    },
+    "docs/results/v8-temporal-combiner-search/README.md": {
+      "source_sha256": "002939ed5774f7905470ee486c6a972978d4ad086d29b8ae4df112d5817128f6",
+      "source_url": "https://github.com/EdwinShibuMathew/techarena/blob/3a902173cf111dcb748140a31293425ae66b2142/docs/results/v8-temporal-combiner-search/README.md",
+      "protocol_link": {
+        "original": "../../../experiments/v8-temporal-combiner-search/RUN_V8_SEARCH.md",
+        "pinned": "https://github.com/EdwinShibuMathew/techarena/blob/3a902173cf111dcb748140a31293425ae66b2142/experiments/v8-temporal-combiner-search/RUN_V8_SEARCH.md"
+      },
+      "archived_sha256": "7076ae609e358e9913e4b1d0edb6fda27ec69a0cd78fc980861dd4f8d3259f0d"
+    },
+    "docs/results/v8-temporal-combiner-search/decision.json": {
+      "source_sha256": "5856c81ac06df5c30e8d1177039bc429e928d1c58f67eba86a33e2d3b177a1ef",
+      "source_url": "https://github.com/EdwinShibuMathew/techarena/blob/3a902173cf111dcb748140a31293425ae66b2142/docs/results/v8-temporal-combiner-search/decision.json",
+      "archived_sha256": "5856c81ac06df5c30e8d1177039bc429e928d1c58f67eba86a33e2d3b177a1ef"
+    },
+    "docs/results/v8-temporal-combiner-search/preparation.json": {
+      "source_sha256": "1afad7ec437819481cc45537b363799916a836aac814de80cc035fdd2817d888",
+      "source_url": "https://github.com/EdwinShibuMathew/techarena/blob/3a902173cf111dcb748140a31293425ae66b2142/docs/results/v8-temporal-combiner-search/preparation.json",
+      "archived_sha256": "1afad7ec437819481cc45537b363799916a836aac814de80cc035fdd2817d888"
+    },
+    "docs/results/v8-temporal-combiner-search/screen.json": {
+      "source_sha256": "1266c357c7cbedc4a6ba487f68518c5187fb34730581efbc9a1ce4c7bbfb84b4",
+      "source_url": "https://github.com/EdwinShibuMathew/techarena/blob/3a902173cf111dcb748140a31293425ae66b2142/docs/results/v8-temporal-combiner-search/screen.json",
+      "archived_sha256": "1266c357c7cbedc4a6ba487f68518c5187fb34730581efbc9a1ce4c7bbfb84b4"
+    },
+    "docs/results/v8-temporal-combiner-search/selected_recipe.json": {
+      "source_sha256": "7da3e689e742139d111d6fea43cf66125d6769c87d2a66d01fa6f6aaf337c9ea",
+      "source_url": "https://github.com/EdwinShibuMathew/techarena/blob/3a902173cf111dcb748140a31293425ae66b2142/docs/results/v8-temporal-combiner-search/selected_recipe.json",
+      "archived_sha256": "7da3e689e742139d111d6fea43cf66125d6769c87d2a66d01fa6f6aaf337c9ea"
+    },
+    "docs/results/v8-temporal-combiner-search/selection.json": {
+      "source_sha256": "404c7ed9e376ea0dc2ad28e5d9f5da3e63a0cef44529e5a7bf3881bc1c34ea5c",
+      "source_url": "https://github.com/EdwinShibuMathew/techarena/blob/3a902173cf111dcb748140a31293425ae66b2142/docs/results/v8-temporal-combiner-search/selection.json",
+      "archived_sha256": "404c7ed9e376ea0dc2ad28e5d9f5da3e63a0cef44529e5a7bf3881bc1c34ea5c"
+    }
+  },
+  "recorded_cumulative_compute_seconds": 1974.359347462001,
+  "original_compute_limit_seconds": 14400,
+  "accounting_note": "Recorded historical accounting, not proof of controller-death or overlap safety. Do not reset the research budget or reopen closed recipes."
+}

@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "purpose": "historical_evidence_preservation",
+  "source_revision": "3a902173cf111dcb748140a31293425ae66b2142",
+  "base_main_revision": "06c8cbdf4348b4047cac774fae3fd1032054acbe",
+  "original_hashes_verified_against_git": 32,
+  "json_reports_preserved_byte_identical": 26,
+  "summaries_with_banner_and_pinned_protocol_only": 6,
+  "source_hashes": {
+    "docs/results/v8-archive/manifest.json": "829a49a41371cbf541da29d87776cb99205bcea8435fdabed401cc8cccf55ed2",
+    "tests/test_v8_archive.py": "9fe256e6b01895008e6512e3e5c1a922d9877eef830707305d9eb112017b08ac",
+    "tests/test_workflow_contracts.py": "ef47bdc22437e28b02d1faaa869219459a7aa04bd64fa45130043a2c8d99e59c"
+  },
+  "tests": {
+    "locked_cpu_suite": {
+      "passed": 134,
+      "skipped_optional_private_artifact": 1,
+      "seconds": 28.58
+    },
+    "required_model_contracts": {
+      "passed": 21,
+      "skipped": 0,
+      "seconds": 26.482
+    },
+    "source_only_suite": {
+      "passed": 124,
+      "skipped_optional_dependencies_or_private_artifacts": 11,
+      "subtests_passed": 187,
+      "seconds": 2.06
+    },
+    "dependency_consistency": "passed",
+    "final_accounting_failure_prevents_publication": true
+  },
+  "production_source_diff_empty": true,
+  "research_training_performed": false,
+  "private_cuda_replay_performed": false,
+  "competition_submission_exported": false,
+  "submission_ready": false
+}

@@ -31,6 +31,26 @@ adjustment, cold-history fallback, CatBoost combiners, longer preference
 training, lower-rate fine-tuning, dimension/seed diversity and the small V6
 global row-ranking update.
 
+## Archived V8 campaigns
+
+[PR #4's preserved evidence](results/v8-archive/README.md) records six closed
+campaigns. None passed every promotion gate or produced a submission-ready V8.
+These results use repeatedly reused dates and are retrospective evidence.
+
+| Campaign | Recorded stopping gate |
+|---|---|
+| PairLogit | Primary confidence interval lower bound not positive |
+| Enriched Logloss | Primary confidence interval lower bound not positive |
+| Temporal combiner search, selected B | Primary confidence gate failed |
+| Seed44 row ranking | Five-day confidence gate failed despite passing screen and late checks |
+| Robust ensemble, selected A | Primary confidence interval lower bound not positive |
+| Residual event, selected B | Primary confidence gate failed |
+
+The archive records all three valid tooling review findings and their supported
+replacements in the merged shared workflow. Historical execution entrypoints
+are excluded. The recorded cumulative compute is 1,974.359347462001 seconds of
+14,400; archival work does not reset accounting or reopen rejected recipes.
+
 ## Recent rejected candidates versus V6
 
 | Fixed experiment | Primary AUC change | Primary paired 95% interval | Jan26 change | Decision |
