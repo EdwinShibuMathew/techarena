@@ -17,6 +17,7 @@ and submission CSVs are distributed separately through private team access.
 |---|---|---|
 | **V6** | Submitted benchmark; supported inference entry point | Historical public ROC AUC: **0.819451**. [Configuration](configs/v6.json) and [model details](docs/MODEL.md). |
 | **V7** | Research candidate; **not promoted** | Overall gains reproduce, but AUC declines by **0.0001676** on the five-day late-window subset. [Validation report](docs/results/v7-validation/README.md). |
+| **V8 research archive** | Six closed campaigns; **none promoted**, no submission-ready V8 | [Preserved evidence and review dispositions](docs/results/v8-archive/README.md). |
 
 V6 combines three dimension-8 preference models and two dimension-16 models,
 with event training, exposure adjustment, cold-user history fallback, and
