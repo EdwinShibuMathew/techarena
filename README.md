@@ -19,6 +19,7 @@ and submission CSVs are distributed separately through private team access.
 | **V7** | Research candidate; **not promoted** | Overall gains reproduce, but AUC declines by **0.0001676** on the five-day late-window subset. [Validation report](docs/results/v7-validation/README.md). |
 | **V8 PairLogit** | Fixed trial; **not promoted**, no submission exported | Primary AUC improves by **0.00008029**, but its paired 95% interval includes zero. [Screen and stopping decision](docs/results/v8-pairlogit/README.md). |
 | **V8 enriched Logloss** | Fixed successor; **not promoted**, no submission exported | Primary AUC improves by **0.00004633**, but its paired 95% interval includes zero. [Screen and stopping decision](docs/results/v8-enriched-logloss/README.md). |
+| **V8 temporal search** | Selected B; **not promoted**, no submission exported | Fitting-only selection chose the regularized 43-feature combiner. Primary AUC changes by **−0.00001046**. [Selection and stopping decision](docs/results/v8-temporal-combiner-search/README.md). |
 
 V6 combines three dimension-8 preference models and two dimension-16 models,
 with event training, exposure adjustment, cold-user history fallback, and
@@ -169,6 +170,13 @@ gate, so no five-day test, final fit, or V8 submission was produced. Its guarded
 replay entrypoint, `tools/predict_v8_enriched.py`, requires a fully verified ready
 release; none currently exists. Both V8 recipes are closed, and PR #4 remains
 draft pending a candidate that passes every promotion and release check.
+
+The separate [V8 temporal search](experiments/v8-temporal-combiner-search/RUN_V8_SEARCH.md)
+compared three declared recipes on two Jan24 forward folds and froze one winner
+before promotion. Selected recipe B failed the primary gate; no fallback was
+screened and no later fit/export ran. `tools/predict_v8_selected.py` is the guarded
+replay entrypoint for a future fully verified release of this experiment; none
+exists. Source CI passing does not promote a model.
 
 ## Documentation
 

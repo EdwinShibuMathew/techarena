@@ -58,6 +58,27 @@ five-day testing, final fitting, or submission export. No V8 configuration or CS
 was created. V6 remains the benchmark; PR #4 stays draft as requested.
 See the [successor protocol and evidence](results/v8-enriched-logloss/README.md).
 
+## V8 temporal combiner search (selected B; not promoted)
+
+Three predeclared candidates were compared against freshly fitted original
+seed42 combiners on Jan24 forward folds. A gained +0.0010613850 then lost
+0.0002884511 and was ineligible. B gained +0.0011859932 and +0.0000019671;
+C gained +0.0004956737 and +0.0005838487. B had the highest mean gain among
+candidates nonnegative on both folds and was frozen before promotion. These
+development gains concern the seed42 component, not the V6 ensemble.
+
+| Promotion window | AUC change vs V6 | Paired 95% interval | Decision |
+|---|---:|---|---|
+| Primary Jan25–26 | −0.0000104611 | [−0.0000734081, +0.0000509818] | Failed |
+| Secondary Jan26 | +0.0000109097 | [−0.0000638571, +0.0000860025] | Passed: point change is nonnegative |
+
+B uses 43 features, 545 Logloss trees, depth 4, L2 50, and the unchanged 2/9
+replacement weight. Both original comparison members replayed with zero maximum
+error and all 1,000 paired draws were valid in each window. No fallback candidate
+was screened after failure; five-day testing, final fitting, and export did not
+run. V6 remains the benchmark and PR #4 remains draft. See the
+[selection protocol and evidence](results/v8-temporal-combiner-search/README.md).
+
 ## Recent rejected candidates versus V6
 
 | Fixed experiment | Primary AUC change | Primary paired 95% interval | Jan26 change | Decision |
