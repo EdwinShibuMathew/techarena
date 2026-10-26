@@ -426,8 +426,9 @@ def run(root,run_id,stage):
     require(not (work/(stage+".attempt.json")).exists(),"Phase attempted; preserve evidence and use a new reviewed run")
     spec=m["spec"]
     ledger=work/"compute.json" if spec["purpose"]=="synthetic_validation" else inside(root,"artifacts/experiments/compute-ledger.json")
-    write_new(work/(stage+".attempt.json"),{"stage":stage,"spec_sha256":m["spec_sha256"],"state":"claimed"})
     with Budget(ledger,run_id+"/"+stage,spec["budget"]["phase_seconds"],spec["budget"]["total_seconds"],m["carried_seconds"],m["carry_identity"]) as budget:
+        # A denied budget never claims the phase; once claimed, retries stay forbidden.
+        write_new(work/(stage+".attempt.json"),{"stage":stage,"spec_sha256":m["spec_sha256"],"state":"claimed"})
         command=[sys.executable,str(work/"source/tools/run_experiment.py"),stage,"--root",str(root),"--run-id",run_id,"--worker"]
         code=budget.run(command,work/"source")
         require(code in (0,2),"Phase subprocess failed with exit code "+str(code))

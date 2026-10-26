@@ -9,6 +9,7 @@ import sys
 import tarfile
 import tempfile
 import unittest
+from unittest.mock import patch
 
 import numpy as np
 
@@ -74,6 +75,38 @@ class WorkflowContractTests(unittest.TestCase):
                 with Budget(path,"first",.1,2.,carry=.2,carry_identity="prior"):pass
             with self.assertRaisesRegex(ValueError,"lineage changed"):
                 with Budget(path,"third",.1,2.,carry=.2,carry_identity="reset"):pass
+
+    def test_contended_phase_can_run_after_shared_budget_lock_is_released(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp);work=root/"artifacts/experiments/run";work.mkdir(parents=True)
+            manifest={"spec_sha256":"f"*64,"spec":{"purpose":"research",
+                "budget":{"phase_seconds":1,"total_seconds":10}},
+                "carried_seconds":0.,"carry_identity":None,"source":{"commit":"fixture"}}
+            ledger=root/"artifacts/experiments/compute-ledger.json"
+            claim=work/"develop.attempt.json"
+            def launch(budget,command,cwd):
+                self.assertTrue(claim.is_file(),"Claim must be committed before launching")
+                self.assertEqual(read(claim)["spec_sha256"],manifest["spec_sha256"])
+                self.assertEqual(read(ledger)["attempts"][-1]["owner"],"run/develop")
+                self.assertEqual(read(ledger)["attempts"][-1]["status"],"running")
+                return 0
+            with patch.object(engine,"locate",return_value=work), patch.object(engine,"load",return_value=manifest), \
+                 patch.object(Budget,"run",autospec=True,side_effect=launch) as child:
+                with Budget(ledger,"other-run/develop",1,10):
+                    before=ledger.read_bytes()
+                    with self.assertRaises(BlockingIOError):engine.run(root,"run","develop")
+                    self.assertFalse(claim.exists())
+                    self.assertFalse((work/"develop.ledger.json").exists())
+                    self.assertEqual(ledger.read_bytes(),before)
+                    child.assert_not_called()
+                self.assertEqual(engine.run(root,"run","develop"),0)
+                child.assert_called_once()
+                self.assertEqual(read(work/"develop.ledger.json")["exit_code"],0)
+                attempts=read(ledger)["attempts"]
+                self.assertEqual([a["owner"] for a in attempts],["other-run/develop","run/develop"])
+                self.assertEqual(attempts[-1]["status"],"complete")
+                with self.assertRaisesRegex(ValueError,"Phase attempted"):engine.run(root,"run","develop")
+                child.assert_called_once()
 
     def test_killed_controller_keeps_its_full_compute_reservation(self):
         with tempfile.TemporaryDirectory() as tmp:

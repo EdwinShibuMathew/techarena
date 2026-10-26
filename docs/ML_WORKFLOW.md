@@ -97,7 +97,9 @@ adapter must declare `PURPOSES={"research"}` and implement:
 - `train(fitting, metadata, checkpoint_path, candidate_params)`: fit only the
   supplied prefix; save `metadata` unchanged and a finite `model_state` using
   Torch. Metadata binds dimension, seed, cutoff, fitting count/index hash and
-  prescribed epoch. Initialize preferences from verified **same-cutoff** dim8
+  prescribed epoch. Training receives defensive deep copies of metadata and
+  candidate parameters; saved metadata is checked against independent expected
+  values before any success receipt is issued. Initialize preferences from verified **same-cutoff** dim8
   epoch-260 or dim16 epoch-196 assets; never reuse later-prefix weights or train
   preference embeddings from scratch. Declare initialization assets in inputs.
 - `extract(fitting, unlabeled_target, checkpoint_path)`: return float32 `X` and
@@ -122,8 +124,11 @@ Research carries the latest closed V8 decision's **1,974.359347462001 seconds**
 into the original **14,400-second** total. All research run IDs share
 `artifacts/experiments/compute-ledger.json`; changing run ID does not reset it.
 Use the original verified carry decision, never a fabricated replacement.
-An exclusive lock allows one active phase. The entire phase allowance is
-reserved before launch, wall time is charged including extraction, hashing,
+An exclusive lock allows one active phase. Lock contention does not claim or
+charge the waiting phase; retry that same phase after the lock is released.
+After budget ownership and reservation succeed, the immutable phase claim is
+written before worker launch, and existing retry protection applies. The entire
+phase allowance is reserved before launch, wall time is charged including extraction, hashing,
 evaluation and export, and unused time is refunded only after a normal
 controller exit. A crashed controller retains the reservation. Timeout kills
 the worker process group; a worker watchdog kills that group if its controller

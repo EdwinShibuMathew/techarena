@@ -10,6 +10,8 @@ import tempfile
 import unittest
 
 ROOT=Path(__file__).resolve().parents[1]
+sys.path.insert(0,str(ROOT/"tools"))
+from ml_workflow.budget import Budget
 AVAILABLE=all(importlib.util.find_spec(name) is not None for name in ("torch","catboost","sklearn"))
 
 
@@ -42,6 +44,13 @@ class WorkflowIntegrationTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             root=Path(tmp);self.make_repository(root)
             _,work=self.prepare(root,"success")
+            # Contention must not close a phase that never launched a worker.
+            with Budget(work/"compute.json","other-run/develop",120,600):
+                before=(work/"compute.json").read_bytes()
+                self.cli(root,"develop","--run-id","success",code=1)
+                self.assertFalse((work/"develop.attempt.json").exists())
+                self.assertFalse((work/"models").exists())
+                self.assertEqual((work/"compute.json").read_bytes(),before)
             # A later maintenance edit cannot change the frozen experiment implementation.
             with (root/"tools/predict_v6.py").open("a") as stream:stream.write("\n# unrelated maintenance\n")
             for stage in ("develop","screen","stress","finalize"):
