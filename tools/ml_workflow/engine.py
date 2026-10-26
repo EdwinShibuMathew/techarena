@@ -1,4 +1,5 @@
 """Standalone chronological orchestration; metrics and release gates are owned here."""
+from copy import deepcopy
 from dataclasses import asdict
 import hashlib
 import importlib.util
@@ -118,7 +119,7 @@ def _model(root,work,m,module,raw,candidate,member,cutoff):
     fit=np.flatnonzero(raw["t"]<cutoff)
     require(len(fit)>0,"Empty neural fitting prefix")
     dimension,seed,pref_epoch=MEMBERS[member]
-    metadata={"member":member,"dimension":dimension,"seed":seed,"preference_epoch":pref_epoch,
+    expected_metadata={"member":member,"dimension":dimension,"seed":seed,"preference_epoch":pref_epoch,
         "epoch":2 if m["spec"]["purpose"]=="synthetic_validation" else 8,"cutoff":cutoff,
         "maximum_fitting_timestamp":int(raw["t"][fit].max()),"fitting_events":len(fit),
         "fitting_indices_sha256":hashlib.sha256(fit.astype(np.int64).tobytes()).hexdigest(),
@@ -129,12 +130,13 @@ def _model(root,work,m,module,raw,candidate,member,cutoff):
         require(receipt.exists() and read(receipt)["sha256"]==digest(path),"Partial or changed model")
     else:
         path.parent.mkdir(parents=True,exist_ok=True)
-        module.train(context(raw,fit,True),metadata,path,m["spec"]["candidates"][candidate])
+        module.train(context(raw,fit,True),deepcopy(expected_metadata),path,
+            deepcopy(m["spec"]["candidates"][candidate]))
     saved=torch.load(path,map_location="cpu",weights_only=True)
-    require(saved["metadata"]==metadata,"Model cutoff/epoch/lineage differs")
+    require(saved["metadata"]==expected_metadata,"Model cutoff/epoch/lineage differs")
     require(isinstance(saved["model_state"],dict) and saved["model_state"],"Missing saved model state")
     require(all(not isinstance(v,torch.Tensor) or not v.is_floating_point() or bool(torch.isfinite(v).all()) for v in saved["model_state"].values()),"Nonfinite checkpoint")
-    if not receipt.exists():write_new(receipt,{"sha256":digest(path),"metadata":metadata})
+    if not receipt.exists():write_new(receipt,{"sha256":digest(path),"metadata":expected_metadata})
     return path
 
 

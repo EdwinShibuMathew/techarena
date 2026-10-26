@@ -1,12 +1,16 @@
 """Required CPU model behavior, including actual fitting and serialized reload."""
+import copy
 import importlib.util
 from pathlib import Path
 import sys
 import tempfile
 import unittest
+from types import SimpleNamespace
+from unittest.mock import Mock
 import numpy as np
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/"legacy"))
+sys.path.insert(0,str(ROOT/"tools"))
 AVAILABLE=all(importlib.util.find_spec(name) is not None for name in ("torch","catboost","sklearn"))
 
 
@@ -42,6 +46,57 @@ class ModelContractTests(unittest.TestCase):
                 reloaded=EventModel(PreferenceModel(3,12,dimension,active),3,12)
                 reloaded.load_state_dict(torch.load(path,weights_only=True,map_location="cpu"))
                 torch.testing.assert_close(reloaded(users,items,context),expected,rtol=0,atol=0)
+
+    def test_adapter_cannot_change_expected_checkpoint_metadata(self):
+        import torch
+        from ml_workflow import engine
+        for member in ("dim8_seed42","dim16_seed42"):
+            for change in ({"cutoff":999}, {"dimension":99}, {"preference_epoch":1},
+                           {"cutoff":999,"dimension":99,"preference_epoch":1}):
+                with self.subTest(member=member,change=change), tempfile.TemporaryDirectory() as tmp:
+                    root=Path(tmp)
+                    manifest={"spec_sha256":"f"*64,"spec":{"purpose":"synthetic_validation",
+                        "candidates":{"candidate":{"members":[member]}}}}
+                    before=copy.deepcopy(manifest)
+                    def train(fitting,metadata,path,params):
+                        metadata.update(change)
+                        torch.save({"metadata":metadata,"model_state":{"weight":torch.ones(1)}},path)
+                    with self.assertRaisesRegex(ValueError,"Model cutoff/epoch/lineage differs"):
+                        engine._model(root,root,manifest,SimpleNamespace(train=train),{"t":np.array([1])},
+                                      "candidate",member,2)
+                    path=root/"models/candidate"/member/"2/model.pt"
+                    self.assertTrue(path.exists(),"Preserve the rejected checkpoint for diagnosis")
+                    self.assertFalse(path.with_suffix(".json").exists(),"Do not attest invalid metadata")
+                    self.assertEqual(manifest,before)
+
+    def test_adapter_mutations_do_not_change_manifest_or_success_receipt(self):
+        import torch
+        from ml_workflow import engine
+        from ml_workflow.storage import read
+        for member in ("dim8_seed42","dim16_seed42"):
+            with self.subTest(member=member), tempfile.TemporaryDirectory() as tmp:
+                root=Path(tmp)
+                manifest={"spec_sha256":"f"*64,"spec":{"purpose":"synthetic_validation",
+                    "candidates":{"candidate":{"members":[member],"nested":{"weights":[1.,2.]}}}}}
+                before=copy.deepcopy(manifest)
+                def train(fitting,metadata,path,params):
+                    torch.save({"metadata":copy.deepcopy(metadata),"model_state":{"weight":torch.ones(1)}},path)
+                    metadata.update(cutoff=999,dimension=99,preference_epoch=1)
+                    params["members"].append("unrequested-member")
+                    params["nested"]["weights"][0]=99.
+                path=engine._model(root,root,manifest,SimpleNamespace(train=train),{"t":np.array([1])},
+                                   "candidate",member,2)
+                self.assertEqual(manifest,before)
+                receipt=read(path.with_suffix(".json"))
+                saved=torch.load(path,map_location="cpu",weights_only=True)
+                self.assertEqual(receipt["metadata"],saved["metadata"])
+                self.assertEqual(receipt["metadata"]["cutoff"],2)
+                self.assertEqual(receipt["metadata"]["dimension"],engine.MEMBERS[member][0])
+                self.assertEqual(receipt["metadata"]["preference_epoch"],engine.MEMBERS[member][2])
+                adapter=SimpleNamespace(train=Mock(side_effect=AssertionError("Must reuse the validated checkpoint")))
+                self.assertEqual(engine._model(root,root,manifest,adapter,{"t":np.array([1])},
+                                              "candidate",member,2),path)
+                adapter.train.assert_not_called()
 
     def test_explicitly_frozen_base_is_unchanged_by_head_training(self):
         import torch
