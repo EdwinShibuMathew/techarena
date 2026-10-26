@@ -21,6 +21,7 @@ and submission CSVs are distributed separately through private team access.
 | **V8 enriched Logloss** | Fixed successor; **not promoted**, no submission exported | Primary AUC improves by **0.00004633**, but its paired 95% interval includes zero. [Screen and stopping decision](docs/results/v8-enriched-logloss/README.md). |
 | **V8 temporal search** | Selected B; **not promoted**, no submission exported | Fitting-only selection chose the regularized 43-feature combiner. Primary AUC changes by **−0.00001046**. [Selection and stopping decision](docs/results/v8-temporal-combiner-search/README.md). |
 | **V8 seed44 row ranking** | Screen passed; **not promoted**, no submission exported | Primary, Jan26 and late-window checks pass; the overall five-day confidence interval includes zero. [Screen, stress and stopping decision](docs/results/v8-seed44-row-auc/README.md). |
+| **V8 robust ensemble** | Selected A; **not promoted**, no submission exported | Jan21 full-ensemble gains transfer only weakly to primary; its confidence interval includes zero. [Development, screen and stopping decision](docs/results/v8-robust-ensemble/README.md). |
 
 V6 combines three dimension-8 preference models and two dimension-16 models,
 with event training, exposure adjustment, cold-user history fallback, and
@@ -185,6 +186,14 @@ checkpoints. It passed the primary, secondary and late-window gates, but failed
 the overall five-day interval gate. Five prefix models completed eight epochs;
 no full-data event fit or submission export ran. `tools/predict_v8_seed44.py`
 requires a verified ready release, which this closed trial did not create.
+
+The [V8 robust ensemble experiment](experiments/v8-robust-ensemble/RUN_V8_ROBUST.md)
+selects complete ensembles on Jan21-only forward folds, using worst-fold gains
+and a no-click-negative safeguard. It selected the two updated dim16 members
+while retaining original seed44. The primary promotion interval includes zero,
+so stress/finalization were blocked. `tools/predict_v8_candidate.py` is the
+guarded replay interface for a future verified release of this experiment;
+no ready V8 release exists.
 
 ## Documentation
 

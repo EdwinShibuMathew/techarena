@@ -102,6 +102,36 @@ remains draft. Cumulative V8 compute is 748.931 seconds, including 205.320 for
 this trial and refusal verification. V6 remains the submitted benchmark.
 See the [protocol, integrity checks and full evidence](results/v8-seed44-row-auc/README.md).
 
+## V8 robust ensemble selection (A selected; not promoted)
+
+This revision addresses earlier weak early-window transfer and selection based
+on component averages. Both compositions update the two dim16 members; B also
+updates seed44. Selection uses Jan21-only forward folds with pre-Jan21 neural
+features and freshly fitted reference combiners for all five members. It uses
+complete ensemble AUC, requires a nonnegative mean no-click-negative contribution,
+and maximizes the weaker fold rather than the average.
+
+| Composition | First fold ensemble gain | Second fold ensemble gain | Decision |
+|---|---:|---:|---|
+| A: update dim16 seeds42/43 only | +0.000102899108 | +0.000123615320 | Selected: stronger weaker fold |
+| B: same plus seed44 | +0.000094229285 | +0.000159499262 | Eligible, weaker minimum |
+
+Both compositions had positive no-click-negative contributions in both folds.
+The winner was frozen before evaluating new promotion outcomes.
+
+| Promotion window | AUC change vs V6 | Paired 95% interval | Gate |
+|---|---:|---|---|
+| Primary Jan25–26 | +0.000010808166 | [−0.000051946950, +0.000075899505] | Failed |
+| Secondary Jan26 | +0.000070042895 | [−0.000004834098, +0.000145198289] | Passed: point change nonnegative |
+
+All 1,000 paired draws were valid. Eight new dim16 prefix models completed eight
+epochs from verified epoch196 preferences without preference retraining.
+Original dim16 vectors reproduced with zero error in all three historical
+cohorts, and all full-data V6 members matched their canonical reference.
+The primary gain is insufficient to pass its interval gate. No fallback was
+screened, no new stress/full-data fit or CSV export ran, and PR #4 stays draft.
+See the [full development, diagnostics and stopping evidence](results/v8-robust-ensemble/README.md).
+
 ## Recent rejected candidates versus V6
 
 | Fixed experiment | Primary AUC change | Primary paired 95% interval | Jan26 change | Decision |
