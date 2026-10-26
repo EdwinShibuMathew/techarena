@@ -12,6 +12,8 @@ our private score and final ranking are still unknown.
 
 If you're joining the team, start with [Reproduce V6 in WSL](docs/REPRODUCE_V6_WSL.md).
 I've also documented [how I manage access and prepare our private downloads](docs/TEAM_ACCESS.md).
+See [CI, branch protection and source releases](docs/CI_RELEASE.md) for merge checks
+and the distinction between source readiness and exact V6 inference replay.
 
 1. [Model and validation](docs/MODEL.md): what V6 does and how it was evaluated.
 2. [Experiment results](docs/RESULTS.md): successful and rejected changes.
@@ -96,8 +98,10 @@ terminal where I signed into GitHub:
 python tools/publish_private.py
 ```
 
-The helper checks my authenticated account and the file list, verifies that
-`EdwinShibuMathew/techarena` is private, and pushes `main`. I add teammates through
+The helper requires a feature branch, checks my authenticated account and the
+file list, verifies that `EdwinShibuMathew/techarena` is private, and pushes that
+branch with a link to open a pull request. It refuses `main` and detached HEAD
+before staging or committing. I add teammates through
 GitHub's repository access settings; the helper does not send invitations.
 
 ## Teammates: reproduce inference
