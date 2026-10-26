@@ -1,0 +1,246 @@
+{
+  "complete": true,
+  "decision_checks": {
+    "primary_ci_lower_positive": false,
+    "secondary_change_nonnegative": true
+  },
+  "input_manifest_sha256": "514e6a554394b80b6ae30b60b55880cbec94ea7e039f4476342e8cbaa05e5ebd",
+  "passed": false,
+  "protocol_sha256": "86b2100d9e7b82312279cb36cde8bad8cbdbb0a4701006b4815fe843b930e61c",
+  "results": {
+    "primary": {
+      "auc_diff": 8.028548612848407e-05,
+      "baseline_auc": 0.8184592533262289,
+      "candidate_auc": 0.8185395388123574,
+      "ci_lower": -1.1608261268231113e-05,
+      "ci_upper": 0.0001711445435930575,
+      "clicked_pairs_auc": null,
+      "decomposition": {
+        "negative_event_partitions": {
+          "negative_from_clicked_event": {
+            "candidate_auc": 0.8196713537797501,
+            "negative_rows": 250659,
+            "pair_weight": 0.6087073719793389,
+            "positive_negative_pairs": 6981103809,
+            "v6_auc": 0.8196224629439542,
+            "weighted_auc_change": 2.9760212171162248e-05
+          },
+          "negative_from_no_click_event": {
+            "candidate_auc": 0.8167788511197386,
+            "negative_rows": 161130,
+            "pair_weight": 0.39129262802066106,
+            "positive_negative_pairs": 4487631630,
+            "v6_auc": 0.8166497271078375,
+            "weighted_auc_change": 5.0525273957363185e-05
+          }
+        },
+        "same_event_pairs_subset": {
+          "auc_change": 1.5957934883625846e-05,
+          "candidate_auc": 0.8072241571218268,
+          "pair_weight_in_global_auc": 2.185585336179451e-05,
+          "v6_auc": 0.8072081991869432
+        }
+      },
+      "events": 43964,
+      "fit": {
+        "cross_event_pairs": 351671,
+        "link": "artifacts/experiments/v8-pairlogit/models/primary/link.json",
+        "link_sha256": "c78531d222e3ede2f682be1e5eb11dc045c09a72677812560f85f6c84de6a030",
+        "model": "artifacts/experiments/v8-pairlogit/models/primary/ranker.cbm",
+        "model_sha256": "3d7493ba156a135bcff766c03baa44cd668599a74969d4548521558342ce2e69",
+        "pair_count": 351680,
+        "pairs_sha256": "5542ab07e0bfc22fd46ae5e618c628e7801b368d2670c0d1bd45eec0e7414650",
+        "pairs_with_no_click_negative": 139596,
+        "resolved_parameters": {
+          "auto_class_weights": "None",
+          "bayesian_matrix_reg": 0.10000000149011612,
+          "best_model_min_trees": 1,
+          "boost_from_average": false,
+          "boosting_type": "Plain",
+          "bootstrap_type": "MVS",
+          "border_count": 254,
+          "classes_count": 0,
+          "depth": 6,
+          "eval_fraction": 0,
+          "eval_metric": "AUC",
+          "feature_border_type": "GreedyLogSum",
+          "force_unit_auto_pair_weights": false,
+          "grow_policy": "SymmetricTree",
+          "iterations": 545,
+          "l2_leaf_reg": 20,
+          "leaf_estimation_backtracking": "AnyImprovement",
+          "leaf_estimation_iterations": 10,
+          "leaf_estimation_method": "Newton",
+          "learning_rate": 0.05000000074505806,
+          "loss_function": "PairLogit",
+          "max_leaves": 64,
+          "min_data_in_leaf": 1,
+          "model_shrink_mode": "Constant",
+          "model_shrink_rate": 0,
+          "model_size_reg": 0.5,
+          "nan_mode": "Min",
+          "penalties_coefficient": 1,
+          "pool_metainfo_options": {
+            "tags": {}
+          },
+          "posterior_sampling": false,
+          "random_score_type": "NormalWithModelSizeDecrease",
+          "random_seed": 42,
+          "random_strength": 1,
+          "rsm": 1,
+          "sampling_frequency": "PerTree",
+          "score_function": "Cosine",
+          "sparse_features_conflict_fraction": 0,
+          "subsample": 0.800000011920929,
+          "task_type": "CPU",
+          "use_best_model": false
+        },
+        "training_link": {
+          "bias": -3.4088412709394795,
+          "rule": "mean(sigmoid(raw_train+b)) = fitting_day_CTR; 80 bisections",
+          "slope": 1.0,
+          "target_labels_used": false,
+          "training_mean_probability": 0.06272831050228313,
+          "training_row_ctr": 0.0627283105022831
+        }
+      },
+      "fitting_events": 35040,
+      "fitting_index_sha256": "323bd0a73c88ba8dfb29aa8e47bae58b6dc45e9452b2a838a5cdd5361334560a",
+      "gate_passed": false,
+      "original_member_max_error": 0.0,
+      "predictions_sha256": "1a5755f63b61a7297fb2a64698be5239acfe71a32021626c79dc76608f254b08",
+      "resamples": 1000,
+      "unclicked_pairs_auc": null
+    },
+    "secondary": {
+      "auc_diff": 6.236049905150587e-05,
+      "baseline_auc": 0.8271277122502162,
+      "candidate_auc": 0.8271900727492677,
+      "ci_lower": -4.075584762811557e-05,
+      "ci_upper": 0.00015949242297694227,
+      "clicked_pairs_auc": null,
+      "decomposition": {
+        "negative_event_partitions": {
+          "negative_from_clicked_event": {
+            "candidate_auc": 0.8286122913356959,
+            "negative_rows": 200394,
+            "pair_weight": 0.6088893210255413,
+            "positive_negative_pairs": 4461972804,
+            "v6_auc": 0.8285343161854019,
+            "weighted_auc_change": 4.7478236319416484e-05
+          },
+          "negative_from_no_click_event": {
+            "candidate_auc": 0.8249759329776027,
+            "negative_rows": 128720,
+            "pair_weight": 0.3911106789744587,
+            "positive_negative_pairs": 2866079520,
+            "v6_auc": 0.8249378816956202,
+            "weighted_auc_change": 1.4882262732036611e-05
+          }
+        },
+        "same_event_pairs_subset": {
+          "auc_change": -8.982304859417312e-05,
+          "candidate_auc": 0.8176841622004651,
+          "pair_weight_in_global_auc": 2.7346147535504415e-05,
+          "v6_auc": 0.8177739852490593
+        }
+      },
+      "events": 35138,
+      "fit": {
+        "cross_event_pairs": 357108,
+        "link": "artifacts/experiments/v8-pairlogit/models/secondary/link.json",
+        "link_sha256": "077d2829ba31984e2aa9ab3d571b8db660c992f9fc56601f8b400aa11dd5415a",
+        "model": "artifacts/experiments/v8-pairlogit/models/secondary/ranker.cbm",
+        "model_sha256": "056ac0a9b1b5f5047b29f4340a8d629c448253761fc231e42ee24bc8a2161954",
+        "pair_count": 357120,
+        "pairs_sha256": "288a018fff0145c3e99a6842cf3fdf0a6eb8d0518f847cf5f707f07f353ef725",
+        "pairs_with_no_click_negative": 139157,
+        "resolved_parameters": {
+          "auto_class_weights": "None",
+          "bayesian_matrix_reg": 0.10000000149011612,
+          "best_model_min_trees": 1,
+          "boost_from_average": false,
+          "boosting_type": "Plain",
+          "bootstrap_type": "MVS",
+          "border_count": 254,
+          "classes_count": 0,
+          "depth": 6,
+          "eval_fraction": 0,
+          "eval_metric": "AUC",
+          "feature_border_type": "GreedyLogSum",
+          "force_unit_auto_pair_weights": false,
+          "grow_policy": "SymmetricTree",
+          "iterations": 545,
+          "l2_leaf_reg": 20,
+          "leaf_estimation_backtracking": "AnyImprovement",
+          "leaf_estimation_iterations": 10,
+          "leaf_estimation_method": "Newton",
+          "learning_rate": 0.05000000074505806,
+          "loss_function": "PairLogit",
+          "max_leaves": 64,
+          "min_data_in_leaf": 1,
+          "model_shrink_mode": "Constant",
+          "model_shrink_rate": 0,
+          "model_size_reg": 0.5,
+          "nan_mode": "Min",
+          "penalties_coefficient": 1,
+          "pool_metainfo_options": {
+            "tags": {}
+          },
+          "posterior_sampling": false,
+          "random_score_type": "NormalWithModelSizeDecrease",
+          "random_seed": 42,
+          "random_strength": 1,
+          "rsm": 1,
+          "sampling_frequency": "PerTree",
+          "score_function": "Cosine",
+          "sparse_features_conflict_fraction": 0,
+          "subsample": 0.800000011920929,
+          "task_type": "CPU",
+          "use_best_model": false
+        },
+        "training_link": {
+          "bias": -3.476629328676424,
+          "rule": "mean(sigmoid(raw_train+b)) = fitting_day_CTR; 80 bisections",
+          "slope": 1.0,
+          "target_labels_used": false,
+          "training_mean_probability": 0.06335509508941245,
+          "training_row_ctr": 0.06335509508941244
+        }
+      },
+      "fitting_events": 35230,
+      "fitting_index_sha256": "365e6bc68e5d25b235cd73798d5d9760ea75068132ff2102a6f913b03c89c21c",
+      "gate_passed": false,
+      "original_member_max_error": 0.0,
+      "predictions_sha256": "8582b090c70496228b0293448c536e1a8ddad1b4c125bd5a7c2815e9f496015b",
+      "resamples": 1000,
+      "unclicked_pairs_auc": null
+    }
+  },
+  "runtime": {
+    "catboost": "1.2.10",
+    "numpy": "2.5.4",
+    "python": "3.12.15",
+    "sklearn": "1.9.1",
+    "torch": "2.14.1+cu130"
+  },
+  "source_sha256": {
+    "configs/source_manifest.json": "72421f9519e72229bbc905bad7db671e9d58f4141f5f00bfb304178fc105649f",
+    "configs/v6.json": "a6e7a3a1ab67b7e1fa234851831c88ca68c18d2e9eab22914b2b2cfbb47c3e68",
+    "docs/results/techarena-row-auc-five-day/paired_results.json": "8ee27f90658f1c618da3215f305694c0935c2b1e4e48c60749b18f8a4c7579cc",
+    "docs/results/techarena-row-auc-trial/ensemble_trial_results.json": "51a57147fb147f3e82dc588834f1a7e4d888ac7b7de9af527d2a6cca4d2592d3",
+    "experiments/v6-pairlogit-v1-api-fix/attention_allocation_test.py": "188899687e31a959e8eb805c8d7a186b7d9fa3e3e3934e1dab37640ffa736b13",
+    "experiments/v6-pairlogit-v1-api-fix/conditional_choice_trial.py": "f6e044172760accbaff9dd910cab2e6f967636a02b3ae8059d15696a1206a40c",
+    "experiments/v6-pairlogit-v1-api-fix/event_scale_diagnostic.py": "0007bc7db9fda6ab689bed23d44b4b06bb0502ff3eee0c0bd3da04f8902293d5",
+    "experiments/v6-pairlogit-v1-api-fix/pairlogit_core.py": "6604edd50c8d8278782680d1e3f18bc2b565ad457eda35f2c9987116573311b9",
+    "experiments/v8-pairlogit/runner.py": "f367565e5aa0c4f6f10e89d37ca369593580b4993e0c05fc0f6c5cb00e0f1181",
+    "experiments/v8-pairlogit/v8_core.py": "2ab6485093faee8fe62d592d4c472e7d7df62284ae2f6771806ebc2370168421",
+    "tools/consolidate.py": "66ea6655d6edb5b2f4b6f8f7ac965fa6c40c7e0a16d3c435adb835b8ee665303",
+    "tools/experiment_runner.py": "7e1270f87a8d94f31a6c80c60b2ee5d102086bba264b0b97e6f9f49b0fda932e",
+    "tools/predict_v6.py": "70176d6c74937c4e693e19b340846945113db265b4217ad38fd86e9a97c51059",
+    "tools/predict_v7.py": "04b040a3055d5c082d93a38805107802ddb2a5539445c2e812770c88d8bf55f5",
+    "tools/predict_v8.py": "6e6a152421a2d3643fecc18ce3a60903927081b1ac2fc0691dc27f528a20730f"
+  },
+  "stage": "screen",
+  "submission_ready": false
+}

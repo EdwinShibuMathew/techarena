@@ -1,0 +1,137 @@
+{
+  "complete": true,
+  "descriptive_only": true,
+  "prediction_sha256": {
+    "primary": "1a5755f63b61a7297fb2a64698be5239acfe71a32021626c79dc76608f254b08",
+    "secondary": "8582b090c70496228b0293448c536e1a8ddad1b4c125bd5a7c2815e9f496015b"
+  },
+  "protocol_sha256": "86b2100d9e7b82312279cb36cde8bad8cbdbb0a4701006b4815fe843b930e61c",
+  "results": {
+    "primary": {
+      "cold_users": {
+        "auc_defined": true,
+        "auc_diff": -0.0002524438331866774,
+        "baseline_auc": 0.7356634555976589,
+        "candidate_auc": 0.7354110117644722,
+        "clicks": 938,
+        "events": 1468,
+        "rows": 14680
+      },
+      "day_0": {
+        "auc_defined": true,
+        "auc_diff": 8.932685395723894e-05,
+        "baseline_auc": 0.8219435082793114,
+        "candidate_auc": 0.8220328351332686,
+        "clicks": 22320,
+        "events": 35230,
+        "rows": 352300
+      },
+      "day_1": {
+        "auc_defined": true,
+        "auc_diff": 3.882112671704796e-05,
+        "baseline_auc": 0.8039686984145853,
+        "candidate_auc": 0.8040075195413023,
+        "clicks": 5531,
+        "events": 8734,
+        "rows": 87340
+      },
+      "history_1_5": {
+        "auc_defined": true,
+        "auc_diff": 0.0001598109566244288,
+        "baseline_auc": 0.7513661558293326,
+        "candidate_auc": 0.7515259667859571,
+        "clicks": 3454,
+        "events": 5841,
+        "rows": 58410
+      },
+      "history_6_20": {
+        "auc_defined": true,
+        "auc_diff": 5.5065320531677564e-05,
+        "baseline_auc": 0.8279484406207488,
+        "candidate_auc": 0.8280035059412805,
+        "clicks": 24234,
+        "events": 37762,
+        "rows": 377620
+      },
+      "history_empty": {
+        "auc_defined": true,
+        "auc_diff": -0.007626441415225393,
+        "baseline_auc": 0.5561784854261107,
+        "candidate_auc": 0.5485520440108853,
+        "clicks": 163,
+        "events": 361,
+        "rows": 3610
+      },
+      "warm_users": {
+        "auc_defined": true,
+        "auc_diff": 7.562963773266596e-05,
+        "baseline_auc": 0.8208327785575634,
+        "candidate_auc": 0.8209084081952961,
+        "clicks": 26913,
+        "events": 42496,
+        "rows": 424960
+      }
+    },
+    "secondary": {
+      "cold_users": {
+        "auc_defined": true,
+        "auc_diff": 0.0017646225077955213,
+        "baseline_auc": 0.7433955400170084,
+        "candidate_auc": 0.7451601625248039,
+        "clicks": 380,
+        "events": 595,
+        "rows": 5950
+      },
+      "day_0": {
+        "auc_defined": true,
+        "auc_diff": 6.236049905150587e-05,
+        "baseline_auc": 0.8271277122502162,
+        "candidate_auc": 0.8271900727492677,
+        "clicks": 22266,
+        "events": 35138,
+        "rows": 351380
+      },
+      "history_1_5": {
+        "auc_defined": true,
+        "auc_diff": 0.00031770613214621157,
+        "baseline_auc": 0.7631775256532568,
+        "candidate_auc": 0.763495231785403,
+        "clicks": 1895,
+        "events": 3258,
+        "rows": 32580
+      },
+      "history_6_20": {
+        "auc_defined": true,
+        "auc_diff": 4.082617440304137e-05,
+        "baseline_auc": 0.8331962692986528,
+        "candidate_auc": 0.8332370954730558,
+        "clicks": 20281,
+        "events": 31682,
+        "rows": 316820
+      },
+      "history_empty": {
+        "auc_defined": true,
+        "auc_diff": 0.005855379188712484,
+        "baseline_auc": 0.5393062904174015,
+        "candidate_auc": 0.545161669606114,
+        "clicks": 90,
+        "events": 198,
+        "rows": 1980
+      },
+      "warm_users": {
+        "auc_defined": true,
+        "auc_diff": 5.000039553260116e-05,
+        "baseline_auc": 0.8283682528344378,
+        "candidate_auc": 0.8284182532299704,
+        "clicks": 21886,
+        "events": 34543,
+        "rows": 345430
+      }
+    }
+  },
+  "source_sha256": "54ab607ad9f2e6edb60845a76f838cb8ef77eba3f2df36635ad5a3926ef42311",
+  "unrun_cohorts": [
+    "five_day"
+  ],
+  "used_for_selection_or_routing": false
+}

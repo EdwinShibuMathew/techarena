@@ -31,6 +31,18 @@ adjustment, cold-history fallback, CatBoost combiners, longer preference
 training, lower-rate fine-tuning, dimension/seed diversity and the small V6
 global row-ranking update.
 
+## V8 PairLogit screen (not promoted)
+
+| Evaluation | AUC change vs V6 | Paired 95% interval | Decision |
+|---|---:|---|---|
+| Primary Jan25–26 | +0.0000802855 | [−0.0000116083, +0.0001711445] | Failed: interval lower is not positive |
+| Secondary Jan26 | +0.0000623605 | [−0.0000407558, +0.0001594924] | Passed: point change is nonnegative |
+
+This fixed trial replaced only the dim8 seed42 combiner at weight 2/9, retaining
+the five neural models, 37 features, and other four combiners. The primary gate
+failed, so the recipe was closed without five-day testing, final fitting, or
+submission export. V6 remains the benchmark. See the [protocol and evidence](results/v8-pairlogit/README.md).
+
 ## Recent rejected candidates versus V6
 
 | Fixed experiment | Primary AUC change | Primary paired 95% interval | Jan26 change | Decision |

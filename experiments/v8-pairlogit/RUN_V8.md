@@ -67,6 +67,18 @@ journal accounts for completed/failed phases, with a hard process timeout
 during expensive calls. Timeouts preserve partial outputs and do not produce
 a ready configuration. Do not alter the recipe to fit a smaller budget.
 
+After a completed model stage, `python experiments/v8-pairlogit/diagnostics.py`
+adds descriptive cold/warm-user, empty/short/long-history and per-day metrics.
+It checks prediction hashes and charges its runtime to the shared verification
+and total compute allowances. It does not change scores or promotion decisions.
+
+## Recorded outcome
+
+The fixed screen produced a primary change of +0.000080285486 with paired 95%
+interval [−0.000011608261, +0.000171144544], and secondary point change
++0.000062360499. The primary gate failed. This recipe is closed; stress, final
+fitting and export were not run. See the [result and stopping decision](../../docs/results/v8-pairlogit/README.md).
+
 ## Promotion and submission
 
 Evaluate global row AUC, half-credit for ties, against unchanged V6. Use 1,000

@@ -17,6 +17,7 @@ and submission CSVs are distributed separately through private team access.
 |---|---|---|
 | **V6** | Submitted benchmark; supported inference entry point | Historical public ROC AUC: **0.819451**. [Configuration](configs/v6.json) and [model details](docs/MODEL.md). |
 | **V7** | Research candidate; **not promoted** | Overall gains reproduce, but AUC declines by **0.0001676** on the five-day late-window subset. [Validation report](docs/results/v7-validation/README.md). |
+| **V8 PairLogit** | Fixed trial; **not promoted**, no submission exported | Primary AUC improves by **0.00008029**, but its paired 95% interval includes zero. [Screen and stopping decision](docs/results/v8-pairlogit/README.md). |
 
 V6 combines three dimension-8 preference models and two dimension-16 models,
 with event training, exposure adjustment, cold-user history fallback, and
@@ -154,6 +155,12 @@ and [fixed V7 validation guide](experiments/v7-validation/RUN_V7.md). PairLogit'
 five-day runner and full-data fitting/export stage are not implemented in that
 trial. Full-data retraining is not available as a supported one-command workflow.
 Competition uploads remain manual.
+
+The [V8 PairLogit pipeline](experiments/v8-pairlogit/RUN_V8.md) freezes inputs and
+parameters, verifies V6 replay, and gates later stages on paired AUC results.
+Its recorded primary screen failed, so the five-day test and final fit were
+not run. `tools/predict_v8.py` requires a submission-ready release configuration;
+this trial did not create one.
 
 ## Documentation
 
