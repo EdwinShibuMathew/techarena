@@ -20,6 +20,9 @@ The commands below document how I prepared the export and how I can rebuild it.
 These are the steps in [GitHub's invitation guide](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/repository-access-and-collaboration/inviting-collaborators-to-a-personal-repository).
 Personal-repository collaborators have write access. I ask the team to use
 branches and pull requests so we can review changes before merging.
+`main` requires an up-to-date PR, passing CPU tests, source integrity and release
+readiness checks, and resolved conversations, including for admins. The initial
+solo-friendly policy requires zero external approvals. See [the CI guide](CI_RELEASE.md).
 
 ## 2. What teammates need
 
@@ -113,6 +116,7 @@ checks. My RTX 4070 Laptop GPU run is the reference that has already passed.
 I ask teammates to make a branch, commit code/docs, push it, and open a pull request.
 Do not commit datasets, checkpoints, submissions, environment archives or tokens.
 `publish_private.py` is my publishing helper and checks my GitHub identity;
-teammates should use ordinary Git commands instead. Existing `legacy/` files and
+it publishes the current feature branch and refuses `main` or detached HEAD
+before staging. Teammates should use ordinary Git commands instead. Existing `legacy/` files and
 V6 configuration fingerprints are part of the reproduction contract, so put
 new experiments in new files instead of changing the frozen baseline.
