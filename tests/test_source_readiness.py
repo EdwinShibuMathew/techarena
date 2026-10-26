@@ -22,6 +22,7 @@ class SourceReadinessTests(unittest.TestCase):
         self.command("config", "user.name", "CI fixture")
         self.command("config", "user.email", "ci@example.invalid")
         self.write("legacy/frozen.py", b"# frozen fixture\r\n")
+        self.write("legacy/README.md", b"historical notes outside the Python manifest\n")
         self.write("configs/source_manifest.json", json.dumps({"files": {
             "legacy/frozen.py": readiness.sha256((self.root / "legacy/frozen.py").read_bytes()),
         }}).encode())

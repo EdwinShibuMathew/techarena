@@ -80,9 +80,9 @@ def verify(root=ROOT, base_ref=None):
             raise ValueError("Frozen baseline paths changed: " + ", ".join(changed))
     manifest_path = root / "configs/source_manifest.json"
     manifest = json.loads(manifest_path.read_text())["files"]
-    legacy = {name for name in names if name.startswith("legacy/")}
+    legacy = {name for name in names if name.startswith("legacy/") and name.endswith(".py")}
     if not legacy or set(manifest) != legacy:
-        raise ValueError("Frozen source manifest does not exactly match tracked legacy files")
+        raise ValueError("Frozen source manifest does not exactly match tracked legacy Python files")
     for name, expected in manifest.items():
         if sha256((root / name).read_bytes()) != expected:
             raise ValueError(f"Frozen source hash mismatch: {name}")

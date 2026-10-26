@@ -28,7 +28,7 @@ download competition data or model weights. PRs are tested at GitHub's merge
 commit. The subsequent push to `main` tests and packages the actual merged SHA.
 
 `legacy/`, `configs/source_manifest.json`, and `configs/v6.json` are frozen
-relative to the PR base or previous `main` commit. Existing legacy files must
+relative to the PR base or previous `main` commit. Legacy Python files must
 also exactly match the source manifest. Put new experiments under `experiments/`
 and new model configurations in separate files.
 
