@@ -1,0 +1,8 @@
+{
+  "composition": "B",
+  "development_sha256": "a6d3a0453d8c82d9eb5849bbf641c317c3796c9a2babb662ba27fda0491b0744",
+  "members": {
+    "dim8_seed42": "both"
+  },
+  "protocol_sha256": "edd2b0fa6a5ce0892d2e4480d3b0c5090c83dc78f19002a78609a0f7c4bd1753"
+}

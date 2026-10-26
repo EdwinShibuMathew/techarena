@@ -22,6 +22,7 @@ and submission CSVs are distributed separately through private team access.
 | **V8 temporal search** | Selected B; **not promoted**, no submission exported | Fitting-only selection chose the regularized 43-feature combiner. Primary AUC changes by **−0.00001046**. [Selection and stopping decision](docs/results/v8-temporal-combiner-search/README.md). |
 | **V8 seed44 row ranking** | Screen passed; **not promoted**, no submission exported | Primary, Jan26 and late-window checks pass; the overall five-day confidence interval includes zero. [Screen, stress and stopping decision](docs/results/v8-seed44-row-auc/README.md). |
 | **V8 robust ensemble** | Selected A; **not promoted**, no submission exported | Jan21 full-ensemble gains transfer only weakly to primary; its confidence interval includes zero. [Development, screen and stopping decision](docs/results/v8-robust-ensemble/README.md). |
+| **V8 residual event** | Selected B; **not promoted**, no submission exported | Frozen-base corrections improve at all three development origins, but primary AUC changes by **−0.00001295**. [Development, screen and stopping decision](docs/results/v8-residual-event/README.md). |
 
 V6 combines three dimension-8 preference models and two dimension-16 models,
 with event training, exposure adjustment, cold-user history fallback, and

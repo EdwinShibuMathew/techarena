@@ -132,6 +132,39 @@ The primary gain is insufficient to pass its interval gate. No fallback was
 screened, no new stress/full-data fit or CSV export ran, and PR #4 stays draft.
 See the [full development, diagnostics and stopping evidence](results/v8-robust-ensemble/README.md).
 
+## V8 residual event (B selected; not promoted)
+
+A bounded campaign compared event-wide corrections on dim8 seed42 (A), event-wide
+plus candidate-choice corrections on that member (B), and both heads on all five
+members (C). Original event weights and embeddings stayed frozen. Three temporal
+origins, Jan21/22/24, included available predictions beyond48h, with fresh reference
+combiners fit in each origin's first 8h. All development targets precede Jan25.
+
+| Composition | Jan21 gain | Jan22 gain | Jan24 gain | Decision |
+|---|---:|---:|---:|---|
+| A | −0.000006838704 | −0.000065255922 | +0.000007491925 | Origin regressions |
+| B | +0.000012948099 | +0.000059153058 | +0.000039583501 | Selected |
+| C | +0.000018307792 | +0.000259494304 | −0.000094088960 | Jan24 regression |
+
+B alone qualified, including nonnegative mean late-development gain and mean
+weighted no-click-negative contribution. Selection was frozen before promotion.
+
+| Window | AUC change | Paired 95% interval | Gate |
+|---|---:|---|---|
+| Primary Jan25–26 | −0.000012945717 | [−0.000071759803, +0.000039411469] | Failed |
+| Secondary Jan26 | +0.000028583175 | [−0.000032561827, +0.000093630479] | Point gate passed |
+
+Both 1,000-draw bootstraps were complete. The primary failure closed this recipe;
+actual stress and finalization commands refused before further training or export.
+Twenty adapters completed eight epochs each and retained their original base
+weights exactly. Zero adapters reproduced all five members with zero probability
+error on samples from all three historical cohorts. Full V6 replay remained exact.
+
+No alternative was screened after failure. No V8 configuration or CSV was
+produced; PR #4 remains draft. Cumulative compute is 1,974.359347 seconds. Jan22–24
+development overlaps the reused five-day dates: this is retrospective evidence,
+not independent confirmation. See the [full protocol and evidence](results/v8-residual-event/README.md).
+
 ## Recent rejected candidates versus V6
 
 | Fixed experiment | Primary AUC change | Primary paired 95% interval | Jan26 change | Decision |
