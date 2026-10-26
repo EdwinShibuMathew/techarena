@@ -5,6 +5,9 @@ combiner matrices, reducing evaluation preparation from 15-45 minutes to <2 seco
 """
 
 from pathlib import Path
+import os
+import re
+import tempfile
 from typing import Any, Dict, List, Optional, Tuple
 import numpy as np
 
@@ -20,7 +23,14 @@ class CombinerFeatureCache:
         self.cache_dir.mkdir(parents=True, exist_ok=True)
 
     def _cache_path(self, member_key: str, split_name: str) -> Path:
-        return self.cache_dir / f"{member_key}_{split_name}_features.npz"
+        for value in (member_key, split_name):
+            if not isinstance(value, str) or not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_.-]*", value):
+                raise ValueError("Cache keys must be simple nonempty identifiers.")
+        root = self.cache_dir.resolve()
+        path = root / f"{member_key}_{split_name}_features.npz"
+        if path.is_symlink() or not path.resolve().is_relative_to(root):
+            raise ValueError("Cache entry escapes its directory or is a symlink.")
+        return path
 
     def has_cache(self, member_key: str, split_name: str) -> bool:
         return self._cache_path(member_key, split_name).is_file()
@@ -50,7 +60,22 @@ class CombinerFeatureCache:
         if labels is not None:
             payload["labels"] = np.asarray(labels, dtype=np.int8)
             
-        np.savez_compressed(path, **payload)
+        temporary = None
+        try:
+            with tempfile.NamedTemporaryFile(mode="wb", prefix=".features-", suffix=".npz", dir=path.parent, delete=False) as stream:
+                temporary = Path(stream.name)
+                np.savez_compressed(stream, **payload)
+                stream.flush()
+                os.fsync(stream.fileno())
+            with np.load(temporary, allow_pickle=False) as stored:
+                for name, value in payload.items():
+                    if stored[name].dtype != value.dtype or not np.array_equal(stored[name], value):
+                        raise ValueError("Cache serialization changed an array.")
+            self._cache_path(member_key, split_name)
+            os.replace(temporary, path)
+        finally:
+            if temporary is not None:
+                temporary.unlink(missing_ok=True)
 
     def load(self, member_key: str, split_name: str) -> Dict[str, Any]:
         """Load arrays in their stored dtypes, including older float32 archives.
