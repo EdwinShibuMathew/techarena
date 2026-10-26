@@ -145,14 +145,16 @@ def _features(root,work,m,module,raw,indices,path,cutoff,training_raw=None,use_c
     start=time.monotonic()
     prefix,target=context(training_raw,fitting,True),context(raw,indices,False)
     if use_cache:
-        identity=cache_request(work/"source",module,path,prefix,target)
+        identity=cache_request(work/"source",module,path,prefix,target,cutoff)
+        hashing_seconds=time.monotonic()-start
         data,receipt=get_or_compute(root,identity,lambda:module.extract(prefix,target,path))
+        receipt["hashing_seconds"]=hashing_seconds
         cache_log=work/"cache-receipts"/(receipt["key"]+".json")
         # Each extraction gets a separate timing record; repeated keys never overwrite evidence.
         write_new(cache_log.with_name(receipt["key"]+"-"+str(time.time_ns())+".json"),receipt)
     else:
         data=module.extract(prefix,target,path)
-    require(set(data)=={"X","feature_names"} and data["X"].shape==(len(indices)*10,len(data["feature_names"]))
+    require({"X","feature_names"}<=set(data)<={"X","feature_names","probs","raw_probs"} and data["X"].shape==(len(indices)*10,len(data["feature_names"]))
         and data["X"].dtype==np.float32 and np.isfinite(data["X"]).all(),"Invalid extracted features")
     return data,time.monotonic()-start
 

@@ -24,7 +24,7 @@ def arrays_identity(arrays):
     return result
 
 
-def request(source, module, checkpoint, prefix, target):
+def request(source, module, checkpoint, prefix, target, cutoff):
     import torch
     names = module.EXTRACTOR_FILES
     actual = Path(inspect.getsourcefile(module.extract)).resolve().relative_to(source.resolve()).as_posix()
@@ -34,7 +34,7 @@ def request(source, module, checkpoint, prefix, target):
                   ("tools/ml_workflow/contracts.py", "tools/ml_workflow/cache.py")})
     require(hasattr(module, "FEATURE_NAMES"), "Adapter must declare the ordered feature schema")
     return {"version": 1, "extractor": files, "checkpoint": digest(checkpoint),
-            "prefix": arrays_identity(prefix), "target": arrays_identity(target),
+            "cutoff": int(cutoff), "prefix": arrays_identity(prefix), "target": arrays_identity(target),
             "feature_names": list(module.FEATURE_NAMES), "dtype": "float32",
             "runtime": {"numpy": np.__version__, "torch": torch.__version__,
                         "python": sys.version.split()[0], "device": getattr(module, "EXTRACTION_DEVICE", "cpu"),
@@ -42,15 +42,22 @@ def request(source, module, checkpoint, prefix, target):
 
 
 def validate(data, identity):
-    require(set(data) == {"X", "feature_names"}, "Invalid cached fields")
+    require({"X", "feature_names"} <= set(data) <= {"X", "feature_names", "probs", "raw_probs"}, "Invalid cached fields")
     require(data["feature_names"].tolist() == identity["feature_names"], "Feature schema differs")
     require(data["X"].dtype == np.float32 and data["X"].ndim == 2
             and data["X"].shape == (identity["target"]["i"]["shape"][0] * 10, len(identity["feature_names"]))
             and np.isfinite(data["X"]).all(), "Invalid cached features")
 
+    for name in ("probs", "raw_probs"):
+        if name in data:
+            require(data[name].shape == (identity["target"]["i"]["shape"][0], 10)
+                    and data[name].dtype.kind == "f" and np.isfinite(data[name]).all()
+                    and ((data[name] >= 0) & (data[name] <= 1)).all(), "Invalid cached probabilities")
+
 
 def get_or_compute(root, identity, compute):
     start = time.monotonic()
+    timings = {"cache_read_seconds": 0., "cache_write_seconds": 0., "extraction_seconds": 0.}
     key = canonical(identity)
     folder = inside(root, "artifacts/cache/ml-workflow/v1/" + key)
     folder.mkdir(parents=True, exist_ok=True)
@@ -59,14 +66,19 @@ def get_or_compute(root, identity, compute):
         values, metadata = inside(folder, "values.npz"), inside(folder, "metadata.json")
         hit = metadata.exists()
         if hit:
+            read_start = time.monotonic()
             record = read(metadata)
             require(record["request"] == identity and record["sha256"] == digest(values), "Feature cache integrity failed")
             with np.load(values, allow_pickle=False) as archive:
                 data = {k: archive[k] for k in archive.files}
             validate(data, identity)
             require(record["arrays"] == arrays_identity(data), "Feature cache schema changed")
+            timings["cache_read_seconds"] = time.monotonic() - read_start
         else:
+            extraction_start = time.monotonic()
             data = compute(); validate(data, identity)
+            timings["extraction_seconds"] = time.monotonic() - extraction_start
+            write_start = time.monotonic()
             with tempfile.TemporaryDirectory(prefix=".entry-", dir=folder) as tmp:
                 staged = Path(tmp) / "values.npz"
                 with staged.open("xb") as stream:
@@ -78,4 +90,5 @@ def get_or_compute(root, identity, compute):
                     validate({k: archive[k] for k in archive.files}, identity)
                 staged.replace(values)
                 write_json(metadata, {"request": identity, "sha256": digest(values), "arrays": arrays_identity(data)})
-    return data, {"key": key, "hit": hit, "seconds": time.monotonic() - start}
+            timings["cache_write_seconds"] = time.monotonic() - write_start
+    return data, {"key": key, "hit": hit, "seconds": time.monotonic() - start, **timings}

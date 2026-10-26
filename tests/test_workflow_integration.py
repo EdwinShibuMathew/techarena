@@ -1,6 +1,7 @@
 """Public end-to-end CLI campaign with real Torch/CatBoost fitting and reload."""
 import importlib.util
 import json
+import time
 from pathlib import Path
 import shutil
 import subprocess
@@ -55,6 +56,30 @@ class WorkflowIntegrationTests(unittest.TestCase):
             self.cli(root,"develop","--run-id","success",code=1)
             (work/"candidate.csv").write_bytes(b"corrupt")
             self.cli(root,"verify","--run-id","success",code=1)
+
+    def test_worker_stops_when_budget_controller_is_killed(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp);git=self.make_repository(root)
+            adapter=root/"experiments/workflow-smoke/adapter.py"
+            adapter.write_text(adapter.read_text().replace('    torch.manual_seed(metadata["seed"])',
+                '    import time\n    (path.parent/"entered").touch()\n    time.sleep(2)\n    (path.parent/"escaped").touch()\n    torch.manual_seed(metadata["seed"])'))
+            git("add",str(adapter));git("commit","-qm","Synthetic controller failure fixture")
+            _,work=self.prepare(root,"crash")
+            process=subprocess.Popen([sys.executable,str(root/"tools/run_experiment.py"),"develop","--run-id","crash"],cwd=root,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
+            try:
+                deadline=time.monotonic()+30
+                while not list((work/"models").glob("*/*/*/entered")):
+                    self.assertIsNone(process.poll(),"Controller exited before fixture entered training")
+                    self.assertLess(time.monotonic(),deadline)
+                    time.sleep(.05)
+                process.kill();process.wait(timeout=5)
+                time.sleep(2.2)
+                self.assertEqual(list((work/"models").glob("*/*/*/escaped")),[])
+                ledger=json.loads((work/"compute.json").read_text())
+                self.assertEqual(ledger["used_seconds"],120)
+                self.cli(root,"develop","--run-id","crash",code=1)
+            finally:
+                if process.poll() is None:process.kill();process.wait(timeout=5)
 
     def test_failed_gate_is_terminal_and_inputs_and_worker_are_guarded(self):
         with tempfile.TemporaryDirectory() as tmp:

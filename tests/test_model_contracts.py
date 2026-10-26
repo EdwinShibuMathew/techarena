@@ -32,12 +32,31 @@ class ModelContractTests(unittest.TestCase):
                 self.assertEqual(tuple(probabilities.shape),(3,11))
                 torch.testing.assert_close(probabilities.sum(1),torch.ones(3))
                 loss=torch.nn.functional.cross_entropy(include_no_click(scores),torch.tensor([1,0,9]))
-                loss.backward();self.assertTrue(all(p.grad is None or bool(torch.isfinite(p.grad).all()) for p in model.parameters()))
+                loss.backward()
+                self.assertIsNotNone(preference.user.weight.grad)
+                self.assertGreater(float(preference.user.weight.grad[active].abs().sum()),0)
+                self.assertGreater(float(preference.item.weight.grad.abs().sum()),0)
+                self.assertTrue(all(p.grad is None or bool(torch.isfinite(p.grad).all()) for p in model.parameters()))
                 optimizer.step();path=Path(tmp)/"model.pt";torch.save(model.state_dict(),path)
                 expected=model(users,items,context).detach()
                 reloaded=EventModel(PreferenceModel(3,12,dimension,active),3,12)
                 reloaded.load_state_dict(torch.load(path,weights_only=True,map_location="cpu"))
                 torch.testing.assert_close(reloaded(users,items,context),expected,rtol=0,atol=0)
+
+    def test_explicitly_frozen_base_is_unchanged_by_head_training(self):
+        import torch
+        from train_final_models import PreferenceModel,EventModel,include_no_click
+        torch.manual_seed(42)
+        preference=PreferenceModel(3,12,16,torch.ones(3,dtype=torch.bool))
+        for parameter in preference.parameters():parameter.requires_grad_(False)
+        before={k:v.clone() for k,v in preference.state_dict().items()}
+        model=EventModel(preference,3,12)
+        optimizer=torch.optim.SGD([p for p in model.parameters() if p.requires_grad],lr=.1)
+        loss=torch.nn.functional.cross_entropy(include_no_click(model(torch.tensor([0,1]),torch.arange(10).repeat(2,1),torch.tensor([0,7]))),torch.tensor([0,3]))
+        loss.backward();optimizer.step()
+        for name,value in preference.state_dict().items():torch.testing.assert_close(value,before[name],rtol=0,atol=0)
+        self.assertTrue(all(p.grad is None for p in preference.parameters()))
+        self.assertGreater(float(model.global_bias.detach().abs()),0)
 
     def test_row_loss_independent_value_and_gradient_oracle(self):
         from row_auc_objective import self_test

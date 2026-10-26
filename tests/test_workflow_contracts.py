@@ -75,6 +75,17 @@ class WorkflowContractTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError,"lineage changed"):
                 with Budget(path,"third",.1,2.,carry=.2,carry_identity="reset"):pass
 
+    def test_killed_controller_keeps_its_full_compute_reservation(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path=Path(tmp)/"compute.json"
+            code="from pathlib import Path; import os; from ml_workflow.budget import Budget; "
+            code+="budget=Budget(Path("+repr(str(path))+"),'crashed',1,3,carry=.5,carry_identity='prior'); budget.__enter__(); os._exit(9)"
+            result=subprocess.run([sys.executable,"-c","import sys; sys.path.insert(0,"+repr(str(ROOT/"tools"))+"); "+code])
+            self.assertEqual(result.returncode,9)
+            self.assertEqual(read(path)["used_seconds"],1.5)
+            with Budget(path,"next",.1,3,carry=.5,carry_identity="prior") as budget:
+                self.assertEqual(budget.state["used_seconds"],1.6)
+
     def test_all_promotion_failure_paths_are_recomputed(self):
         def metric(gain=.01,low=.001):
             return {"baseline_auc":.8,"candidate_auc":.8+gain,"auc_diff":gain,"ci_lower":low,"ci_upper":.02,"resamples":1000}
