@@ -1,0 +1,9 @@
+{
+  "composition": "A",
+  "development_sha256": "189d03c77fd5c390280ac27d2b24f609c53dca6de61e9a9ed6bb9abd5e73cba8",
+  "members": [
+    "dim16_seed42",
+    "dim16_seed43"
+  ],
+  "protocol_sha256": "d188059220cdd950d69aa692b6f2361d74ed72f427cc31786ca26dfcc0e6fd6d"
+}

@@ -1,0 +1,93 @@
+{
+  "carried_seconds": 1160.5870987930011,
+  "complete": true,
+  "manifest_sha256": "2cbda2457b07982b0a2f47151649f43e0875cb3c3391af5af60a2dc2bccaece9",
+  "newly_staged_replay_errors": {
+    "five_day": {
+      "dim8_seed43": 0.0
+    },
+    "primary": {
+      "dim8_seed43": 0.0
+    },
+    "secondary": {
+      "dim8_seed43": 0.0
+    }
+  },
+  "protocol_sha256": "edd2b0fa6a5ce0892d2e4480d3b0c5090c83dc78f19002a78609a0f7c4bd1753",
+  "runtime": {
+    "catboost": "1.2.10",
+    "numpy": "2.5.4",
+    "python": "3.12.15",
+    "sklearn": "1.9.1",
+    "torch": "2.14.1+cu130"
+  },
+  "source_sha256": {
+    "configs/source_manifest.json": "72421f9519e72229bbc905bad7db671e9d58f4141f5f00bfb304178fc105649f",
+    "configs/v6.json": "a6e7a3a1ab67b7e1fa234851831c88ca68c18d2e9eab22914b2b2cfbb47c3e68",
+    "docs/results/techarena-row-auc-five-day/paired_results.json": "8ee27f90658f1c618da3215f305694c0935c2b1e4e48c60749b18f8a4c7579cc",
+    "docs/results/techarena-row-auc-trial/ensemble_trial_results.json": "51a57147fb147f3e82dc588834f1a7e4d888ac7b7de9af527d2a6cca4d2592d3",
+    "experiments/v6-pairlogit-v1-api-fix/attention_allocation_test.py": "188899687e31a959e8eb805c8d7a186b7d9fa3e3e3934e1dab37640ffa736b13",
+    "experiments/v6-pairlogit-v1-api-fix/conditional_choice_trial.py": "f6e044172760accbaff9dd910cab2e6f967636a02b3ae8059d15696a1206a40c",
+    "experiments/v6-pairlogit-v1-api-fix/event_scale_diagnostic.py": "0007bc7db9fda6ab689bed23d44b4b06bb0502ff3eee0c0bd3da04f8902293d5",
+    "experiments/v6-pairlogit-v1-api-fix/pairlogit_core.py": "6604edd50c8d8278782680d1e3f18bc2b565ad457eda35f2c9987116573311b9",
+    "experiments/v8-enriched-logloss/enriched_core.py": "ba1f9c71ecaa302ce236f0308e975b9945352d134f5f60248b454b0178e479a8",
+    "experiments/v8-enriched-logloss/runner.py": "6f15177893c060f9e5532f18866cc93bd231244344381d81e9fbb3f73fe51902",
+    "experiments/v8-pairlogit/runner.py": "f367565e5aa0c4f6f10e89d37ca369593580b4993e0c05fc0f6c5cb00e0f1181",
+    "experiments/v8-pairlogit/v8_core.py": "2ab6485093faee8fe62d592d4c472e7d7df62284ae2f6771806ebc2370168421",
+    "experiments/v8-residual-event/residual_core.py": "0d446e1b0616034be10993fb948a43541a7ff4c344389be11273f01a598677be",
+    "experiments/v8-residual-event/residual_model.py": "26dffb1423fc1407881b39b1d11c8b09ec3aaac6d2a3374f25be345de800cd7d",
+    "experiments/v8-residual-event/runner.py": "186379b8e467fea286f9d20ae324f220571bc58b7db1636da19405dd8f227616",
+    "experiments/v8-residual-event/train_adapter.py": "305a27ea3597831fa4054001b21b4da96cc644bc58550d45e205670beaf7813d",
+    "experiments/v8-robust-ensemble/robust_core.py": "abe8c3c3be4a848a8d17be419d4d5c4385de9430a78c51ba50206d5ba1ee85fc",
+    "experiments/v8-robust-ensemble/runner.py": "e641a15fa5e87610bdda12b880882cbb09c8872b35265f928314bf12dd64dff4",
+    "experiments/v8-robust-ensemble/train_member.py": "97282efd985e8e07d1094fc29a7c2686a9794387c4598247c43afebe0b589c9c",
+    "experiments/v8-seed44-row-auc/runner.py": "08e67640c18d87a8c74388dbb1e29ecd308973d6b65883d3db8ae904c623732e",
+    "experiments/v8-seed44-row-auc/seed44_core.py": "364d90fe06ea69c79a9e3b825aa9b60d6349ea528c715f88045a223e844c74e5",
+    "experiments/v8-seed44-row-auc/train_seed44.py": "8f89b129fbaa309cd43014454afabea402e7d70ce421916548ebcc73bab1c383",
+    "experiments/v8-temporal-combiner-search/runner.py": "8b3508435dfbe8e140887a9af05a2f8f70dd9a78ce7d38b531400399f7955896",
+    "experiments/v8-temporal-combiner-search/search_core.py": "efe0565019a6639a62aab09fee78bf1a2b3af1a509beae64b1f052c458156cb7",
+    "legacy/row_auc_objective.py": "79fa11470b42bf3dc2779b2c61ec7b959c3e921b492006859faff52b47eeefd4",
+    "legacy/train_final_models.py": "ccba6e04a614edf954e4424007d80ed658d4ee746f10ec116c256d70cedb8dd3",
+    "tools/consolidate.py": "66ea6655d6edb5b2f4b6f8f7ac965fa6c40c7e0a16d3c435adb835b8ee665303",
+    "tools/experiment_runner.py": "7e1270f87a8d94f31a6c80c60b2ee5d102086bba264b0b97e6f9f49b0fda932e",
+    "tools/predict_v6.py": "70176d6c74937c4e693e19b340846945113db265b4217ad38fd86e9a97c51059",
+    "tools/predict_v7.py": "04b040a3055d5c082d93a38805107802ddb2a5539445c2e812770c88d8bf55f5",
+    "tools/predict_v8.py": "6e6a152421a2d3643fecc18ce3a60903927081b1ac2fc0691dc27f528a20730f",
+    "tools/predict_v8_candidate.py": "ab316e92e0f4484d97267114252104a98243b82d6d5ed7f022efc2ce8052ff8f",
+    "tools/predict_v8_enriched.py": "97db15c8f9a61584690339a3b718e53da10acadcda274733aa2ffc6f4c5c4658",
+    "tools/predict_v8_residual.py": "c70258b10a31aa009dcddfefdcc6f350f78b7ad391a711d0a310070e6846622d",
+    "tools/predict_v8_seed44.py": "b9f8f4a13620313c5a77b56fd46f45619464e3b1918f325f157e48945a645843",
+    "tools/predict_v8_selected.py": "c76547eccf1b6e44781c082c6edc615e0a29805dbd4f234ff05e2f5ebc2e9cb7"
+  },
+  "v6_csv_sha256": "c386d545b3746e05dd515020c6185afda06cefdbcdf7d48df022454762fb378c",
+  "v6_replay_errors": {
+    "dim16_seed42": 0.0,
+    "dim16_seed43": 0.0,
+    "dim8_seed42": 0.0,
+    "dim8_seed43": 0.0,
+    "dim8_seed44": 0.0
+  },
+  "zero_adapter_errors": {
+    "five_day": {
+      "dim16_seed42": 0.0,
+      "dim16_seed43": 0.0,
+      "dim8_seed42": 0.0,
+      "dim8_seed43": 0.0,
+      "dim8_seed44": 0.0
+    },
+    "primary": {
+      "dim16_seed42": 0.0,
+      "dim16_seed43": 0.0,
+      "dim8_seed42": 0.0,
+      "dim8_seed43": 0.0,
+      "dim8_seed44": 0.0
+    },
+    "secondary": {
+      "dim16_seed42": 0.0,
+      "dim16_seed43": 0.0,
+      "dim8_seed42": 0.0,
+      "dim8_seed43": 0.0,
+      "dim8_seed44": 0.0
+    }
+  }
+}

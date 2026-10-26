@@ -17,6 +17,7 @@ and submission CSVs are distributed separately through private team access.
 |---|---|---|
 | **V6** | Submitted benchmark; supported inference entry point | Historical public ROC AUC: **0.819451**. [Configuration](configs/v6.json) and [model details](docs/MODEL.md). |
 | **V7** | Research candidate; **not promoted** | Overall gains reproduce, but AUC declines by **0.0001676** on the five-day late-window subset. [Validation report](docs/results/v7-validation/README.md). |
+| **V8 research archive** | Six closed campaigns; **none promoted**, no submission-ready V8 | [Preserved evidence and review dispositions](docs/results/v8-archive/README.md). |
 
 V6 combines three dimension-8 preference models and two dimension-16 models,
 with event training, exposure adjustment, cold-user history fallback, and
@@ -121,11 +122,12 @@ and cleanup operations are documented separately; they are not onboarding steps.
 
 Create a feature branch from current `main`, commit the intended changes, and
 open a PR. Protected `main` requires an up-to-date branch, resolved conversations,
-and all three GitHub Actions checks, including for administrators:
+and all four GitHub Actions checks, including for administrators:
 
 | Required check | What it establishes |
 |---|---|
 | `cpu-tests` | Regression tests on Ubuntu 24.04 with Python 3.12 and the CPU test dependencies. |
+| `model-contracts` | Actual CPU model fitting, numerical contracts and the full synthetic experiment workflow; skips fail this check. |
 | `source-integrity` | Frozen baseline/source integrity and checks against tracked private assets, binary files, and oversized files. |
 | `release-readiness` | Successful prerequisite jobs and a verified source archive from the tested commit. |
 
@@ -148,6 +150,8 @@ paired 95% interval strictly above zero and nonnegative secondary Jan26 change,
 then perform the fixed five-day comparison and its declared stress checks.
 Record results under `docs/results/`. Do not tune against the public leaderboard
 or relabel reused dates as independent holdout data.
+
+Use the [standalone ML workflow](docs/ML_WORKFLOW.md) for new work: committed source snapshots, explicit input fingerprints, shared verified features, chronological development and promotion, persistent compute limits, and two saved-model replays. The public synthetic adapter validates this machinery; production model adapters and measured V8 improvement remain separate research work.
 
 The feature cache, enrichment, event-scale, recency-history, and evaluation tools
 are research building blocks. They do not change the frozen V6 inference recipe.

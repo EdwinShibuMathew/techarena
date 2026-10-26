@@ -123,13 +123,13 @@ def validate_archive(root, archive_path, names):
         raise ValueError("Source archive has missing tracked files")
 
 
-def require_prerequisites(cpu_test_result, source_integrity_result):
-    if cpu_test_result != "success" or source_integrity_result != "success":
-        raise ValueError(f"Readiness blocked: tests={cpu_test_result}, integrity={source_integrity_result}")
+def require_prerequisites(cpu_test_result, source_integrity_result, model_test_result):
+    if any(result != "success" for result in (cpu_test_result, source_integrity_result, model_test_result)):
+        raise ValueError(f"Readiness blocked: tests={cpu_test_result}, integrity={source_integrity_result}, models={model_test_result}")
 
 
-def package(root, output_dir, cpu_test_result, source_integrity_result, base_ref=None):
-    require_prerequisites(cpu_test_result, source_integrity_result)
+def package(root, output_dir, cpu_test_result, source_integrity_result, base_ref=None, *, model_test_result=None):
+    require_prerequisites(cpu_test_result, source_integrity_result, model_test_result)
     root = Path(root).resolve()
     report = verify(root, base_ref)
     output_dir = Path(output_dir).resolve()
@@ -148,7 +148,7 @@ def package(root, output_dir, cpu_test_result, source_integrity_result, base_ref
     report.update({
         "schema_version": 1,
         "kind": "source_readiness",
-        "checks": {"cpu_tests": cpu_test_result, "source_integrity": source_integrity_result, "source_archive": "success"},
+        "checks": {"cpu_tests": cpu_test_result, "source_integrity": source_integrity_result, "model_contracts": model_test_result, "source_archive": "success"},
         "archive": {"filename": archive.name, "sha256": sha256(archive.read_bytes())},
         "model_inference_performed": False,
         "private_assets_verified": False,
@@ -173,12 +173,13 @@ def main():
             command.add_argument("--output-dir", type=Path, required=True)
             command.add_argument("--cpu-test-result", required=True,
                                  choices=["success", "failure", "cancelled", "skipped"])
+            command.add_argument("--model-test-result", required=True, choices=["success", "failure", "cancelled", "skipped"])
             command.add_argument("--source-integrity-result", required=True,
                                  choices=["success", "failure", "cancelled", "skipped"])
     args = parser.parse_args()
     try:
         report = (verify(ROOT, args.base_ref) if args.action == "verify" else
-                  package(ROOT, args.output_dir, args.cpu_test_result, args.source_integrity_result, args.base_ref))
+                  package(ROOT, args.output_dir, args.cpu_test_result, args.source_integrity_result, args.base_ref, model_test_result=args.model_test_result))
     except (ValueError, OSError, subprocess.CalledProcessError) as error:
         parser.exit(1, f"Source readiness failed: {error}\n")
     print(json.dumps(report, indent=2, sort_keys=True))

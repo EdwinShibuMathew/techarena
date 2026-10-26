@@ -7,7 +7,7 @@ import sys
 import tempfile
 from pathlib import Path
 
-from consolidate import ROOT, asset, digest, read_json, utc, verify_bundle, write_json
+from consolidate import ROOT, asset, digest, read_json, utc, verify_bundle, write_json, source_manifest_binding
 
 
 def portable_pipeline(original):
@@ -131,6 +131,7 @@ def main():
     paths = ["tools/predict_v6.py", "tools/consolidate.py", "configs/v6.json", "configs/source_manifest.json"]
     paths += list(read_json(ROOT / "configs/source_manifest.json")["files"])
     report = {"passed": True, "created_at": utc(), "member_max_abs_differences": differences,
+              "source_manifest_binding": source_manifest_binding(ROOT, manifest),
               "bundle_manifest_sha256": digest(ROOT / "artifacts/v6/manifest.json"),
               "submission_sha256": digest(output), "output_relative": "artifacts/" + relative_output.as_posix(),
               "code_sha256": {p: digest(ROOT / p) for p in paths}, "device": args.device,

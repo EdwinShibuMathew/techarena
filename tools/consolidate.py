@@ -11,6 +11,7 @@ import math
 import os
 import shutil
 import sys
+import tempfile
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -43,9 +44,35 @@ def read_json(path):
 def write_json(path, value):
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
-    temporary = path.with_suffix(path.suffix + ".tmp")
-    temporary.write_text(json.dumps(value, indent=2, allow_nan=False) + "\n", encoding="utf-8")
-    temporary.replace(path)
+    temporary = None
+    try:
+        with tempfile.NamedTemporaryFile(mode="w", encoding="utf-8", newline="\n",
+                prefix=".receipt-", suffix=".tmp", dir=path.parent, delete=False) as stream:
+            temporary = Path(stream.name)
+            json.dump(value, stream, indent=2, allow_nan=False)
+            stream.write("\n")
+            stream.flush()
+            os.fsync(stream.fileno())
+        temporary.replace(path)
+    finally:
+        if temporary is not None:
+            temporary.unlink(missing_ok=True)
+
+
+def source_manifest_binding(root, manifest):
+    """Accept exact bytes or a uniform LF/CRLF-only representation change."""
+    content = (Path(root) / "configs/source_manifest.json").read_bytes()
+    actual = hashlib.sha256(content).hexdigest()
+    declared = manifest["source_manifest_sha256"]
+    method = "exact"
+    if actual != declared:
+        lf = content.replace(b"\r\n", b"\n")
+        crlf = lf.replace(b"\n", b"\r\n")
+        if (b"\r" in lf or content not in (lf, crlf)
+                or declared not in {hashlib.sha256(v).hexdigest() for v in (lf, crlf)}):
+            raise RuntimeError("Historical source manifest changed.")
+        method = "lf-crlf-only"
+    return {"declared_sha256": declared, "checkout_sha256": actual, "method": method}
 
 
 def inside(path, parent):
@@ -215,8 +242,7 @@ def verify_bundle(root=ROOT):
     config = read_json(root / "configs/v6.json")
     if manifest["config_sha256"] != digest(root / "configs/v6.json") or manifest["expected_submission_sha256"] != config["submission_sha256"]:
         raise RuntimeError("Bundle configuration changed.")
-    if manifest["source_manifest_sha256"] != digest(root / "configs/source_manifest.json"):
-        raise RuntimeError("Historical source manifest changed.")
+    source_manifest_binding(root, manifest)
     source_manifest = read_json(root / "configs/source_manifest.json")
     for relative, expected in source_manifest["files"].items():
         if digest(asset(root, relative)) != expected:
@@ -238,6 +264,9 @@ def verify_bundle(root=ROOT):
 def require_receipt(root):
     verify_bundle(root)
     receipt = read_json(root / "local/v6_relocation_check.json")
+    if "source_manifest_binding" in receipt:
+        if receipt["source_manifest_binding"] != source_manifest_binding(root, read_json(root / "artifacts/v6/manifest.json")):
+            raise RuntimeError("Replay source manifest binding changed.")
     if receipt["passed"] is not True or receipt["bundle_manifest_sha256"] != digest(root / "artifacts/v6/manifest.json"):
         raise RuntimeError("A current successful portable V6 replay is required before archive.")
     config = read_json(root / "configs/v6.json")
