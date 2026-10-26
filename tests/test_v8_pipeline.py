@@ -21,6 +21,17 @@ spec.loader.exec_module(runner)
 
 
 class V8ProtocolTests(unittest.TestCase):
+    def test_manifest_line_ending_adapter_does_not_accept_content_changes(self):
+        import hashlib
+        with tempfile.TemporaryDirectory() as temporary:
+            path = Path(temporary) / "manifest.json"
+            content = b'{\n  "file": "checksum"\n}\n'
+            path.write_bytes(content)
+            bound = hashlib.sha256(content.replace(b"\n", b"\r\n")).hexdigest()
+            self.assertTrue(core.manifest_line_endings_match(path, bound))
+            path.write_bytes(content.replace(b"checksum", b"changed"))
+            self.assertFalse(core.manifest_line_endings_match(path, bound))
+
     def test_first_user_selection_and_temporal_separation(self):
         day = core.FOLDS["jan24"]
         raw = {"u": np.array([1, 1, 2, 3, 1, 2, 4]),

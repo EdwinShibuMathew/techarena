@@ -122,6 +122,33 @@ def verify_files(root, hashes):
         require(sha256(inside(root, relative)) == expected, f"Frozen input changed: {relative}")
 
 
+def manifest_line_endings_match(path, expected):
+    """Only LF/CRLF serialization may differ; all other manifest bytes stay bound."""
+    content = Path(path).read_bytes()
+    lf = content.replace(b"\r\n", b"\n")
+    return expected in {hashlib.sha256(value).hexdigest() for value in (content, lf, lf.replace(b"\n", b"\r\n"))}
+
+
+def verify_v6_bundle(root):
+    """Verify the original bundle with an explicit JSON line-ending adapter."""
+    manifest = read_json(root / "artifacts/v6/manifest.json")
+    config = read_json(root / "configs/v6.json")
+    require(manifest["config_sha256"] == sha256(root / "configs/v6.json")
+            and config["submission_sha256"] == manifest["expected_submission_sha256"] == V6_SHA, "V6 bundle configuration differs")
+    source = root / "configs/source_manifest.json"
+    require(manifest_line_endings_match(source, manifest["source_manifest_sha256"]), "Source manifest has a content difference beyond LF/CRLF")
+    verify_files(root, read_json(source)["files"])
+    require([m["key"] for m in manifest["members"]] == config["members"], "V6 member order differs")
+    for relative, info in manifest["files"].items():
+        path = inside(root, relative)
+        require(path.stat().st_size == info["bytes"] and sha256(path) == info["sha256"], f"V6 asset differs: {relative}")
+    for member in manifest["members"]:
+        for field in ("checkpoint", "preference", "combiner", "reference"):
+            require(member[field] in manifest["files"], "Unverified V6 member asset")
+    print(f"Verified {len(manifest['files'])} V6 assets and exact historical source bytes (JSON LF/CRLF adapter).", flush=True)
+    return manifest
+
+
 def load_manifest(root):
     path = root / "artifacts/experiments/v8-pairlogit/inputs.json"
     manifest = read_json(path)
@@ -158,10 +185,14 @@ class Budget(AbstractContextManager):
         temporary.replace(self.path)
 
     def __enter__(self):
-        self.state = read_json(self.path) if self.path.exists() else {"used_seconds": 0., "phases": {}}
+        carry_path = self.path.parent.parent / "v8-pairlogit-budget-carry.json"
+        carry = read_json(carry_path) if carry_path.exists() else {"used_seconds": 0., "prior_engineering_attempts": []}
+        self.state = read_json(self.path) if self.path.exists() else {**carry, "phases": {}}
         require(self.phase not in self.state["phases"], "Preserve prior phase attempt; automatic retries are prohibited")
         remaining = PROTOCOL["total_compute_seconds"] - self.state["used_seconds"]
-        self.limit = min(PHASE_LIMITS[self.phase], remaining)
+        prior_phase_seconds = sum(attempt.get("phases", {}).get(self.phase, {}).get("seconds", 0.)
+                                  for attempt in self.state.get("prior_engineering_attempts", []))
+        self.limit = min(PHASE_LIMITS[self.phase] - prior_phase_seconds, remaining)
         require(self.limit > 0, "Total compute budget exhausted")
         self.start = time.monotonic()
         self.state["phases"][self.phase] = {"status": "running", "limit_seconds": self.limit}

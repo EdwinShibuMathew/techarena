@@ -40,6 +40,10 @@ atol=1e-15. The historical NPZ `candidate` is V6; `baseline` is V5. Five-day
 seed42 comes from `candidate_members[0]`. Identity replacement must preserve
 V6 exactly. Preparation also replays all five full-data V6 members and the
 canonical V6 CSV SHA256. Any mismatch closes preparation before a ranker fit.
+The bundle's source-manifest binding permits only LF/CRLF serialization of the
+same JSON bytes, to account for Git's checkout normalization. Every historical
+Python source, model and asset still requires its original exact SHA256; the
+line-ending adapter and both manifest fingerprints are recorded explicitly.
 
 ## Commands and budget
 

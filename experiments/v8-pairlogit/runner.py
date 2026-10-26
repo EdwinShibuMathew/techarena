@@ -73,7 +73,6 @@ def smoke(parameters, names):
 
 
 def prepare(root, source_root):
-    from consolidate import verify_bundle
     from predict_v8 import replay_v6
     import torch
     work = root / WORK
@@ -87,7 +86,7 @@ def prepare(root, source_root):
         inputs = {}
         bundle = core.read_json(source_root / "artifacts/v6/manifest.json")
         core.require(bundle["config_sha256"] == core.sha256(root / "configs/v6.json")
-                     and bundle["source_manifest_sha256"] == core.sha256(root / "configs/source_manifest.json")
+                     and core.manifest_line_endings_match(root / "configs/source_manifest.json", bundle["source_manifest_sha256"])
                      and bundle["expected_submission_sha256"] == core.V6_SHA, "Source bundle is not the protected V6 bundle")
         for relative, info in bundle["files"].items():
             budget.check()
@@ -97,7 +96,7 @@ def prepare(root, source_root):
         copy_checked(source_root / "artifacts/v6/manifest.json", root / "artifacts/v6/manifest.json",
                      core.sha256(source_root / "artifacts/v6/manifest.json"))
         inputs["artifacts/v6/manifest.json"] = core.sha256(root / "artifacts/v6/manifest.json")
-        verify_bundle(root)
+        core.verify_v6_bundle(root)
         inputs.update(core.read_json(root / "configs/source_manifest.json")["files"])
 
         def stage(relative, source, expected):
@@ -171,6 +170,9 @@ def prepare(root, source_root):
         core.write_new(root / REPORTS / "preparation.json", {"complete": True, "submission_ready": False,
             "protocol_sha256": manifest["protocol_sha256"], "manifest_sha256": core.sha256(work / "inputs.json"),
             "v6_csv_sha256": core.V6_SHA, "v6_member_replay_errors": errors, "checkpoint_headers": headers,
+            "source_manifest_binding": {"bundle_declared_sha256": bundle["source_manifest_sha256"],
+                                        "checkout_sha256": core.sha256(root / "configs/source_manifest.json"),
+                                        "compatibility": "JSON LF/CRLF only; all legacy source and model bytes checked exactly"},
             "source_sha256": code, "runtime": runtime(), "competition_data_ranker_fitted": False})
 
 

@@ -15,12 +15,12 @@ import v8_core as core
 def replay_v6(root, device="cuda"):
     """Reproduce all five frozen members and the exact baseline CSV; never fit trees."""
     import torch
-    from consolidate import verify_bundle, asset
+    from consolidate import asset
     from predict_v6 import portable_pipeline
     sys.path.insert(0, str(root / "legacy"))
     from build_submission import neural_pipeline, FIT_FIELDS, TARGET_FIELDS, load_combiner, predict_combiner
     from submission_export import export_submission
-    manifest = verify_bundle(root)
+    manifest = core.verify_v6_bundle(root)
     core.require(device in {"cpu", "cuda"}, "Unsupported inference device")
     core.require(device != "cuda" or torch.cuda.is_available(), "CUDA is unavailable")
     torch.set_num_threads(4)
