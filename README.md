@@ -18,6 +18,7 @@ and submission CSVs are distributed separately through private team access.
 | **V6** | Submitted benchmark; supported inference entry point | Historical public ROC AUC: **0.819451**. [Configuration](configs/v6.json) and [model details](docs/MODEL.md). |
 | **V7** | Research candidate; **not promoted** | Overall gains reproduce, but AUC declines by **0.0001676** on the five-day late-window subset. [Validation report](docs/results/v7-validation/README.md). |
 | **V8 PairLogit** | Fixed trial; **not promoted**, no submission exported | Primary AUC improves by **0.00008029**, but its paired 95% interval includes zero. [Screen and stopping decision](docs/results/v8-pairlogit/README.md). |
+| **V8 enriched Logloss** | Fixed successor; **not promoted**, no submission exported | Primary AUC improves by **0.00004633**, but its paired 95% interval includes zero. [Screen and stopping decision](docs/results/v8-enriched-logloss/README.md). |
 
 V6 combines three dimension-8 preference models and two dimension-16 models,
 with event training, exposure adjustment, cold-user history fallback, and
@@ -161,6 +162,13 @@ parameters, verifies V6 replay, and gates later stages on paired AUC results.
 Its recorded primary screen failed, so the five-day test and final fit were
 not run. `tools/predict_v8.py` requires a submission-ready release configuration;
 this trial did not create one.
+
+The separate [V8 enriched Logloss successor](experiments/v8-enriched-logloss/RUN_V8_ENRICHED.md)
+adds six checked relative features to one combiner. It also failed the primary
+gate, so no five-day test, final fit, or V8 submission was produced. Its guarded
+replay entrypoint, `tools/predict_v8_enriched.py`, requires a fully verified ready
+release; none currently exists. Both V8 recipes are closed, and PR #4 remains
+draft pending a candidate that passes every promotion and release check.
 
 ## Documentation
 

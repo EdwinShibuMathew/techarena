@@ -43,6 +43,21 @@ the five neural models, 37 features, and other four combiners. The primary gate
 failed, so the recipe was closed without five-day testing, final fitting, or
 submission export. V6 remains the benchmark. See the [protocol and evidence](results/v8-pairlogit/README.md).
 
+## V8 enriched Logloss successor (not promoted)
+
+| Evaluation | AUC change vs V6 | Paired 95% interval | Decision |
+|---|---:|---|---|
+| Primary Jan25–26 | +0.0000463279 | [−0.0000192994, +0.0001089003] | Failed: interval lower is not positive |
+| Secondary Jan26 | +0.0000496322 | [−0.0000108388, +0.0001105305] | Passed: point change is nonnegative |
+
+One predeclared successor replaced the seed42 combiner with a 43-feature Logloss
+classifier, retaining the neural models, other combiners, and 2/9 member weight.
+Both original screen members replayed with zero maximum error; all 1,000 paired
+bootstrap draws were valid. The primary gate failed, closing this recipe before
+five-day testing, final fitting, or submission export. No V8 configuration or CSV
+was created. V6 remains the benchmark; PR #4 stays draft as requested.
+See the [successor protocol and evidence](results/v8-enriched-logloss/README.md).
+
 ## Recent rejected candidates versus V6
 
 | Fixed experiment | Primary AUC change | Primary paired 95% interval | Jan26 change | Decision |
