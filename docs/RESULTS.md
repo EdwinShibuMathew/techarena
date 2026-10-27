@@ -31,6 +31,26 @@ adjustment, cold-history fallback, CatBoost combiners, longer preference
 training, lower-rate fine-tuning, dimension/seed diversity and the small V6
 global row-ranking update.
 
+## V7.1 entropy-conditioned allocation (not promoted)
+
+The fixed two-parameter postprocessor used user-grouped cross-fitted V6 scores,
+retaining event score mass and within-event ranking. It passed both development
+cases, primary/Jan26 screening and the five-day confidence gate. It failed the
+late-window point gate; the recipe is closed with no final export.
+
+| Gate | AUC change vs V6 | Paired 95% interval | Decision |
+|---|---:|---|---|
+| Primary Jan25–26 | +0.000253392017 | [+0.000135593223, +0.000375645545] | Passed |
+| Secondary Jan26 | +0.000299762461 | [+0.000178194607, +0.000414059705] | Passed |
+| Five-day Jan22–26 | +0.000208877797 | [+0.000023714297, +0.000373496981] | Passed |
+| Late48–120h | −0.000483522408 | Point comparison | Failed |
+
+No promotion-based tuning, fallback, cohort routing or new neural training was
+performed. Finalization refused at the failed stress gate. New compute was
+915.106481503s; cumulative research usage is 2,889.465828965005s of 14,400.
+The dates remain reused retrospective evidence. See the
+[protocol, source provenance and terminal decision](results/v7.1-entropy-sharpening-v1/README.md).
+
 ## Archived V8 campaigns
 
 [PR #4's preserved evidence](results/v8-archive/README.md) records six closed

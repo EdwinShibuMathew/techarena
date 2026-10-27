@@ -1,0 +1,160 @@
+{
+  "schema_version": 1,
+  "stage": "screen",
+  "purpose": "research",
+  "complete": true,
+  "passed": true,
+  "submission_ready": false,
+  "manifest_sha256": "35c54c0def6e7f902754757ba70b72d490a053bd5a9b99a9676349853f613d2f",
+  "results": {
+    "primary": {
+      "case": {
+        "name": "primary",
+        "meta_cutoff": 1737676800,
+        "target_cutoff": 1737763200,
+        "target_end": 1737936000,
+        "baseline": "baseline_primary"
+      },
+      "events": 43964,
+      "fit_events": 35040,
+      "maximum_meta_label_timestamp": 1737763140,
+      "baseline_auc": 0.8184592533262289,
+      "candidate_auc": 0.8187126453427643,
+      "auc_diff": 0.0002533920165354031,
+      "models": {
+        "calibrator": "calibrators/entropy/c84b19cda5ffcd416c691681e8b328aecd8896ce308a8c427b2a997f5ac97a9a.json"
+      },
+      "files": {
+        "calibrators/entropy/c84b19cda5ffcd416c691681e8b328aecd8896ce308a8c427b2a997f5ac97a9a.json": "bb83d706446f77d38296833a90fd73f2ac84572c799656886acc6bc2dcd4d856",
+        "cache-receipts/oof-37c62d6e2af99687b429207cc0694adb70e63aa0f9f1b3245a6ae60d0658e945-1793065779957449843.json": "08c1f2f2feef4d84565c57df51b2fb8ab0a368e3588606c8b09051dba7dc0a94",
+        "predictions/entropy-primary.npz": "e132e5c5cd392e903507975f6effe385cd70696166428b39e4882578db53f704"
+      },
+      "coefficients": [
+        0.13798070461683798,
+        0.06026015817541928
+      ],
+      "objective": 0.3014330435315568,
+      "identity_objective": 0.3035481086642845,
+      "timings": {
+        "total": 180.8131671739975,
+        "calibration_and_reference": 18.66447170000174
+      },
+      "ci_lower": 0.00013559322299494249,
+      "ci_upper": 0.0003756455447355339,
+      "gate_passed": true,
+      "resamples": 1000,
+      "clicked_pairs_auc": null,
+      "unclicked_pairs_auc": null,
+      "v7_diagnostic": {
+        "baseline_auc": 0.8184592533262289,
+        "candidate_auc": 0.8187017003697403,
+        "auc_diff": 0.00024244704351139568,
+        "candidate_minus_v7_auc": 1.0944973024007432e-05,
+        "used_for_selection": false
+      },
+      "diagnostics": {
+        "warm": {
+          "events": 42496,
+          "baseline_auc": 0.8208327785575634,
+          "candidate_auc": 0.8210697296973422,
+          "auc_diff": 0.0002369511397787294
+        },
+        "cold": {
+          "events": 1468,
+          "baseline_auc": 0.7356634555976589,
+          "candidate_auc": 0.7362366908414867,
+          "auc_diff": 0.0005732352438277966
+        },
+        "history_empty": {
+          "events": 361,
+          "baseline_auc": 0.5561784854261107,
+          "candidate_auc": 0.5544271625900357,
+          "auc_diff": -0.0017513228360750421
+        },
+        "late": {
+          "events": 0
+        }
+      }
+    },
+    "secondary": {
+      "case": {
+        "name": "secondary",
+        "meta_cutoff": 1737763200,
+        "target_cutoff": 1737849600,
+        "target_end": 1737936000,
+        "baseline": "baseline_secondary"
+      },
+      "events": 35138,
+      "fit_events": 35230,
+      "maximum_meta_label_timestamp": 1737849540,
+      "baseline_auc": 0.8271277122502162,
+      "candidate_auc": 0.8274274747113555,
+      "auc_diff": 0.00029976246113927463,
+      "models": {
+        "calibrator": "calibrators/entropy/b04676b88f4892b65aa75b8f6119fcd63146ad4877d18faa847bc7b9b049621a.json"
+      },
+      "files": {
+        "calibrators/entropy/b04676b88f4892b65aa75b8f6119fcd63146ad4877d18faa847bc7b9b049621a.json": "bd3a79ecf4ae82932372d4f48136b02f4371452da765ea4f68735d63694b12b2",
+        "cache-receipts/oof-4cf6cecf55aa27314599a3012194e1ce46af53dc34c35e21dad7a3d232b6afff-1793065978079941189.json": "7f418fc143aad52dba25aba5389b03ccc7e027966b431ffa7286220362e17fed",
+        "predictions/entropy-secondary.npz": "dbad564f5aebee2cb9961ac0d1e56366ce6e324d9a5a84b6ad42418b9b49affe"
+      },
+      "coefficients": [
+        0.13115186023033382,
+        0.052787236146648736
+      ],
+      "objective": 0.2916068819240668,
+      "identity_objective": 0.29348501428312845,
+      "timings": {
+        "total": 186.07637232799607,
+        "calibration_and_reference": 16.477377531999082
+      },
+      "ci_lower": 0.0001781946066381379,
+      "ci_upper": 0.00041405970465567543,
+      "gate_passed": true,
+      "resamples": 1000,
+      "clicked_pairs_auc": null,
+      "unclicked_pairs_auc": null,
+      "v7_diagnostic": {
+        "baseline_auc": 0.8271277122502162,
+        "candidate_auc": 0.827404252852057,
+        "auc_diff": 0.0002765406018407912,
+        "candidate_minus_v7_auc": 2.3221859298483416e-05,
+        "used_for_selection": false
+      },
+      "diagnostics": {
+        "warm": {
+          "events": 34543,
+          "baseline_auc": 0.8283682528344378,
+          "candidate_auc": 0.8286667773265602,
+          "auc_diff": 0.0002985244921224206
+        },
+        "cold": {
+          "events": 595,
+          "baseline_auc": 0.7433955400170084,
+          "candidate_auc": 0.7434427855995465,
+          "auc_diff": 4.7245582538102404e-05
+        },
+        "history_empty": {
+          "events": 198,
+          "baseline_auc": 0.5393062904174015,
+          "candidate_auc": 0.5364373897707231,
+          "auc_diff": -0.0028689006466784406
+        },
+        "late": {
+          "events": 0
+        }
+      }
+    }
+  },
+  "files": {
+    "calibrators/entropy/c84b19cda5ffcd416c691681e8b328aecd8896ce308a8c427b2a997f5ac97a9a.json": "bb83d706446f77d38296833a90fd73f2ac84572c799656886acc6bc2dcd4d856",
+    "cache-receipts/oof-37c62d6e2af99687b429207cc0694adb70e63aa0f9f1b3245a6ae60d0658e945-1793065779957449843.json": "08c1f2f2feef4d84565c57df51b2fb8ab0a368e3588606c8b09051dba7dc0a94",
+    "predictions/entropy-primary.npz": "e132e5c5cd392e903507975f6effe385cd70696166428b39e4882578db53f704",
+    "calibrators/entropy/b04676b88f4892b65aa75b8f6119fcd63146ad4877d18faa847bc7b9b049621a.json": "bd3a79ecf4ae82932372d4f48136b02f4371452da765ea4f68735d63694b12b2",
+    "cache-receipts/oof-4cf6cecf55aa27314599a3012194e1ce46af53dc34c35e21dad7a3d232b6afff-1793065978079941189.json": "7f418fc143aad52dba25aba5389b03ccc7e027966b431ffa7286220362e17fed",
+    "predictions/entropy-secondary.npz": "dbad564f5aebee2cb9961ac0d1e56366ce6e324d9a5a84b6ad42418b9b49affe"
+  },
+  "hashing_seconds": 1.461833007997484,
+  "validation_status": "reused retrospective dates; not independent or selection-adjusted evidence",
+  "winner": "entropy"
+}

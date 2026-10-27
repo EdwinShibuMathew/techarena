@@ -1,4 +1,4 @@
-# Standalone ML workflow (schema version 1)
+# Standalone ML workflow
 
 `tools/run_experiment.py` owns chronology, metrics, gates, budgeting, source
 snapshots and publication. `tools/ml_workflow/` is the shared implementation.
@@ -177,3 +177,32 @@ Use `develop`, `screen`, `stress`, `finalize`, then `verify` with that run ID.
 Preparation itself never authorizes restarting a closed recipe or resetting the
 research budget. The supplied adapter is synthetic only; implementing and
 reviewing a scientific hypothesis remains a separate research change.
+
+## Schema-v2 ensemble postprocessing
+
+Schema-v1 retains the neural/member-replacement interface above. Schema-v2 with
+`mode: ensemble_postprocessor` supports a calibration adapter without fake neural
+checkpoints. Candidates declare `kind: ensemble_postprocessor` and a frozen
+`config` matching the adapter's `CONFIG`. The adapter exposes `user_folds`,
+`fit_calibrator`, `load_calibrator` and `predict_calibrator`; predictions receive
+no target labels. The controller owns chronology, case metrics, gates and export.
+
+Preparation is budgeted, snapshots committed source, and normalizes event inputs
+while preserving official evaluation row IDs. Generated arrays and their hashes
+are sealed into the immutable run manifest only after preparation accounting
+succeeds. Worker execution requires the active budget-owning controller. Research
+continues the shared cumulative ledger and cannot reset it through a new run ID.
+
+User-grouped cross-fitting creates label-safe calibration scores from frozen
+neural features and temporary copies of the original CatBoost recipe. Its
+content-addressed cache binds features, fitting labels/users/fold assignments,
+cutoff, parameters, implementation and runtime. Complete entries retain hashes
+for every fitted fold model and score array; corrupted entries fail verification.
+Original model/combiner files are never changed. At most two independent CPU
+folds run concurrently, preserving each model's fixed parameters and seed.
+
+See the [V7.1 frozen protocol](../experiments/v7.1-entropy-sharpening-v1/RUN_V7_1.md)
+for the first such experiment and its explicit asset handoff. It is a distinct
+successor to the existing V7 recipe. A failed development or promotion gate closes
+the recipe and produces no ready configuration. Publication and independent
+release replay retain the shared accounting, provenance and no-replacement rules.

@@ -1,0 +1,118 @@
+{
+  "schema_version": 2,
+  "status": "rejected_at_late_gate",
+  "submission_ready": false,
+  "competition_upload_performed": false,
+  "final_models_trained": false,
+  "submission_exported": false,
+  "finalization_attempted": true,
+  "finalization_refusal": "stress gate failed; recipe is terminal",
+  "replay_refusal": "missing configs/v7_1.json; refused before inference",
+  "decision_checks": {
+    "primary_ci_lower_positive": true,
+    "secondary_change_nonnegative": true,
+    "five_day_ci_lower_positive": true,
+    "late_change_nonnegative": false
+  },
+  "source_commit": "c64eab4b1e7a42a664900edfabbca1804137b359",
+  "source_archive_sha256": "7110513cf568698ec7cac7675bfa8e99d7846a9651ce97367254a77208b7055a",
+  "spec_sha256": "34fc2d31ce6e78b0d195b08563e8c2b2064069f4e8eb0b60473b619256acec2c",
+  "manifest_sha256": "35c54c0def6e7f902754757ba70b72d490a053bd5a9b99a9676349853f613d2f",
+  "reports_sha256": {
+    "develop": "cc724767182d662ecc7e8f919c52108865084d1985fb78f7157e4e5f37cedca3",
+    "screen": "acdc35d91d3da1c033e98447127650e3b837fef8eee008adfeb18e2088164b61",
+    "stress": "389c3c369a17ecee90ac730d3bc7b15cdf772e9854a432082a84d95db4ca9055"
+  },
+  "original_neural_training_performed": false,
+  "original_models_modified": false,
+  "recorded_original_compute_seconds": 1974.359347462001,
+  "new_compute_seconds": 915.106481503004,
+  "total_compute_seconds": 2889.465828965005,
+  "compute_limit_seconds": 14400,
+  "phases": [
+    {
+      "owner": "v7.1-entropy-sharpening-v1/prepare",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 2,
+      "seconds": 29.927673234000395,
+      "error": null
+    },
+    {
+      "owner": "v7.1-entropy-sharpening-v1/develop",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 71446,
+      "seconds": 445.35834743099986,
+      "error": null
+    },
+    {
+      "owner": "v7.1-entropy-sharpening-v1/screen",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 73365,
+      "seconds": 394.16438585200376,
+      "error": null
+    },
+    {
+      "owner": "v7.1-entropy-sharpening-v1/stress",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 74947,
+      "seconds": 45.65607498600002,
+      "error": null
+    }
+  ],
+  "temporary_crossfit_combiners": 100,
+  "development_reference_combiners": 5,
+  "cache": {
+    "feature_and_oof_requests": 60,
+    "hits": 16,
+    "misses": 44
+  },
+  "integrity_checks": {
+    "develop/entropy/jan22_long": {
+      "maximum_event_mass_error": 4.440892098500626e-16,
+      "within_event_order_or_tie_changes": 0,
+      "rows": 479570,
+      "probabilities_valid": true,
+      "baseline_replay_maximum_absolute_error": 0.0
+    },
+    "develop/entropy/jan24_forward": {
+      "maximum_event_mass_error": 4.440892098500626e-16,
+      "within_event_order_or_tie_changes": 0,
+      "rows": 350400,
+      "probabilities_valid": true
+    },
+    "screen/primary": {
+      "maximum_event_mass_error": 4.440892098500626e-16,
+      "within_event_order_or_tie_changes": 0,
+      "rows": 439640,
+      "probabilities_valid": true,
+      "baseline_replay_maximum_absolute_error": 0.0
+    },
+    "screen/secondary": {
+      "maximum_event_mass_error": 4.440892098500626e-16,
+      "within_event_order_or_tie_changes": 0,
+      "rows": 351380,
+      "probabilities_valid": true,
+      "baseline_replay_maximum_absolute_error": 0.0
+    },
+    "stress/five_day": {
+      "maximum_event_mass_error": 4.440892098500626e-16,
+      "within_event_order_or_tie_changes": 0,
+      "rows": 514880,
+      "probabilities_valid": true,
+      "baseline_replay_maximum_absolute_error": 0.0
+    }
+  },
+  "validation": {
+    "locked_cpu_suite_passed": 142,
+    "optional_private_artifact_skips": 1,
+    "source_only_passed": 128,
+    "source_only_optional_skips": 15
+  },
+  "validation_status": "reused retrospective dates; not independent or selection-adjusted evidence",
+  "interpretation": "Primary and secondary exceed fixed V7 point gains; five-day gain is smaller and late loss is worse. This recipe is closed. No parameters, routing or weights were adjusted after promotion.",
+  "finalize_phase_claimed": false
+}
