@@ -1,0 +1,25 @@
+{
+  "source_commit": "dfd1361eee5411f431cac645da3c23b82a7356ed",
+  "source_archive_sha256": "5f4b64892150b48f31a98b88d3bbfb19afaecc064550e2728553594bf3db75ef",
+  "source_files": 250,
+  "manifest_sha256": "a2d6b3f5ed66f996c0d0436a2ac48f653900c1c08012ae7de20cc3c37168edf7",
+  "spec_sha256": "263ba6a3741a231c7fc883413f392eb82eca8261f91075c6cedb2cb330960cd4",
+  "generated_inputs": {
+    "train": {
+      "path": "artifacts/experiments/v7.2-joint-calibration-v1/inputs/train.npz",
+      "sha256": "88509328efbcdd376dbf8ab272f6d3bed617485782e49fa8abc999fc948b2c07"
+    },
+    "evaluation": {
+      "path": "artifacts/experiments/v7.2-joint-calibration-v1/inputs/evaluation.npz",
+      "sha256": "6566734e7185827b5926d0b87a34c48e68cd19d8f3994eb33d6a2ae3969cb6db"
+    }
+  },
+  "inventory_sha256": "5995d59d1e596214c52725b85e9c4615a83241bc59b76d7c518274322d564b55",
+  "continuation_decision_sha256": "d22bed7f03fb5150c9a0bd58fb73370d479d73a1e5c4fe0109df16d1804b84a6",
+  "carry_identity": "15fac4ea051b87f1457742744eb4b1fb3452626509cfb1555b44e6c4702c3547",
+  "ledger_used_before_campaign": 2889.465828965005,
+  "original_neural_models_modified": false,
+  "phase_limit_seconds": 1200,
+  "total_limit_seconds": 14400,
+  "complete": true
+}

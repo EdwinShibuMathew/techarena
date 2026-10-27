@@ -51,6 +51,23 @@ performed. Finalization refused at the failed stress gate. New compute was
 The dates remain reused retrospective evidence. See the
 [protocol, source provenance and terminal decision](results/v7.1-entropy-sharpening-v1/README.md).
 
+## V7.2 joint calibration (rejected during development)
+
+All three predeclared calibration variants improved the two aggregate development
+windows, but all regressed on the Jan22–24 aged 48–72-hour subset. No candidate
+qualified, so the campaign stopped before promotion. All four promotion gates
+remain unchanged and were not evaluated. No submission CSV was produced.
+
+| Variant | Jan22–24 change | Jan24 forward change | Aged change |
+|---|---:|---:|---:|
+| Event correction | +0.000666948308 | +0.000474150119 | −0.000152856957 |
+| Joint constant | +0.000726594348 | +0.000585951991 | −0.000084809510 |
+| Joint entropy | +0.000720001722 | +0.000573566195 | −0.000087419660 |
+
+The controller refused further stages before phase claims. New compute was
+507.804453513 seconds; cumulative usage is 3,397.270282478001 of 14,400 seconds.
+See the [frozen method and exact evidence](results/v7.2-joint-calibration-v1/README.md).
+
 ## Archived V8 campaigns
 
 [PR #4's preserved evidence](results/v8-archive/README.md) records six closed
