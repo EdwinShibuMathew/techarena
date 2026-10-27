@@ -31,6 +31,7 @@ def load(name, path):
 ADAPTER = 'experiments/v7.4-history-graph-v1/adapter.py'
 adapter = load('history_graph_adapter', ROOT / ADAPTER)
 fixture = load('history_graph_fixture', ROOT / 'experiments/v7.4-history-graph-v1/prepare_fixture.py')
+SCIPY = importlib.util.find_spec('scipy') is not None
 
 
 def sample(n=40):
@@ -48,6 +49,7 @@ def sample(n=40):
             'rowids': np.array([[f'{e}-{j}' for j in range(10)] for e in range(n)])}
 
 
+@unittest.skipUnless(SCIPY, 'SciPy required; enforced without skips by model-contracts CI')
 class HistoryGraphModelTests(unittest.TestCase):
     def test_graph_matches_distinct_user_oracle_including_warmup(self):
         data = sample()
@@ -365,6 +367,7 @@ class HistoryPromotionTests(unittest.TestCase):
             self.assertNotEqual(before, replay._validation(record, 'replay-token', stage, root, 'bridge'))
 
 
+@unittest.skipUnless(SCIPY, 'SciPy required; enforced without skips by model-contracts CI')
 class HistoryWorkflowTests(unittest.TestCase):
     def repository(self, root):
         from test_workflow_integration import WorkflowIntegrationTests
