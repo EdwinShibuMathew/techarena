@@ -1,0 +1,59 @@
+{
+  "competition_upload_performed": false,
+  "cpu_regressions": {
+    "failed": 0,
+    "passed": 165,
+    "skip_reason": "Optional artifacts/submissions/v7_candidate.csv is absent",
+    "skipped": 1
+  },
+  "dependencies": {
+    "catboost": "1.2.10",
+    "numpy": "2.2.6",
+    "pytest": "8.4.2",
+    "scikit-learn": "1.9.1",
+    "torch": "2.13.0+cpu"
+  },
+  "dependency_consistency": "success",
+  "frozen_paths_unchanged_from_reviewed_head": true,
+  "historical_evidence_modified": false,
+  "implementation_commit": "16b72b373a2125d6080eea350987283e92671c84",
+  "kind": "pr21_replay_review_validation",
+  "private_bundle_verification": {
+    "reason": "artifacts/v6/manifest.json is absent",
+    "status": "unavailable"
+  },
+  "private_inference_performed": false,
+  "replay_bridge_sha256": "f7cd65ec0046a806c35dd07f39bb4cfe273cc9f9c74225a6c3f538b88741118e",
+  "required_model_contracts": {
+    "failed": 0,
+    "passed": 52,
+    "skipped": 0
+  },
+  "research_training_performed": false,
+  "reviewed_head": "14eca06c0d6f7628ba3bc86fae9ebe41a82bc1a8",
+  "schema_version": 1,
+  "source_readiness": {
+    "archive": {
+      "filename": "techarena-source.tar.gz",
+      "sha256": "1abd6ab67f900b889697da4ceb42a9f2c77fe56a13c1ea3c06de2e9537f66b57"
+    },
+    "checks": {
+      "cpu_tests": "success",
+      "model_contracts": "success",
+      "source_archive": "success",
+      "source_integrity": "success"
+    },
+    "competition_submission_created": false,
+    "evaluation_rows": 529390,
+    "frozen_source_files_verified": 59,
+    "git_commit": "16b72b373a2125d6080eea350987283e92671c84",
+    "kind": "source_readiness",
+    "model_inference_performed": false,
+    "private_assets_verified": false,
+    "schema_version": 1,
+    "source_manifest_sha256": "72421f9519e72229bbc905bad7db671e9d58f4141f5f00bfb304178fc105649f",
+    "tracked_files": 283,
+    "v6_config_sha256": "a6e7a3a1ab67b7e1fa234851831c88ca68c18d2e9eab22914b2b2cfbb47c3e68",
+    "v6_submission_sha256": "c386d545b3746e05dd515020c6185afda06cefdbcdf7d48df022454762fb378c"
+  }
+}
