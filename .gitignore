@@ -3,6 +3,7 @@
 /artifacts/
 /local/
 /archive/
+/Competition Folder/
 __pycache__/
 *.py[cod]
 .pytest_cache/

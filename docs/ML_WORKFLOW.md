@@ -280,3 +280,33 @@ replays, the exact fixed V7 CSV fingerprint and two independent new CSVs before
 completed accounting permits publication. Generic postprocessor replay supports
 both release kinds while rejecting conflicting readiness claims. See the
 [V7.3 protocol](../experiments/v7.3-v7-anchor-v1/RUN_V7_3.md).
+
+## Schema-v4 history-context correction
+
+`mode: history_postprocessor` adds an explicit context-aware contract while
+preserving all older schemas. The adapter builds a graph from a strictly earlier
+labeled prefix, extracts affinities from unlabeled target histories, and
+fits/reloads a scalar correction using cross-fitted fixed-V7 scores. Graphs bind
+their encoded input IDs, labels, cutoff, source, parameters and numerical runtime.
+Each saved calibrator binds its graph, fitting cohort, score/feature fingerprints
+and independently checked fitting-only normalization. Target labels never reach
+the adapter's prediction interface. This schema may change candidate ordering
+while preserving V7 event click sums; it does not relax schema-v2/v3 invariants.
+
+Its explicit `v6_v7_four_gate` policy requires positive primary/five-day paired
+confidence lower bounds and nonnegative Jan26/late changes against BOTH V6 and
+fixed V7. Development also checks aged transfer against both anchors, freezes
+one winner and forbids fallback after failure. Verification/replay recompute
+the policy and reject altered comparison receipts. Successful research receipts
+include all eight checks and `upload_ready`, `submission_ready` and
+`promotion_supported` true. Synthetic runs always remain unpromoted.
+
+V7.4 [protocol and commands](../experiments/v7.4-history-graph-v1/RUN_V7_4.md)
+declare two sparse history-neighbor variants. Its read-only prerequisite checker
+refuses missing private assets or an absent/unreconciled authoritative ledger;
+it never creates replacement accounting. Preparation verifies fresh exact V6/V7
+anchors under the shared budget. Finalization constructs independent uncached
+graphs and binds them in the final report; supported replay binds another fresh
+graph into its internal validation evidence. The maintained replay controller
+retains accounting-before-publication ordering. No source test or synthetic
+fixture establishes scientific improvement or authorizes a competition upload.

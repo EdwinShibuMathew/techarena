@@ -32,6 +32,9 @@ def prepare(root,spec_path,run_id):
     root=Path(root).resolve();identifier(run_id)
     spec=ExperimentSpec.parse(read(spec_path)).value
     research=spec['purpose']=='research'
+    if research and spec['schema_version']==4:
+        from .history_postprocessing import preflight
+        preflight(root,spec)
     if research:require(Path(spec_path).resolve().is_relative_to(root/'experiments'),'Commit the research specification')
     work=inside(root,'artifacts/experiments' if research else 'artifacts/validation')/run_id
     require(not any((inside(root,p)/run_id).exists() for p in ('artifacts/experiments','artifacts/validation')),'Preserve existing run ID')
@@ -88,6 +91,12 @@ def prepare_worker(root,run_id):
         path=work/'inputs'/(name+'.npz');save_arrays(path,**data)
         generated[name]={'path':path.relative_to(root).as_posix(),'sha256':digest(path)}
     write_new(work/'generated-inputs.json',generated)
+    if m['spec']['schema_version']==4 and m['spec']['purpose']=='research':
+        # Establish exact anchors under the preparation lease, before research.
+        from .history_postprocessing import final_anchor
+        sys.path.insert(0,str(work/'source/legacy'))
+        m['generated_inputs']=generated
+        final_anchor(root,work,m,'prepare')
     return 0
 
 
@@ -195,7 +204,7 @@ def reference_scores(root,work,m,inv,raw,fit,valid,case):
         else:
             meta=features(root,work,m,inv,raw,fit,member,case.meta_cutoff)
             path=work/'reference-combiners'/(case.name+'-'+member+'.cbm');path.parent.mkdir(parents=True,exist_ok=True)
-            v3=m['spec']['schema_version']==3
+            v3=m['spec']['schema_version'] in (3,4)
             receipt=path.with_suffix('.json')
             expected={'fit':arrays_identity({'X':meta['X'],'indices':fit,'labels':raw['y'][fit]}),
                       'parameters':inv['parameters'][member]['development'],'schema':meta['feature_names'].tolist()}
@@ -296,6 +305,9 @@ def score(root,work,m,module,raw,candidate,case):
 
 
 def final_probabilities(root,work,m,module,calibrator,number):
+    if m['spec']['schema_version']==4:
+        from .history_postprocessing import final_probabilities as history_final
+        return history_final(root,work,m,module,calibrator,number)
     from . import engine
     from predict_v7 import load_aligned_probabilities
     v3=m['spec']['schema_version']==3
@@ -357,12 +369,21 @@ def finalize(root,work,m,module,raw,winner):
     report={'schema_version':2,'purpose':m['spec']['purpose'],'complete':True,'passed':True,'submission_ready':False,
             'manifest_sha256':digest(work/'manifest.json'),'independent_replay':True,'winner':winner,'rows':len(ids),
             'csv_sha256':digest(outputs[0]),'files':{p.relative_to(work).as_posix():digest(p) for p in (*outputs,path)}}
-    from .policy import is_trial
-    if is_trial(m['spec']) and m['spec']['purpose']=='research':
+    from .policy import is_trial, is_dual
+    if (is_trial(m['spec']) or is_dual(m['spec'])) and m['spec']['purpose']=='research':
         for number in (1,2):
             for relative in ('v7_anchor.csv','local/v6_relocation_check.json'):
                 artifact=work/'v6-replays'/str(number)/relative
                 report['files'][artifact.relative_to(work).as_posix()]=digest(artifact)
+    if m['spec']['schema_version']==4:
+        graph_arrays=[]
+        for number in (1,2):
+            path=work/'graphs'/('final-'+str(number)+'.npz')
+            with np.load(path,allow_pickle=False) as saved:
+                graph_arrays.append(arrays_identity({k:saved[k] for k in saved.files}))
+            for artifact in (path,path.with_suffix('.json')):
+                report['files'][artifact.relative_to(work).as_posix()]=digest(artifact)
+        require(graph_arrays[0]==graph_arrays[1],'Independent final graphs differ')
     write_new(work/'finalize.json',report);write_new(work/'finalize.seal.json',{'sha256':digest(work/'finalize.json')})
     return 0
 
