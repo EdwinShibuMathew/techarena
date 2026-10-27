@@ -78,6 +78,14 @@ class ExperimentSpec:
         require(value.get("purpose") in {"synthetic_validation","research"}, "Unknown experiment purpose")
         require(isinstance(value.get("hypothesis"),str) and value["hypothesis"].strip(), "Declare one hypothesis")
         require(value.get("comparator")=="V6", "Comparator must be V6")
+        policy=value.get("release_policy","v6_four_gate")
+        require(policy in {"v6_four_gate","v7_upload_trial"}, "Unknown release policy")
+        trial=policy=="v7_upload_trial"
+        if trial:
+            require(value["schema_version"]==3 and value.get("upload_comparator")=="V7", "V7 trials require schema-v3 and explicit comparator")
+            require(value.get("anchor_sha256")=="9aebf08df53b9b1d0661479151c37118859831b3b4c9d371d533c3bf203b141a" and value.get("anchor_gamma")==1.12,"Fixed V7 identity changed")
+            require({"v7_config","v7_validation"}<=set(value["inputs"]), "Missing V7 identity evidence")
+        else:require("upload_comparator" not in value,"Upload comparator requires trial policy")
         adapter = Path(value["adapter"])
         require(not adapter.is_absolute() and ".." not in adapter.parts and adapter.parts[0]=="experiments" and adapter.suffix==".py", "Adapter must be repository experiment source")
         candidates = value["candidates"]
@@ -93,7 +101,7 @@ class ExperimentSpec:
         require(isinstance(order,list) and len(order)==len(candidates) and set(order)==set(candidates),"Declare an explicit candidate tie order")
         require(type(value.get("seed")) is int, "Declare deterministic seed")
         require(value.get("bootstrap")=={"resamples":1000,"seed":2026,"minimum_valid":990}, "Promotion bootstrap contract changed")
-        require(value.get("selection")==("maximin_nonnegative_origins_and_late" if value["schema_version"]==3 else "maximin_nonnegative_origins"), "Unsupported selection rule")
+        require(value.get("selection")==("maximin_nonnegative_v7_origins" if trial else "maximin_nonnegative_origins_and_late" if value["schema_version"]==3 else "maximin_nonnegative_origins"), "Unsupported selection rule")
         if value["schema_version"]==3:
             require(value.get("postprocessing_contract")=={"event_mass":"learned","within_event_order":"preserve","state_schema_version":2}, "Invalid schema-v3 postprocessing contract")
         for name, asset in value["inputs"].items():

@@ -44,6 +44,8 @@ def prepare(root,spec_path,run_id):
         write_new(work/'prepare.attempt.json',{'spec_sha256':canonical(spec),'state':'claimed'})
         if research:verify_bundle(root)
         for value in spec['inputs'].values():require(digest(inside(root,value['path']))==value['sha256'],'Declared input changed')
+        from .policy import validate_anchor
+        validate_anchor(root,spec)
         source=snapshot(root,work)
         require(spec['adapter'] in source['files'],'Adapter must be committed')
         if research:
@@ -223,6 +225,8 @@ def reference_scores(root,work,m,inv,raw,fit,valid,case):
 
 def score(root,work,m,module,raw,candidate,case):
     from . import engine
+    from .policy import is_trial, V7_SHA
+    trial=is_trial(m['spec'])
     start=time.monotonic();inv=inventory(root,m)
     fit=first_indices(raw['u'],raw['t'],case.meta_cutoff,case.meta_cutoff+DAY)
     valid=first_indices(raw['u'],raw['t'],case.target_cutoff,case.target_end)
@@ -244,7 +248,11 @@ def score(root,work,m,module,raw,candidate,case):
     before,files=reference_scores(root,work,m,inv,raw,fit,valid,case)
     if v3:
         require(saved['parameters']==params,'Adapter modified expected candidate parameters')
-        logmass=np.log(np.maximum(scores.sum(1),params['config']['log_floor']))
+        norm_scores=scores
+        if trial:
+            from predict_v7 import calibrate_v7_probabilities
+            norm_scores=calibrate_v7_probabilities(scores,m['spec']['anchor_gamma'])
+        logmass=np.log(np.maximum(norm_scores.sum(1),params['config']['log_floor']))
         expected_norm={'log_mass_mean':float(logmass.mean()),'log_mass_scale':max(float(logmass.std()),params['config']['scale_floor'])}
         require(saved['normalization']==expected_norm,'Calibration normalization differs from fitting scores')
     after=module.predict_calibrator(before.copy() if v3 else before,deepcopy(saved) if v3 else saved['coefficients']);y=raw['y'][valid]
@@ -264,20 +272,26 @@ def score(root,work,m,module,raw,candidate,case):
     if case.name in ('primary','secondary','five_day'):
         result.update(asdict(engine.PairedBootstrapEvaluator().evaluate(after,before,y,raw['u'][valid])))
         require(result['resamples']>=990,'Insufficient paired draws')
-    if case.name in ('primary','secondary','five_day'):
+    if trial or case.name in ('primary','secondary','five_day'):
         from predict_v7 import calibrate_v7_probabilities
         old_v7=calibrate_v7_probabilities(before,1.12)
         result['v7_diagnostic']={**engine.point(y,before,old_v7),
                                  'candidate_minus_v7_auc':result['candidate_auc']-engine.compute_roc_auc(y,old_v7),
                                  'used_for_selection':False}
+    if trial:
+        result['v7_comparison']={**engine.point(y,old_v7,after),'anchor_sha256':V7_SHA}
+        if case.name in ('primary','secondary','five_day'):
+            result['v7_comparison'].update(asdict(engine.PairedBootstrapEvaluator().evaluate(after,old_v7,y,raw['u'][valid])))
+            require(result['v7_comparison']['resamples']>=990,'Insufficient paired V7 draws')
     hours=(raw['t'][valid]-case.target_cutoff)/3600;late=(hours>=48)&(hours<120)
     if case.name=='five_day':
         require(int(late.sum())==7596 if m['spec']['purpose']=='research' else late.any(),'Missing late cohort')
         result['late']=engine.point(y[late],before[late],after[late])
+    if trial and late.any():result['v7_comparison']['late']=engine.point(y[late],old_v7[late],after[late])
     warm=np.isin(raw['u'][valid],raw['u'][raw['t']<case.target_cutoff])
     masks={'warm':warm,'cold':~warm,'history_empty':(raw['h'][valid]<0).all(1),'late':late}
     result['diagnostics']={k:{'events':int(v.sum()),**(engine.point(y[v],before[v],after[v]) if v.any() and len(np.unique(y[v]))==2 else {})} for k,v in masks.items()}
-    print('result',case.name,result['auc_diff'],saved['coefficients'],flush=True)
+    print('result',candidate,case.name,result['auc_diff'],'vs_V7',result.get('v7_comparison',{}).get('auc_diff'),saved['coefficients'],flush=True)
     return result
 
 
@@ -303,6 +317,17 @@ def final_probabilities(root,work,m,module,calibrator,number):
     before=compose(original)
     fresh=load_aligned_probabilities(work/'v6-replays'/str(number)/'artifacts/reproduced_v6.csv',ids).reshape(-1,10)
     require(np.allclose(fresh,before,rtol=0,atol=1e-15),'Fresh V6 differs from final references')
+    from .policy import is_trial
+    if is_trial(m['spec']):
+        from predict_v7 import calibrate_v7_probabilities
+        from submission_export import export_submission,validate_csv
+        from row_auc_final_utils import verify_csv_probabilities
+        anchor=calibrate_v7_probabilities(fresh,m['spec']['anchor_gamma'])
+        anchor_path=work/'v6-replays'/str(number)/'v7_anchor.csv'
+        example=inside(root,m['spec']['inputs']['example']['path'])
+        export_submission(ids,anchor,example,anchor_path,529390)
+        validate_csv(anchor_path,example,529390);verify_csv_probabilities(anchor_path,ids,anchor)
+        require(digest(anchor_path)==m['spec']['anchor_sha256'],'Fresh V7 anchor fingerprint differs')
     saved=module.load_calibrator(calibrator)
     require(saved['metadata']['spec_sha256']==m['spec_sha256'] and saved['metadata']['meta_cutoff']==JAN20+5*DAY
             and saved['metadata']['maximum_label_timestamp']<JAN20+6*DAY,'Final calibrator must reuse validated Jan25 fitting')
@@ -332,6 +357,12 @@ def finalize(root,work,m,module,raw,winner):
     report={'schema_version':2,'purpose':m['spec']['purpose'],'complete':True,'passed':True,'submission_ready':False,
             'manifest_sha256':digest(work/'manifest.json'),'independent_replay':True,'winner':winner,'rows':len(ids),
             'csv_sha256':digest(outputs[0]),'files':{p.relative_to(work).as_posix():digest(p) for p in (*outputs,path)}}
+    from .policy import is_trial
+    if is_trial(m['spec']) and m['spec']['purpose']=='research':
+        for number in (1,2):
+            for relative in ('v7_anchor.csv','local/v6_relocation_check.json'):
+                artifact=work/'v6-replays'/str(number)/relative
+                report['files'][artifact.relative_to(work).as_posix()]=digest(artifact)
     write_new(work/'finalize.json',report);write_new(work/'finalize.seal.json',{'sha256':digest(work/'finalize.json')})
     return 0
 
@@ -339,7 +370,8 @@ def finalize(root,work,m,module,raw,winner):
 def replay_release(root,output,release_name="v7_1"):
     from . import engine
     root=Path(root).resolve();identifier(release_name);config=read(root/('configs/'+release_name+'.json'))
-    require(config.get('submission_ready') is True,'Release is not submission-ready')
+    from .policy import receipt_ready
+    require(receipt_ready(config,config),'Release is not ready for its declared policy')
     work=engine.locate(root,config['run_id']);m=engine.load(root,work)
     require(m['spec'].get('release_name')==release_name and m['spec']['schema_version'] in (2,3) and m['spec']['purpose']=='research','Wrong release recipe')
     engine.verify(root,m['run_id'])
@@ -363,7 +395,7 @@ def replay_worker(root,output,token,release_name="v7_1"):
     config=read(root/('configs/'+release_name+'.json'));work=engine.locate(root,config['run_id']);m=engine.load(root,work)
     require(m['spec'].get('release_name')==release_name and m['spec']['schema_version'] in (2,3),'Wrong release recipe')
     engine._start_watchdog(engine._worker_lease(root,work,m,token))
-    require(engine.verify(root,m['run_id'])['submission_ready'],'Release evidence is incomplete')
+    require(engine.verify(root,m['run_id'])['upload_ready'],'Release evidence is incomplete')
     screen=engine.checked(work,'screen');calibrator=inside(work,screen['results']['secondary']['models']['calibrator'])
     protected=[inside(root,v['path']) for v in m['spec']['inputs'].values()]+[calibrator,root/('configs/'+release_name+'.json'),work/'candidate.csv',work/'manifest.json']
     for stage in ('develop','screen','stress','finalize'):
@@ -381,5 +413,6 @@ def replay_worker(root,output,token,release_name="v7_1"):
         engine.load(root,work)
         if output.exists():require(digest(output)==config['csv_sha256'],'Preserve different existing output')
         else:os.link(candidate,output)
-    write_new(work/(token+'.result.json'),{'submission_ready':True,'rows':529390,'csv_sha256':digest(output),'output_relative':output.relative_to(root).as_posix()})
+    from .policy import release_flags
+    write_new(work/(token+'.result.json'),{**release_flags(m['spec']),'rows':529390,'csv_sha256':digest(output),'output_relative':output.relative_to(root).as_posix()})
     return 0

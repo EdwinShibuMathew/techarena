@@ -229,3 +229,25 @@ General replay uses `python tools/predict_postprocessor.py --release v7_2`;
 the existing V7.1 CLI remains compatible. Synthetic final predictions use only
 explicitly synthetic baselines and never claim private V6 reproduction or publish
 a ready release.
+
+
+## Explicit V7 upload trials
+
+Schema-v3 can declare `release_policy: v7_upload_trial`, `upload_comparator: V7`
+and a hash-bound fixed V7 anchor. Omitted policy retains the historical four V6
+gates and aged-development selection. Unknown policies and partial trial
+contracts are rejected. V6 remains a reported scientific comparator.
+
+The trial selects a candidate on predeclared development gains against V7,
+then requires positive paired 95% lower bounds against V7 on primary/five-day
+windows and nonnegative Jan26 change. Late changes are reported for both
+comparators without blocking this user-approved trial policy. The controller
+recomputes the same rules when verifying reports and replaying a release.
+
+Trial receipts publish `upload_ready: true`, `submission_ready: false` and
+`promotion_supported: false`, plus all original V6 gate outcomes. They do not
+promote old failed campaigns. Finalization verifies two fresh canonical V6
+replays, the exact fixed V7 CSV fingerprint and two independent new CSVs before
+completed accounting permits publication. Generic postprocessor replay supports
+both release kinds while rejecting conflicting readiness claims. See the
+[V7.3 protocol](../experiments/v7.3-v7-anchor-v1/RUN_V7_3.md).
