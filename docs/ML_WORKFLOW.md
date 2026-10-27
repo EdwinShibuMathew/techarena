@@ -230,6 +230,35 @@ the existing V7.1 CLI remains compatible. Synthetic final predictions use only
 explicitly synthetic baselines and never claim private V6 reproduction or publish
 a ready release.
 
+Supported postprocessor replay defaults to `artifacts/replays/<release>.csv`;
+`python tools/predict_v7_1.py` defaults to `artifacts/replays/v7_1.csv`.
+Use `--output` for another destination inside ignored `artifacts/`. Published
+submissions and their hard-link/symlink aliases remain protected inputs. Existing
+matching replay outputs are preserved; different outputs are never replaced.
+
+Run these maintained CLIs from the current checkout even when a release uses an
+older scientific snapshot. The maintained replay bridge verifies the snapshot
+before importing its runtime in a fresh subprocess, then uses that frozen
+runtime for evidence checks, adapter loading and inference. Historical snapshot
+CLIs retain their original behavior; editing snapshots or disabling runtime hash
+checks is not a supported migration.
+
+The controller owns the replay staging directory and public destination. Workers
+write only a validated staged CSV and an internal record without readiness flags.
+Successful shared compute accounting and a durable replay ledger must precede
+CSV publication; the final ready replay result is written last. Failure of final
+accounting or replay-ledger persistence cannot publish a new destination or ready
+result. Failed accounting retains the durable reservation. A later publication
+or result-write failure reports failure and preserves any existing destination;
+it never creates a ready result. Completed inference may already be charged in
+these later failure cases.
+
+New replay ledgers and results use schema version 2. The ledger binds the
+completed budget state to the staged CSV and immutable validation-record hash;
+the final result binds that ledger, validation record, scientific source snapshot
+and maintained bridge implementation hash. Historical replay records remain
+unchanged. A successful replay ledger alone does not establish public readiness.
+
 
 ## Explicit V7 upload trials
 

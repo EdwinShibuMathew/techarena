@@ -367,52 +367,12 @@ def finalize(root,work,m,module,raw,winner):
     return 0
 
 
-def replay_release(root,output,release_name="v7_1"):
-    from . import engine
-    root=Path(root).resolve();identifier(release_name);config=read(root/('configs/'+release_name+'.json'))
-    from .policy import receipt_ready
-    require(receipt_ready(config,config),'Release is not ready for its declared policy')
-    work=engine.locate(root,config['run_id']);m=engine.load(root,work)
-    require(m['spec'].get('release_name')==release_name and m['spec']['schema_version'] in (2,3) and m['spec']['purpose']=='research','Wrong release recipe')
-    engine.verify(root,m['run_id'])
-    token='replay-'+str(time.time_ns())
-    ledger=inside(root,'artifacts/experiments/compute-ledger.json')
-    with Budget(ledger,m['run_id']+'/'+token,1200,14400,m['carried_seconds'],m['carry_identity']) as budget:
-        write_new(work/(token+'.attempt.json'),{'spec_sha256':m['spec_sha256'],'state':'claimed'})
-        cli='tools/predict_v7_1.py' if release_name=='v7_1' else 'tools/predict_postprocessor.py'
-        command=[sys.executable,str(work/'source'/cli),'--root',str(root),'--output',str(Path(output).resolve()),'--worker','--token',token]
-        if release_name!='v7_1':command.extend(['--release',release_name])
-        require(budget.run(command,work/'source')==0,'Independent release replay failed')
-    result=read(work/(token+'.result.json'))
-    write_new(work/(token+'.ledger.json'),{'exit_code':0,'compute':read(ledger),'result_sha256':digest(work/(token+'.result.json'))})
-    return result
+def replay_release(root, output, release_name="v7_1"):
+    """Use maintained accounting/publication around the frozen scientific code."""
+    from postprocessor_replay import replay_release as maintained_replay
+    return maintained_replay(root, output, release_name)
 
 
-def replay_worker(root,output,token,release_name="v7_1"):
-    from . import engine
-    from predict_v7 import validate_output_path
-    identifier(token);identifier(release_name)
-    config=read(root/('configs/'+release_name+'.json'));work=engine.locate(root,config['run_id']);m=engine.load(root,work)
-    require(m['spec'].get('release_name')==release_name and m['spec']['schema_version'] in (2,3),'Wrong release recipe')
-    engine._start_watchdog(engine._worker_lease(root,work,m,token))
-    require(engine.verify(root,m['run_id'])['upload_ready'],'Release evidence is incomplete')
-    screen=engine.checked(work,'screen');calibrator=inside(work,screen['results']['secondary']['models']['calibrator'])
-    protected=[inside(root,v['path']) for v in m['spec']['inputs'].values()]+[calibrator,root/('configs/'+release_name+'.json'),work/'candidate.csv',work/'manifest.json']
-    for stage in ('develop','screen','stress','finalize'):
-        protected.extend(inside(work,p) for p in read(work/(stage+'.json'))['files'])
-    output=validate_output_path(output,root,protected)
-    module=engine.adapter(work,m);ids,p=final_probabilities(root,work,m,module,calibrator,token)
-    from submission_export import export_submission,validate_csv
-    from row_auc_final_utils import verify_csv_probabilities
-    output.parent.mkdir(parents=True,exist_ok=True)
-    with tempfile.TemporaryDirectory(prefix='.'+release_name+'-',dir=output.parent) as tmp:
-        candidate=Path(tmp)/'candidate.csv';example=inside(root,m['spec']['inputs']['example']['path'])
-        export_submission(ids,p,example,candidate,529390)
-        validate_csv(candidate,example,529390);verify_csv_probabilities(candidate,ids,p)
-        require(digest(candidate)==config['csv_sha256'],'Release replay fingerprint differs')
-        engine.load(root,work)
-        if output.exists():require(digest(output)==config['csv_sha256'],'Preserve different existing output')
-        else:os.link(candidate,output)
-    from .policy import release_flags
-    write_new(work/(token+'.result.json'),{**release_flags(m['spec']),'rows':529390,'csv_sha256':digest(output),'output_relative':output.relative_to(root).as_posix()})
-    return 0
+def replay_worker(root, output, token, release_name="v7_1"):
+    """Old direct workers cannot satisfy the staged publication contract."""
+    raise ValueError('Use the maintained replay bridge with an active controller lease')
