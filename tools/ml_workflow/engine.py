@@ -38,7 +38,7 @@ def locate(root,run_id):
 def prepare(root,spec_path,run_id):
     root=Path(root).resolve();identifier(run_id)
     spec=ExperimentSpec.parse(read(spec_path)).value
-    if spec["schema_version"]==2:
+    if spec["schema_version"] in (2,3):
         from .postprocessing import prepare as prepare_postprocessor
         return prepare_postprocessor(root,spec_path,run_id)
     if spec["purpose"]=="research":
@@ -78,7 +78,7 @@ def load(root,work):
         require(digest(inside(root,asset["path"]))==asset["sha256"],"Input changed: "+name)
     for asset in m.get("generated_inputs",{}).values():
         require(digest(inside(root,asset["path"]))==asset["sha256"],"Prepared input changed")
-    if m["spec"]["schema_version"]==2:
+    if m["spec"]["schema_version"] in (2,3):
         require(read(work/"prepare.ledger.json")["exit_code"]==0,"Preparation accounting incomplete")
     # An old adapter is never silently combined with a changed runtime.
     for name,expected in m["source"]["files"].items():
@@ -95,8 +95,11 @@ def adapter(work,m):
     module_spec=importlib.util.spec_from_file_location("workflow_adapter_"+m["run_id"].replace("-","_"),path)
     module=importlib.util.module_from_spec(module_spec);module_spec.loader.exec_module(module)
     require(m["spec"]["purpose"] in module.PURPOSES,"Adapter purpose mismatch")
-    if m["spec"]["schema_version"]==2:
-        require(all(p.get("config")==module.CONFIG for p in m["spec"]["candidates"].values()),"Postprocessor recipe differs")
+    if m["spec"]["schema_version"] in (2,3):
+        if m["spec"]["schema_version"]==3:
+            require(m["spec"]["candidates"]==module.CANDIDATES,"Postprocessor candidate family differs")
+        else:
+            require(all(p.get("config")==module.CONFIG for p in m["spec"]["candidates"].values()),"Postprocessor recipe differs")
     return module
 
 
@@ -176,7 +179,7 @@ def point(y,before,after):
 
 
 def _score(root,work,m,module,raw,candidate,case):
-    if m["spec"]["schema_version"]==2:
+    if m["spec"]["schema_version"] in (2,3):
         from .postprocessing import score
         return score(root,work,m,module,raw,candidate,case)
     fit=first_indices(raw["u"],raw["t"],case.meta_cutoff,case.meta_cutoff+DAY)
@@ -271,7 +274,15 @@ def _winner(spec,results):
     eligible=[]
     for candidate in spec["candidate_order"]:
         gains=[results[candidate+"/"+case["name"]]["auc_diff"] for case in spec["development"]]
-        if min(gains)>=0 and np.mean(gains)>0:eligible.append((candidate,min(gains)))
+        aged=[]
+        if spec["schema_version"]==3:
+            for case in spec["development"]:
+                if case["target_end"]>case["target_cutoff"]+2*DAY:
+                    row=results[candidate+"/"+case["name"]]
+                    require(row["diagnostics"]["late"]["events"]>0,"Missing aged development events")
+                    aged.append(row["diagnostics"]["late"]["auc_diff"])
+            require(aged and np.isfinite(aged).all(),"Invalid aged development evidence")
+        if min(gains+aged)>=0 and np.mean(gains)>0:eligible.append((candidate,min(gains+aged)))
     if not eligible:return None
     best=max(value for _,value in eligible)
     return next(name for name,value in eligible if best-value<=1e-12)
@@ -299,7 +310,7 @@ def _private_replay(root,work,m,number):
 
 
 def finalize(root,work,m,module,raw,winner):
-    if m["spec"]["schema_version"]==2:
+    if m["spec"]["schema_version"] in (2,3):
         from .postprocessing import finalize as finalize_postprocessor
         return finalize_postprocessor(root,work,m,module,raw,winner)
     screen=checked(work,"screen");checked(work,"stress")

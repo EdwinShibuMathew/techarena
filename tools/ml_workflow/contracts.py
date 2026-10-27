@@ -72,8 +72,8 @@ class ExperimentSpec:
 
     @classmethod
     def parse(cls, value):
-        require(value.get("schema_version") in (1,2), "Unsupported specification version")
-        post=value["schema_version"]==2
+        require(value.get("schema_version") in (1,2,3), "Unsupported specification version")
+        post=value["schema_version"] in (2,3)
         if post:require(value.get("mode")=="ensemble_postprocessor", "Unsupported schema-v2 mode")
         require(value.get("purpose") in {"synthetic_validation","research"}, "Unknown experiment purpose")
         require(isinstance(value.get("hypothesis"),str) and value["hypothesis"].strip(), "Declare one hypothesis")
@@ -93,7 +93,9 @@ class ExperimentSpec:
         require(isinstance(order,list) and len(order)==len(candidates) and set(order)==set(candidates),"Declare an explicit candidate tie order")
         require(type(value.get("seed")) is int, "Declare deterministic seed")
         require(value.get("bootstrap")=={"resamples":1000,"seed":2026,"minimum_valid":990}, "Promotion bootstrap contract changed")
-        require(value.get("selection")=="maximin_nonnegative_origins", "Unsupported selection rule")
+        require(value.get("selection")==("maximin_nonnegative_origins_and_late" if value["schema_version"]==3 else "maximin_nonnegative_origins"), "Unsupported selection rule")
+        if value["schema_version"]==3:
+            require(value.get("postprocessing_contract")=={"event_mass":"learned","within_event_order":"preserve","state_schema_version":2}, "Invalid schema-v3 postprocessing contract")
         for name, asset in value["inputs"].items():
             identifier(name)
             require(isinstance(asset,dict) and re.fullmatch(r"[a-f0-9]{64}",asset["sha256"]), "Invalid input fingerprint")
@@ -102,6 +104,8 @@ class ExperimentSpec:
         cases = [CaseSpec.parse(c) for c in value["development"]]
         require(cases and len({c.name for c in cases})==len(cases), "Development cases must be unique and nonempty")
         require(all(c.target_end<=JAN20+5*DAY for c in cases), "Development must end before Jan25")
+        if value["schema_version"]==3:
+            require(any(c.target_end>c.target_cutoff+2*DAY for c in cases), "Missing aged development case")
         expected={"primary":(JAN20+4*DAY,JAN20+5*DAY,JAN20+7*DAY),
                   "secondary":(JAN20+5*DAY,JAN20+6*DAY,JAN20+7*DAY),
                   "five_day":(JAN20+DAY,JAN20+2*DAY,JAN20+7*DAY)}

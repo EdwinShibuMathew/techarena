@@ -206,3 +206,26 @@ for the first such experiment and its explicit asset handoff. It is a distinct
 successor to the existing V7 recipe. A failed development or promotion gate closes
 the recipe and produces no ready configuration. Publication and independent
 release replay retain the shared accounting, provenance and no-replacement rules.
+
+
+## Schema-v3 joint calibration
+
+Schema-v3 adds candidate-specific saved state for bounded event-wide and
+conditional-score calibration. Its explicit contract permits learned event mass
+while preserving within-event order and ties. Schema-v1/v2 keep their interfaces
+and checks, including schema-v2 mass preservation.
+
+The adapter declares the exact `CANDIDATES` family. `fit_calibrator` receives
+independent candidate parameters; `predict_calibrator` receives the saved state;
+`load_calibrator` checks metadata and parameters. Saved state includes fitting-only
+normalization. The controller independently recomputes that normalization and
+binds the candidate identity and parameters to its fitting metadata. Candidate
+scoring shares hash-verified temporary development reference combiners.
+
+Selection additionally requires nonnegative aged-development change. One winner
+is frozen before the unchanged four promotion gates; there is no runner-up
+promotion after a failure. See the [V7.2 protocol](../experiments/v7.2-joint-calibration-v1/RUN_V7_2.md).
+General replay uses `python tools/predict_postprocessor.py --release v7_2`;
+the existing V7.1 CLI remains compatible. Synthetic final predictions use only
+explicitly synthetic baselines and never claim private V6 reproduction or publish
+a ready release.
