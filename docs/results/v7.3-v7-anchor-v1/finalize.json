@@ -1,0 +1,21 @@
+{
+  "schema_version": 2,
+  "purpose": "research",
+  "complete": true,
+  "passed": true,
+  "submission_ready": false,
+  "manifest_sha256": "2ab46795cc26a2dfc33bf4ee92a9d4920f36acbb4fbafa19ec51c4063c07afca",
+  "independent_replay": true,
+  "winner": "entropy_mass",
+  "rows": 529390,
+  "csv_sha256": "0e48fad60f1d3bf92f7ddbfb4117725e9ccb10ad2432fa8b43f7996e51a5ef7b",
+  "files": {
+    "candidate.csv": "0e48fad60f1d3bf92f7ddbfb4117725e9ccb10ad2432fa8b43f7996e51a5ef7b",
+    "independent-replay.csv": "0e48fad60f1d3bf92f7ddbfb4117725e9ccb10ad2432fa8b43f7996e51a5ef7b",
+    "calibrators/entropy_mass/34dffb8512bf381ac297a763783d547eb23058c6cc129db0fdda5e9b5c328458.json": "a01c00605199880ee63b0ccbbbaf6c8ae95c0ba0ab116cdaadb5bb54841fe8ec",
+    "v6-replays/1/v7_anchor.csv": "9aebf08df53b9b1d0661479151c37118859831b3b4c9d371d533c3bf203b141a",
+    "v6-replays/1/local/v6_relocation_check.json": "e8df7161c1b888fcebc05337d569bb4fd23adae708a77ef85bcb8379cd5060f7",
+    "v6-replays/2/v7_anchor.csv": "9aebf08df53b9b1d0661479151c37118859831b3b4c9d371d533c3bf203b141a",
+    "v6-replays/2/local/v6_relocation_check.json": "5be5ed148844d03d018ae9d72f141a82c6206710acba9d73546b348459472387"
+  }
+}

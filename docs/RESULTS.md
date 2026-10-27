@@ -68,6 +68,28 @@ The controller refused further stages before phase claims. New compute was
 507.804453513 seconds; cumulative usage is 3,397.270282478001 of 14,400 seconds.
 See the [frozen method and exact evidence](results/v7.2-joint-calibration-v1/README.md).
 
+## V7.3 upload trial (accepted against V7)
+
+The selected entropy-plus-mass correction on fixed V7 passed the user-approved
+trial criteria. Primary and five-day paired 95% lower bounds against V7 were
+strictly positive; Jan26 point change was nonnegative. Late change is reported
+as risk and did not block this explicitly approved trial policy.
+
+| Window | AUC change vs V7 | Paired 95% interval |
+|---|---:|---|
+| Primary Jan25–26 | +0.000081636115 | [+0.000026788450, +0.000136279733] |
+| Secondary Jan26 | +0.000127886096 | [+0.000089680508, +0.000165693243] |
+| Five-day Jan22–26 | +0.000161523553 | [+0.000038298539, +0.000272903676] |
+| Late 48–120h | −0.000252453117 | Diagnostic point comparison |
+
+The original V6 late gate still fails; full scientific promotion is not claimed.
+Two independent final exports and a separately budgeted supported replay matched
+exactly. The validated 529,390-row CSV was delivered to the project submissions
+folder and Windows Downloads. New compute was 1,062.429163982 seconds; cumulative
+usage is 4,459.699446460001 of 14,400 seconds. Reused dates remain retrospective,
+not independent or selection-adjusted evidence; no hidden competition score is
+claimed. See the [exact method, evidence and CSV fingerprint](results/v7.3-v7-anchor-v1/README.md).
+
 ## Archived V8 campaigns
 
 [PR #4's preserved evidence](results/v8-archive/README.md) records six closed

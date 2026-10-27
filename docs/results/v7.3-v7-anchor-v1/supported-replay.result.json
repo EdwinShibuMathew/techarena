@@ -1,0 +1,9 @@
+{
+  "release_policy": "v7_upload_trial",
+  "upload_ready": true,
+  "submission_ready": false,
+  "promotion_supported": false,
+  "rows": 529390,
+  "csv_sha256": "0e48fad60f1d3bf92f7ddbfb4117725e9ccb10ad2432fa8b43f7996e51a5ef7b",
+  "output_relative": "artifacts/submissions/v7_3_trial_replayed.csv"
+}

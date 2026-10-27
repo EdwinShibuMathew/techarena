@@ -1,0 +1,118 @@
+{
+  "schema_version": 1,
+  "stage": "stress",
+  "purpose": "research",
+  "complete": true,
+  "passed": true,
+  "submission_ready": false,
+  "manifest_sha256": "2ab46795cc26a2dfc33bf4ee92a9d4920f36acbb4fbafa19ec51c4063c07afca",
+  "results": {
+    "five_day": {
+      "case": {
+        "name": "five_day",
+        "meta_cutoff": 1737417600,
+        "target_cutoff": 1737504000,
+        "target_end": 1737936000,
+        "baseline": "baseline_five_day"
+      },
+      "events": 51488,
+      "fit_events": 35156,
+      "maximum_meta_label_timestamp": 1737503940,
+      "baseline_auc": 0.7818190858952342,
+      "candidate_auc": 0.7822476123338514,
+      "auc_diff": 0.00042852643861723827,
+      "models": {
+        "calibrator": "calibrators/entropy_mass/accf80fd22959690ae3b5a82eb059c530d8c9916115ee307b619732b2e55dc30.json"
+      },
+      "files": {
+        "calibrators/entropy_mass/accf80fd22959690ae3b5a82eb059c530d8c9916115ee307b619732b2e55dc30.json": "3647582289f3718a31ef01805f1e432e8f6945414d0e80f8b5595333eb92a257",
+        "cache-receipts/oof-37a7906c0697081ae88965ceb4273a5cf49e0cd4ad28b32f6f587e4d3cdf7996-1793071562272103680.json": "d6994dedb0c55c74760f664d9df7c143af473e7116d888e19d5601c0cbd048d2",
+        "predictions/entropy_mass-five_day.npz": "64499dccb2254f1be71ee283f49a888d7bb946225fe5f2fa0057b6f58bdb610f"
+      },
+      "coefficients": [
+        0.0,
+        0.0,
+        5.4141271544707376e-05,
+        -0.04808355537688793
+      ],
+      "objective": 0.33566889745088563,
+      "identity_objective": 0.3358991350180849,
+      "timings": {
+        "total": 24.330929587995342,
+        "calibration_and_reference": 20.752789293001115
+      },
+      "maximum_event_mass_change": 0.16381109173504949,
+      "ci_lower": 0.0001909253020741103,
+      "ci_upper": 0.0006364297704029131,
+      "gate_passed": true,
+      "resamples": 1000,
+      "clicked_pairs_auc": null,
+      "unclicked_pairs_auc": null,
+      "v7_diagnostic": {
+        "baseline_auc": 0.7818190858952342,
+        "candidate_auc": 0.7820860887805409,
+        "auc_diff": 0.0002670028853066775,
+        "candidate_minus_v7_auc": 0.00016152355331056079,
+        "used_for_selection": false
+      },
+      "v7_comparison": {
+        "baseline_auc": 0.7820860887805409,
+        "candidate_auc": 0.7822476123338514,
+        "auc_diff": 0.00016152355331056079,
+        "anchor_sha256": "9aebf08df53b9b1d0661479151c37118859831b3b4c9d371d533c3bf203b141a",
+        "ci_lower": 3.8298539084929974e-05,
+        "ci_upper": 0.00027290367600386607,
+        "gate_passed": true,
+        "resamples": 1000,
+        "clicked_pairs_auc": null,
+        "unclicked_pairs_auc": null,
+        "late": {
+          "baseline_auc": 0.7393037851795764,
+          "candidate_auc": 0.7390513320629086,
+          "auc_diff": -0.00025245311666777237
+        }
+      },
+      "late": {
+        "baseline_auc": 0.7394713810595162,
+        "candidate_auc": 0.7390513320629086,
+        "auc_diff": -0.0004200489966075249
+      },
+      "diagnostics": {
+        "warm": {
+          "events": 42519,
+          "baseline_auc": 0.7907192639848334,
+          "candidate_auc": 0.791092392524645,
+          "auc_diff": 0.0003731285398116402
+        },
+        "cold": {
+          "events": 8969,
+          "baseline_auc": 0.734597401668976,
+          "candidate_auc": 0.7353850356648465,
+          "auc_diff": 0.0007876339958704515
+        },
+        "history_empty": {
+          "events": 960,
+          "baseline_auc": 0.5297467837125955,
+          "candidate_auc": 0.5300580312102796,
+          "auc_diff": 0.0003112474976840751
+        },
+        "late": {
+          "events": 7596,
+          "baseline_auc": 0.7394713810595162,
+          "candidate_auc": 0.7390513320629086,
+          "auc_diff": -0.0004200489966075249
+        }
+      }
+    }
+  },
+  "files": {
+    "calibrators/entropy_mass/accf80fd22959690ae3b5a82eb059c530d8c9916115ee307b619732b2e55dc30.json": "3647582289f3718a31ef01805f1e432e8f6945414d0e80f8b5595333eb92a257",
+    "cache-receipts/oof-37a7906c0697081ae88965ceb4273a5cf49e0cd4ad28b32f6f587e4d3cdf7996-1793071562272103680.json": "d6994dedb0c55c74760f664d9df7c143af473e7116d888e19d5601c0cbd048d2",
+    "predictions/entropy_mass-five_day.npz": "64499dccb2254f1be71ee283f49a888d7bb946225fe5f2fa0057b6f58bdb610f"
+  },
+  "hashing_seconds": 1.5005310270062182,
+  "validation_status": "reused retrospective dates; not independent or selection-adjusted evidence",
+  "winner": "entropy_mass",
+  "release_policy": "v7_upload_trial",
+  "upload_comparator": "V7"
+}

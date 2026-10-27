@@ -1,0 +1,192 @@
+{
+  "schema_version": 1,
+  "stage": "screen",
+  "purpose": "research",
+  "complete": true,
+  "passed": true,
+  "submission_ready": false,
+  "manifest_sha256": "2ab46795cc26a2dfc33bf4ee92a9d4920f36acbb4fbafa19ec51c4063c07afca",
+  "results": {
+    "primary": {
+      "case": {
+        "name": "primary",
+        "meta_cutoff": 1737676800,
+        "target_cutoff": 1737763200,
+        "target_end": 1737936000,
+        "baseline": "baseline_primary"
+      },
+      "events": 43964,
+      "fit_events": 35040,
+      "maximum_meta_label_timestamp": 1737763140,
+      "baseline_auc": 0.8184592533262289,
+      "candidate_auc": 0.8187833364842867,
+      "auc_diff": 0.0003240831580577641,
+      "models": {
+        "calibrator": "calibrators/entropy_mass/c549eeecc24d3efb21d678457ac54ae4d10147bcc6e3d98d3746ae859bb9b58f.json"
+      },
+      "files": {
+        "calibrators/entropy_mass/c549eeecc24d3efb21d678457ac54ae4d10147bcc6e3d98d3746ae859bb9b58f.json": "7729722c508d4d6ce2da03469e01c00331e04f633d99e7b9fffd2502f478583d",
+        "cache-receipts/oof-77db2e0b64d6963d8d23e2a110d1b0f455e3a80f7d1249d5e1d94454875ee7c8-1793071282860215678.json": "f5dc513f24e2e4592e51df4e763851ab5ee0c0ad232630a801318337b1475f43",
+        "predictions/entropy_mass-primary.npz": "2d33a31f7b81687f5756b9369301baac27e932036d20cf6fa46dc7975e5d5688"
+      },
+      "coefficients": [
+        0.0,
+        0.0,
+        -0.024049036240349392,
+        -0.03278793164783393
+      ],
+      "objective": 0.3013924500363068,
+      "identity_objective": 0.30148655048462486,
+      "timings": {
+        "total": 182.87037721800152,
+        "calibration_and_reference": 18.76230857399787
+      },
+      "maximum_event_mass_change": 0.08600746027253092,
+      "ci_lower": 0.00018906547465484812,
+      "ci_upper": 0.00046784236610463993,
+      "gate_passed": true,
+      "resamples": 1000,
+      "clicked_pairs_auc": null,
+      "unclicked_pairs_auc": null,
+      "v7_diagnostic": {
+        "baseline_auc": 0.8184592533262289,
+        "candidate_auc": 0.8187017003697403,
+        "auc_diff": 0.00024244704351139568,
+        "candidate_minus_v7_auc": 8.163611454636843e-05,
+        "used_for_selection": false
+      },
+      "v7_comparison": {
+        "baseline_auc": 0.8187017003697403,
+        "candidate_auc": 0.8187833364842867,
+        "auc_diff": 8.163611454636843e-05,
+        "anchor_sha256": "9aebf08df53b9b1d0661479151c37118859831b3b4c9d371d533c3bf203b141a",
+        "ci_lower": 2.678845017690945e-05,
+        "ci_upper": 0.00013627973271001235,
+        "gate_passed": true,
+        "resamples": 1000,
+        "clicked_pairs_auc": null,
+        "unclicked_pairs_auc": null
+      },
+      "diagnostics": {
+        "warm": {
+          "events": 42496,
+          "baseline_auc": 0.8208327785575634,
+          "candidate_auc": 0.8211387531196888,
+          "auc_diff": 0.0003059745621253329
+        },
+        "cold": {
+          "events": 1468,
+          "baseline_auc": 0.7356634555976589,
+          "candidate_auc": 0.7363996854615006,
+          "auc_diff": 0.0007362298638416975
+        },
+        "history_empty": {
+          "events": 361,
+          "baseline_auc": 0.5561784854261107,
+          "candidate_auc": 0.5534678505893806,
+          "auc_diff": -0.0027106348367300637
+        },
+        "late": {
+          "events": 0
+        }
+      }
+    },
+    "secondary": {
+      "case": {
+        "name": "secondary",
+        "meta_cutoff": 1737763200,
+        "target_cutoff": 1737849600,
+        "target_end": 1737936000,
+        "baseline": "baseline_secondary"
+      },
+      "events": 35138,
+      "fit_events": 35230,
+      "maximum_meta_label_timestamp": 1737849540,
+      "baseline_auc": 0.8271277122502162,
+      "candidate_auc": 0.8275321389476477,
+      "auc_diff": 0.0004044266974314592,
+      "models": {
+        "calibrator": "calibrators/entropy_mass/34dffb8512bf381ac297a763783d547eb23058c6cc129db0fdda5e9b5c328458.json"
+      },
+      "files": {
+        "calibrators/entropy_mass/34dffb8512bf381ac297a763783d547eb23058c6cc129db0fdda5e9b5c328458.json": "a01c00605199880ee63b0ccbbbaf6c8ae95c0ba0ab116cdaadb5bb54841fe8ec",
+        "cache-receipts/oof-793d843c162995807ddaeffed699a90cc3633c5e4199b844195aec4bb045f943-1793071490814005180.json": "daee542d37a6378b83a713ed553e0ef69bbc5053a115bbb9fc35131bca84b78d",
+        "predictions/entropy_mass-secondary.npz": "20739670d7adbbd0643fa9d57860ee760213d16beaa802007feddbaf832aa8f4"
+      },
+      "coefficients": [
+        0.0,
+        0.0,
+        -0.018350114739393953,
+        -0.021652154941973815
+      ],
+      "objective": 0.2915512590114216,
+      "identity_objective": 0.29159156601354713,
+      "timings": {
+        "total": 185.8149286800035,
+        "calibration_and_reference": 16.112525138996716
+      },
+      "maximum_event_mass_change": 0.060956937665350486,
+      "ci_lower": 0.00027328002478281267,
+      "ci_upper": 0.0005328041502156127,
+      "gate_passed": true,
+      "resamples": 1000,
+      "clicked_pairs_auc": null,
+      "unclicked_pairs_auc": null,
+      "v7_diagnostic": {
+        "baseline_auc": 0.8271277122502162,
+        "candidate_auc": 0.827404252852057,
+        "auc_diff": 0.0002765406018407912,
+        "candidate_minus_v7_auc": 0.000127886095590668,
+        "used_for_selection": false
+      },
+      "v7_comparison": {
+        "baseline_auc": 0.827404252852057,
+        "candidate_auc": 0.8275321389476477,
+        "auc_diff": 0.000127886095590668,
+        "anchor_sha256": "9aebf08df53b9b1d0661479151c37118859831b3b4c9d371d533c3bf203b141a",
+        "ci_lower": 8.968050816950402e-05,
+        "ci_upper": 0.0001656932426316121,
+        "gate_passed": true,
+        "resamples": 1000,
+        "clicked_pairs_auc": null,
+        "unclicked_pairs_auc": null
+      },
+      "diagnostics": {
+        "warm": {
+          "events": 34543,
+          "baseline_auc": 0.8283682528344378,
+          "candidate_auc": 0.8287729795692818,
+          "auc_diff": 0.00040472673484392985
+        },
+        "cold": {
+          "events": 595,
+          "baseline_auc": 0.7433955400170084,
+          "candidate_auc": 0.7435538127185108,
+          "auc_diff": 0.00015827270150248207
+        },
+        "history_empty": {
+          "events": 198,
+          "baseline_auc": 0.5393062904174015,
+          "candidate_auc": 0.5358553791887125,
+          "auc_diff": -0.003450911228689013
+        },
+        "late": {
+          "events": 0
+        }
+      }
+    }
+  },
+  "files": {
+    "calibrators/entropy_mass/c549eeecc24d3efb21d678457ac54ae4d10147bcc6e3d98d3746ae859bb9b58f.json": "7729722c508d4d6ce2da03469e01c00331e04f633d99e7b9fffd2502f478583d",
+    "cache-receipts/oof-77db2e0b64d6963d8d23e2a110d1b0f455e3a80f7d1249d5e1d94454875ee7c8-1793071282860215678.json": "f5dc513f24e2e4592e51df4e763851ab5ee0c0ad232630a801318337b1475f43",
+    "predictions/entropy_mass-primary.npz": "2d33a31f7b81687f5756b9369301baac27e932036d20cf6fa46dc7975e5d5688",
+    "calibrators/entropy_mass/34dffb8512bf381ac297a763783d547eb23058c6cc129db0fdda5e9b5c328458.json": "a01c00605199880ee63b0ccbbbaf6c8ae95c0ba0ab116cdaadb5bb54841fe8ec",
+    "cache-receipts/oof-793d843c162995807ddaeffed699a90cc3633c5e4199b844195aec4bb045f943-1793071490814005180.json": "daee542d37a6378b83a713ed553e0ef69bbc5053a115bbb9fc35131bca84b78d",
+    "predictions/entropy_mass-secondary.npz": "20739670d7adbbd0643fa9d57860ee760213d16beaa802007feddbaf832aa8f4"
+  },
+  "hashing_seconds": 1.521321063999494,
+  "validation_status": "reused retrospective dates; not independent or selection-adjusted evidence",
+  "winner": "entropy_mass",
+  "release_policy": "v7_upload_trial",
+  "upload_comparator": "V7"
+}

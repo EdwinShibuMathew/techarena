@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "release_policy": "v7_upload_trial",
+  "upload_ready": true,
+  "submission_ready": false,
+  "promotion_supported": false,
+  "purpose": "research",
+  "run_id": "v7.3-v7-anchor-v1",
+  "csv_sha256": "0e48fad60f1d3bf92f7ddbfb4117725e9ccb10ad2432fa8b43f7996e51a5ef7b",
+  "source_snapshot_sha256": "cb938b341d1d2f57b508305a9857db56f9e0c0d2d2f684d07b26334110105d47",
+  "manifest_sha256": "2ab46795cc26a2dfc33bf4ee92a9d4920f36acbb4fbafa19ec51c4063c07afca",
+  "final_report_sha256": "b0d96af6bc093ae890017a3dd96d0c49c450650dc6db33bf921d3a63bb1f9ca9",
+  "competition_upload_performed": false,
+  "v6_gate_results": {
+    "primary": true,
+    "secondary": true,
+    "five_day": true,
+    "late": false
+  },
+  "v7_anchor_sha256": "9aebf08df53b9b1d0661479151c37118859831b3b4c9d371d533c3bf203b141a"
+}
