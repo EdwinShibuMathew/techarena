@@ -1,4 +1,4 @@
-# Standalone ML workflow (schema version 1)
+# Standalone ML workflow
 
 `tools/run_experiment.py` owns chronology, metrics, gates, budgeting, source
 snapshots and publication. `tools/ml_workflow/` is the shared implementation.
@@ -177,3 +177,106 @@ Use `develop`, `screen`, `stress`, `finalize`, then `verify` with that run ID.
 Preparation itself never authorizes restarting a closed recipe or resetting the
 research budget. The supplied adapter is synthetic only; implementing and
 reviewing a scientific hypothesis remains a separate research change.
+
+## Schema-v2 ensemble postprocessing
+
+Schema-v1 retains the neural/member-replacement interface above. Schema-v2 with
+`mode: ensemble_postprocessor` supports a calibration adapter without fake neural
+checkpoints. Candidates declare `kind: ensemble_postprocessor` and a frozen
+`config` matching the adapter's `CONFIG`. The adapter exposes `user_folds`,
+`fit_calibrator`, `load_calibrator` and `predict_calibrator`; predictions receive
+no target labels. The controller owns chronology, case metrics, gates and export.
+
+Preparation is budgeted, snapshots committed source, and normalizes event inputs
+while preserving official evaluation row IDs. Generated arrays and their hashes
+are sealed into the immutable run manifest only after preparation accounting
+succeeds. Worker execution requires the active budget-owning controller. Research
+continues the shared cumulative ledger and cannot reset it through a new run ID.
+
+User-grouped cross-fitting creates label-safe calibration scores from frozen
+neural features and temporary copies of the original CatBoost recipe. Its
+content-addressed cache binds features, fitting labels/users/fold assignments,
+cutoff, parameters, implementation and runtime. Complete entries retain hashes
+for every fitted fold model and score array; corrupted entries fail verification.
+Original model/combiner files are never changed. At most two independent CPU
+folds run concurrently, preserving each model's fixed parameters and seed.
+
+See the [V7.1 frozen protocol](../experiments/v7.1-entropy-sharpening-v1/RUN_V7_1.md)
+for the first such experiment and its explicit asset handoff. It is a distinct
+successor to the existing V7 recipe. A failed development or promotion gate closes
+the recipe and produces no ready configuration. Publication and independent
+release replay retain the shared accounting, provenance and no-replacement rules.
+
+
+## Schema-v3 joint calibration
+
+Schema-v3 adds candidate-specific saved state for bounded event-wide and
+conditional-score calibration. Its explicit contract permits learned event mass
+while preserving within-event order and ties. Schema-v1/v2 keep their interfaces
+and checks, including schema-v2 mass preservation.
+
+The adapter declares the exact `CANDIDATES` family. `fit_calibrator` receives
+independent candidate parameters; `predict_calibrator` receives the saved state;
+`load_calibrator` checks metadata and parameters. Saved state includes fitting-only
+normalization. The controller independently recomputes that normalization and
+binds the candidate identity and parameters to its fitting metadata. Candidate
+scoring shares hash-verified temporary development reference combiners.
+
+Selection additionally requires nonnegative aged-development change. One winner
+is frozen before the unchanged four promotion gates; there is no runner-up
+promotion after a failure. See the [V7.2 protocol](../experiments/v7.2-joint-calibration-v1/RUN_V7_2.md).
+General replay uses `python tools/predict_postprocessor.py --release v7_2`;
+the existing V7.1 CLI remains compatible. Synthetic final predictions use only
+explicitly synthetic baselines and never claim private V6 reproduction or publish
+a ready release.
+
+Supported postprocessor replay defaults to `artifacts/replays/<release>.csv`;
+`python tools/predict_v7_1.py` defaults to `artifacts/replays/v7_1.csv`.
+Use `--output` for another destination inside ignored `artifacts/`. Published
+submissions and their hard-link/symlink aliases remain protected inputs. Existing
+matching replay outputs are preserved; different outputs are never replaced.
+
+Run these maintained CLIs from the current checkout even when a release uses an
+older scientific snapshot. The maintained replay bridge verifies the snapshot
+before importing its runtime in a fresh subprocess, then uses that frozen
+runtime for evidence checks, adapter loading and inference. Historical snapshot
+CLIs retain their original behavior; editing snapshots or disabling runtime hash
+checks is not a supported migration.
+
+The controller owns the replay staging directory and public destination. Workers
+write only a validated staged CSV and an internal record without readiness flags.
+Successful shared compute accounting and a durable replay ledger must precede
+CSV publication; the final ready replay result is written last. Failure of final
+accounting or replay-ledger persistence cannot publish a new destination or ready
+result. Failed accounting retains the durable reservation. A later publication
+or result-write failure reports failure and preserves any existing destination;
+it never creates a ready result. Completed inference may already be charged in
+these later failure cases.
+
+New replay ledgers and results use schema version 2. The ledger binds the
+completed budget state to the staged CSV and immutable validation-record hash;
+the final result binds that ledger, validation record, scientific source snapshot
+and maintained bridge implementation hash. Historical replay records remain
+unchanged. A successful replay ledger alone does not establish public readiness.
+
+
+## Explicit V7 upload trials
+
+Schema-v3 can declare `release_policy: v7_upload_trial`, `upload_comparator: V7`
+and a hash-bound fixed V7 anchor. Omitted policy retains the historical four V6
+gates and aged-development selection. Unknown policies and partial trial
+contracts are rejected. V6 remains a reported scientific comparator.
+
+The trial selects a candidate on predeclared development gains against V7,
+then requires positive paired 95% lower bounds against V7 on primary/five-day
+windows and nonnegative Jan26 change. Late changes are reported for both
+comparators without blocking this user-approved trial policy. The controller
+recomputes the same rules when verifying reports and replaying a release.
+
+Trial receipts publish `upload_ready: true`, `submission_ready: false` and
+`promotion_supported: false`, plus all original V6 gate outcomes. They do not
+promote old failed campaigns. Finalization verifies two fresh canonical V6
+replays, the exact fixed V7 CSV fingerprint and two independent new CSVs before
+completed accounting permits publication. Generic postprocessor replay supports
+both release kinds while rejecting conflicting readiness claims. See the
+[V7.3 protocol](../experiments/v7.3-v7-anchor-v1/RUN_V7_3.md).

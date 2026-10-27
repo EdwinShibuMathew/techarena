@@ -1,0 +1,148 @@
+{
+  "schema_version": 1,
+  "stage": "develop",
+  "purpose": "research",
+  "complete": true,
+  "passed": true,
+  "submission_ready": false,
+  "manifest_sha256": "35c54c0def6e7f902754757ba70b72d490a053bd5a9b99a9676349853f613d2f",
+  "results": {
+    "entropy/jan22_long": {
+      "case": {
+        "name": "jan22_long",
+        "meta_cutoff": 1737417600,
+        "target_cutoff": 1737504000,
+        "target_end": 1737763200,
+        "baseline": "baseline_jan22_long"
+      },
+      "events": 47957,
+      "fit_events": 35156,
+      "maximum_meta_label_timestamp": 1737503940,
+      "baseline_auc": 0.7851209752765934,
+      "candidate_auc": 0.7853130533392936,
+      "auc_diff": 0.0001920780627001628,
+      "models": {
+        "calibrator": "calibrators/entropy/0bb7e376d91de695e5afe5e1270a49d8165c4dfa2f284a31bcc4eae6327142e3.json"
+      },
+      "files": {
+        "calibrators/entropy/0bb7e376d91de695e5afe5e1270a49d8165c4dfa2f284a31bcc4eae6327142e3.json": "147139e2225d479d9f2772e13c1db9745cd58b3e4e2fc318f449cf78b07002ab",
+        "cache-receipts/oof-3cc4623db5e164e2a2330c1be523cf30d8cc8b65eed4b582079cba7642eb28d3-1793065288948341775.json": "16ccf69231e7f41f6b214b3b1dfba739acb12f516d7e8ecfdc360692c5385e40",
+        "predictions/entropy-jan22_long.npz": "74fe34a37de6ffcd815c087046d78b1809bf996f540303e9386a0f78fd41aafe"
+      },
+      "coefficients": [
+        0.1723938825024883,
+        0.06584918284146862
+      ],
+      "objective": 0.33546091391787985,
+      "identity_objective": 0.3384689501789035,
+      "timings": {
+        "total": 190.09485377500096,
+        "calibration_and_reference": 19.16202865699597
+      },
+      "diagnostics": {
+        "warm": {
+          "events": 40456,
+          "baseline_auc": 0.7926952264581525,
+          "candidate_auc": 0.7928494788476321,
+          "auc_diff": 0.0001542523894796366
+        },
+        "cold": {
+          "events": 7501,
+          "baseline_auc": 0.7397107471113986,
+          "candidate_auc": 0.7400870173332509,
+          "auc_diff": 0.00037627022185227066
+        },
+        "history_empty": {
+          "events": 707,
+          "baseline_auc": 0.5431455190771961,
+          "candidate_auc": 0.5442066436964396,
+          "auc_diff": 0.0010611246192434587
+        },
+        "late": {
+          "events": 4065,
+          "baseline_auc": 0.7443329853404143,
+          "candidate_auc": 0.7435306494511995,
+          "auc_diff": -0.0008023358892147447
+        }
+      }
+    },
+    "entropy/jan24_forward": {
+      "case": {
+        "name": "jan24_forward",
+        "meta_cutoff": 1737504000,
+        "target_cutoff": 1737676800,
+        "target_end": 1737763200,
+        "baseline": "baseline_jan24_forward"
+      },
+      "events": 35040,
+      "fit_events": 35112,
+      "maximum_meta_label_timestamp": 1737590340,
+      "baseline_auc": 0.8107038322674216,
+      "candidate_auc": 0.8108149894227077,
+      "auc_diff": 0.00011115715528609016,
+      "models": {
+        "calibrator": "calibrators/entropy/f15684fd3bc2370729739ab3fb16e8e6c805ce2e478715d6189b45a8c7aeced9.json"
+      },
+      "files": {
+        "reference-combiners/jan24_forward-dim8_seed42.cbm": "23affdba5be1b0291ba83876142739f4138377fd50a796e067a81e8c3b396a21",
+        "reference-combiners/jan24_forward-dim8_seed43.cbm": "7fd6a1ec4e390bf3f03a85e9b83bd41e2b001e10b708bc75d848f705cdbc3d18",
+        "reference-combiners/jan24_forward-dim8_seed44.cbm": "8945897eab87c618374a2c7c7b4a579ee193ffb3f925afbf919798a1b64337fa",
+        "reference-combiners/jan24_forward-dim16_seed42.cbm": "6922dfaae7db1e063950c152a12a4202475ed4cbb3709a368a9b340694c6ba6b",
+        "reference-combiners/jan24_forward-dim16_seed43.cbm": "c74fd7c12e987b7bb5c3a0f237561f260016015616c9576413953bf9a02413d9",
+        "calibrators/entropy/f15684fd3bc2370729739ab3fb16e8e6c805ce2e478715d6189b45a8c7aeced9.json": "2ed0c7ce046171dec5f57539d0529c3a0ac7c221e18fe9aa41bad4c42db9167c",
+        "cache-receipts/oof-6385dcaaa5142523ec2619d47ea88ed429bf7f9b82b9ba179a3d0f7ab302f627-1793065480870633462.json": "2403520f085bdb07b8f28dc82e56e26f27a74b4a06c41a58057633d4cf37318f",
+        "predictions/entropy-jan24_forward.npz": "ee0f37dcee3789e72c70ba6525fb173801c90d22c884338b1e8fb597f9a45299"
+      },
+      "coefficients": [
+        0.16116268513796975,
+        0.06621370889256863
+      ],
+      "objective": 0.319518421987851,
+      "identity_objective": 0.3223097845131767,
+      "timings": {
+        "total": 243.68690428099944,
+        "calibration_and_reference": 71.38014030100021
+      },
+      "diagnostics": {
+        "warm": {
+          "events": 33648,
+          "baseline_auc": 0.8132784095002146,
+          "candidate_auc": 0.8133943537896883,
+          "auc_diff": 0.00011594428947370172
+        },
+        "cold": {
+          "events": 1392,
+          "baseline_auc": 0.7365696952249591,
+          "candidate_auc": 0.7356474138289741,
+          "auc_diff": -0.0009222813959849363
+        },
+        "history_empty": {
+          "events": 234,
+          "baseline_auc": 0.5171961083108663,
+          "candidate_auc": 0.5140405579650685,
+          "auc_diff": -0.0031555503457977307
+        },
+        "late": {
+          "events": 0
+        }
+      }
+    }
+  },
+  "files": {
+    "calibrators/entropy/0bb7e376d91de695e5afe5e1270a49d8165c4dfa2f284a31bcc4eae6327142e3.json": "147139e2225d479d9f2772e13c1db9745cd58b3e4e2fc318f449cf78b07002ab",
+    "cache-receipts/oof-3cc4623db5e164e2a2330c1be523cf30d8cc8b65eed4b582079cba7642eb28d3-1793065288948341775.json": "16ccf69231e7f41f6b214b3b1dfba739acb12f516d7e8ecfdc360692c5385e40",
+    "predictions/entropy-jan22_long.npz": "74fe34a37de6ffcd815c087046d78b1809bf996f540303e9386a0f78fd41aafe",
+    "reference-combiners/jan24_forward-dim8_seed42.cbm": "23affdba5be1b0291ba83876142739f4138377fd50a796e067a81e8c3b396a21",
+    "reference-combiners/jan24_forward-dim8_seed43.cbm": "7fd6a1ec4e390bf3f03a85e9b83bd41e2b001e10b708bc75d848f705cdbc3d18",
+    "reference-combiners/jan24_forward-dim8_seed44.cbm": "8945897eab87c618374a2c7c7b4a579ee193ffb3f925afbf919798a1b64337fa",
+    "reference-combiners/jan24_forward-dim16_seed42.cbm": "6922dfaae7db1e063950c152a12a4202475ed4cbb3709a368a9b340694c6ba6b",
+    "reference-combiners/jan24_forward-dim16_seed43.cbm": "c74fd7c12e987b7bb5c3a0f237561f260016015616c9576413953bf9a02413d9",
+    "calibrators/entropy/f15684fd3bc2370729739ab3fb16e8e6c805ce2e478715d6189b45a8c7aeced9.json": "2ed0c7ce046171dec5f57539d0529c3a0ac7c221e18fe9aa41bad4c42db9167c",
+    "cache-receipts/oof-6385dcaaa5142523ec2619d47ea88ed429bf7f9b82b9ba179a3d0f7ab302f627-1793065480870633462.json": "2403520f085bdb07b8f28dc82e56e26f27a74b4a06c41a58057633d4cf37318f",
+    "predictions/entropy-jan24_forward.npz": "ee0f37dcee3789e72c70ba6525fb173801c90d22c884338b1e8fb597f9a45299"
+  },
+  "hashing_seconds": 1.5524216409976361,
+  "validation_status": "reused retrospective dates; not independent or selection-adjusted evidence",
+  "winner": "entropy",
+  "selection_rule": "maximin_nonnegative_origins"
+}

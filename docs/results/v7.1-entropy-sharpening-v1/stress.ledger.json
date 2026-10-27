@@ -1,0 +1,43 @@
+{
+  "exit_code": 2,
+  "compute": {
+    "used_seconds": 2889.465828965005,
+    "carry_identity": "15fac4ea051b87f1457742744eb4b1fb3452626509cfb1555b44e6c4702c3547",
+    "total_seconds": 14400,
+    "attempts": [
+      {
+        "owner": "v7.1-entropy-sharpening-v1/prepare",
+        "status": "complete",
+        "reserved_seconds": 1200,
+        "controller_pid": 2,
+        "seconds": 29.927673234000395,
+        "error": null
+      },
+      {
+        "owner": "v7.1-entropy-sharpening-v1/develop",
+        "status": "complete",
+        "reserved_seconds": 1200,
+        "controller_pid": 71446,
+        "seconds": 445.35834743099986,
+        "error": null
+      },
+      {
+        "owner": "v7.1-entropy-sharpening-v1/screen",
+        "status": "complete",
+        "reserved_seconds": 1200,
+        "controller_pid": 73365,
+        "seconds": 394.16438585200376,
+        "error": null
+      },
+      {
+        "owner": "v7.1-entropy-sharpening-v1/stress",
+        "status": "complete",
+        "reserved_seconds": 1200,
+        "controller_pid": 74947,
+        "seconds": 45.65607498600002,
+        "error": null
+      }
+    ]
+  },
+  "source_commit": "c64eab4b1e7a42a664900edfabbca1804137b359"
+}

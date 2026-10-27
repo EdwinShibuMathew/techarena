@@ -72,31 +72,48 @@ class ExperimentSpec:
 
     @classmethod
     def parse(cls, value):
-        require(value.get("schema_version")==1, "Unsupported specification version")
+        require(value.get("schema_version") in (1,2,3), "Unsupported specification version")
+        post=value["schema_version"] in (2,3)
+        if post:require(value.get("mode")=="ensemble_postprocessor", "Unsupported schema-v2 mode")
         require(value.get("purpose") in {"synthetic_validation","research"}, "Unknown experiment purpose")
         require(isinstance(value.get("hypothesis"),str) and value["hypothesis"].strip(), "Declare one hypothesis")
         require(value.get("comparator")=="V6", "Comparator must be V6")
+        policy=value.get("release_policy","v6_four_gate")
+        require(policy in {"v6_four_gate","v7_upload_trial"}, "Unknown release policy")
+        trial=policy=="v7_upload_trial"
+        if trial:
+            require(value["schema_version"]==3 and value.get("upload_comparator")=="V7", "V7 trials require schema-v3 and explicit comparator")
+            require(value.get("anchor_sha256")=="9aebf08df53b9b1d0661479151c37118859831b3b4c9d371d533c3bf203b141a" and value.get("anchor_gamma")==1.12,"Fixed V7 identity changed")
+            require({"v7_config","v7_validation"}<=set(value["inputs"]), "Missing V7 identity evidence")
+        else:require("upload_comparator" not in value,"Upload comparator requires trial policy")
         adapter = Path(value["adapter"])
         require(not adapter.is_absolute() and ".." not in adapter.parts and adapter.parts[0]=="experiments" and adapter.suffix==".py", "Adapter must be repository experiment source")
         candidates = value["candidates"]
         require(bool(candidates) and isinstance(candidates,dict), "Declare candidates before development")
         for name, params in candidates.items():
             identifier(name)
-            changed=params["members"]
-            require(bool(changed) and len(set(changed))==len(changed) and set(changed)<=set(MEMBERS), "Unknown or repeated changed members")
+            if post:
+                require(params.get("kind")=="ensemble_postprocessor", "Invalid postprocessor candidate")
+            else:
+                changed=params["members"]
+                require(bool(changed) and len(set(changed))==len(changed) and set(changed)<=set(MEMBERS), "Unknown or repeated changed members")
         order=value["candidate_order"]
         require(isinstance(order,list) and len(order)==len(candidates) and set(order)==set(candidates),"Declare an explicit candidate tie order")
         require(type(value.get("seed")) is int, "Declare deterministic seed")
         require(value.get("bootstrap")=={"resamples":1000,"seed":2026,"minimum_valid":990}, "Promotion bootstrap contract changed")
-        require(value.get("selection")=="maximin_nonnegative_origins", "Unsupported selection rule")
+        require(value.get("selection")==("maximin_nonnegative_v7_origins" if trial else "maximin_nonnegative_origins_and_late" if value["schema_version"]==3 else "maximin_nonnegative_origins"), "Unsupported selection rule")
+        if value["schema_version"]==3:
+            require(value.get("postprocessing_contract")=={"event_mass":"learned","within_event_order":"preserve","state_schema_version":2}, "Invalid schema-v3 postprocessing contract")
         for name, asset in value["inputs"].items():
             identifier(name)
             require(isinstance(asset,dict) and re.fullmatch(r"[a-f0-9]{64}",asset["sha256"]), "Invalid input fingerprint")
             require(not Path(asset["path"]).is_absolute() and ".." not in Path(asset["path"]).parts, "Unsafe input path")
-        require({"train","evaluation","baseline_evaluation"} <= set(value["inputs"]), "Missing event/baseline inputs")
+        require(({"train","evaluation","inventory"} if post else {"train","evaluation","baseline_evaluation"}) <= set(value["inputs"]), "Missing event/baseline inputs")
         cases = [CaseSpec.parse(c) for c in value["development"]]
         require(cases and len({c.name for c in cases})==len(cases), "Development cases must be unique and nonempty")
         require(all(c.target_end<=JAN20+5*DAY for c in cases), "Development must end before Jan25")
+        if value["schema_version"]==3:
+            require(any(c.target_end>c.target_cutoff+2*DAY for c in cases), "Missing aged development case")
         expected={"primary":(JAN20+4*DAY,JAN20+5*DAY,JAN20+7*DAY),
                   "secondary":(JAN20+5*DAY,JAN20+6*DAY,JAN20+7*DAY),
                   "five_day":(JAN20+DAY,JAN20+2*DAY,JAN20+7*DAY)}
@@ -105,7 +122,7 @@ class ExperimentSpec:
             case=CaseSpec.parse(value["promotion"][name])
             require(case.name==name and (case.meta_cutoff,case.target_cutoff,case.target_end)==dates, "Historical promotion chronology changed")
         for case in cases+[CaseSpec.parse(c) for c in value["promotion"].values()]:
-            require(case.baseline in value["inputs"], "Missing explicit baseline input")
+            require(post or case.baseline in value["inputs"], "Missing explicit baseline input")
         budget=value["budget"]
         require(type(budget["phase_seconds"]) is int and 0<budget["phase_seconds"]<=14400, "Invalid phase cap")
         require(type(budget["total_seconds"]) is int and 0<budget["total_seconds"]<=14400, "Invalid global cap")

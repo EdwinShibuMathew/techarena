@@ -1,0 +1,83 @@
+{
+  "exit_code": 0,
+  "compute": {
+    "used_seconds": 4313.202775686006,
+    "carry_identity": "15fac4ea051b87f1457742744eb4b1fb3452626509cfb1555b44e6c4702c3547",
+    "total_seconds": 14400,
+    "attempts": [
+      {
+        "owner": "v7.1-entropy-sharpening-v1/prepare",
+        "status": "complete",
+        "reserved_seconds": 1200,
+        "controller_pid": 2,
+        "seconds": 29.927673234000395,
+        "error": null
+      },
+      {
+        "owner": "v7.1-entropy-sharpening-v1/develop",
+        "status": "complete",
+        "reserved_seconds": 1200,
+        "controller_pid": 71446,
+        "seconds": 445.35834743099986,
+        "error": null
+      },
+      {
+        "owner": "v7.1-entropy-sharpening-v1/screen",
+        "status": "complete",
+        "reserved_seconds": 1200,
+        "controller_pid": 73365,
+        "seconds": 394.16438585200376,
+        "error": null
+      },
+      {
+        "owner": "v7.1-entropy-sharpening-v1/stress",
+        "status": "complete",
+        "reserved_seconds": 1200,
+        "controller_pid": 74947,
+        "seconds": 45.65607498600002,
+        "error": null
+      },
+      {
+        "owner": "v7.2-joint-calibration-v1/prepare",
+        "status": "complete",
+        "reserved_seconds": 1200,
+        "controller_pid": 83484,
+        "seconds": 29.3423582539981,
+        "error": null
+      },
+      {
+        "owner": "v7.2-joint-calibration-v1/develop",
+        "status": "complete",
+        "reserved_seconds": 1200,
+        "controller_pid": 83561,
+        "seconds": 478.4620952589976,
+        "error": null
+      },
+      {
+        "owner": "v7.3-v7-anchor-v1/prepare",
+        "status": "complete",
+        "reserved_seconds": 1200,
+        "controller_pid": 92401,
+        "seconds": 29.588645508003538,
+        "error": null
+      },
+      {
+        "owner": "v7.3-v7-anchor-v1/develop",
+        "status": "complete",
+        "reserved_seconds": 1200,
+        "controller_pid": 92481,
+        "seconds": 472.92246088099637,
+        "error": null
+      },
+      {
+        "owner": "v7.3-v7-anchor-v1/screen",
+        "status": "complete",
+        "reserved_seconds": 1200,
+        "controller_pid": 94230,
+        "seconds": 413.4213868190054,
+        "error": null
+      }
+    ]
+  },
+  "source_commit": "ce1eef8fbbbbbe8bc97c808c40ea50d0e9f5e933"
+}

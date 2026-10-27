@@ -1,0 +1,116 @@
+{
+  "schema_version": 3,
+  "status": "rejected_at_aged_development_selection",
+  "submission_ready": false,
+  "winner": null,
+  "development_passed": false,
+  "promotion_gates_evaluated": false,
+  "four_promotion_gates_changed": false,
+  "submission_exported": false,
+  "competition_upload_performed": false,
+  "neural_training_performed": false,
+  "source_commit": "dfd1361eee5411f431cac645da3c23b82a7356ed",
+  "source_archive_sha256": "5f4b64892150b48f31a98b88d3bbfb19afaecc064550e2728553594bf3db75ef",
+  "spec_sha256": "263ba6a3741a231c7fc883413f392eb82eca8261f91075c6cedb2cb330960cd4",
+  "manifest_sha256": "a2d6b3f5ed66f996c0d0436a2ac48f653900c1c08012ae7de20cc3c37168edf7",
+  "develop_report_sha256": "df48cb1935b2b92b880a766750b1ce369d50bcc74fb24f43cc666cb344c69a2a",
+  "prior_compute_seconds": 2889.465828965005,
+  "new_compute_seconds": 507.8044535129957,
+  "total_compute_seconds": 3397.270282478001,
+  "compute_limit_seconds": 14400,
+  "phases": [
+    {
+      "owner": "v7.2-joint-calibration-v1/prepare",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 83484,
+      "seconds": 29.3423582539981,
+      "error": null
+    },
+    {
+      "owner": "v7.2-joint-calibration-v1/develop",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 83561,
+      "seconds": 478.4620952589976,
+      "error": null
+    }
+  ],
+  "temporary_crossfit_combiners": 50,
+  "development_reference_combiners": 5,
+  "cache": {
+    "requests": 81,
+    "hits": 59,
+    "misses": 22
+  },
+  "integrity_checks": {
+    "event/jan22_long": {
+      "rows": 479570,
+      "within_event_order_or_tie_changes": 0,
+      "probabilities_valid": true,
+      "maximum_event_mass_change": 0.19023405459864762,
+      "baseline_replay_maximum_absolute_error": 0.0
+    },
+    "event/jan24_forward": {
+      "rows": 350400,
+      "within_event_order_or_tie_changes": 0,
+      "probabilities_valid": true,
+      "maximum_event_mass_change": 0.1435377092324348
+    },
+    "joint/jan22_long": {
+      "rows": 479570,
+      "within_event_order_or_tie_changes": 0,
+      "probabilities_valid": true,
+      "maximum_event_mass_change": 0.22409270054343233,
+      "baseline_replay_maximum_absolute_error": 0.0
+    },
+    "joint/jan24_forward": {
+      "rows": 350400,
+      "within_event_order_or_tie_changes": 0,
+      "probabilities_valid": true,
+      "maximum_event_mass_change": 0.23946246645221292
+    },
+    "entropy_joint/jan22_long": {
+      "rows": 479570,
+      "within_event_order_or_tie_changes": 0,
+      "probabilities_valid": true,
+      "maximum_event_mass_change": 0.20672813142769308,
+      "baseline_replay_maximum_absolute_error": 0.0
+    },
+    "entropy_joint/jan24_forward": {
+      "rows": 350400,
+      "within_event_order_or_tie_changes": 0,
+      "probabilities_valid": true,
+      "maximum_event_mass_change": 0.2098119775945625
+    }
+  },
+  "refusals": {
+    "screen": {
+      "exit_code": 1,
+      "message": "develop gate failed; recipe is terminal",
+      "phase_claimed": false
+    },
+    "stress": {
+      "exit_code": 1,
+      "message": "develop gate failed; recipe is terminal",
+      "phase_claimed": false
+    },
+    "finalize": {
+      "exit_code": 1,
+      "message": "develop gate failed; recipe is terminal",
+      "phase_claimed": false
+    }
+  },
+  "replay_refusal": {
+    "exit_code": 1,
+    "message": "missing configs/v7_2.json; refused before inference"
+  },
+  "validation": {
+    "locked_cpu_passed": 148,
+    "optional_private_artifact_skips": 1,
+    "required_model_contracts_passed": 35,
+    "required_model_contracts_skipped": 0
+  },
+  "validation_status": "reused retrospective dates; not independent or selection-adjusted evidence",
+  "interpretation": "All candidates improved both aggregate development windows but lost aged-development AUC. No candidate was eligible; no promotion window was evaluated and the campaign is closed."
+}

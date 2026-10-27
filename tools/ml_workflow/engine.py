@@ -38,6 +38,9 @@ def locate(root,run_id):
 def prepare(root,spec_path,run_id):
     root=Path(root).resolve();identifier(run_id)
     spec=ExperimentSpec.parse(read(spec_path)).value
+    if spec["schema_version"] in (2,3):
+        from .postprocessing import prepare as prepare_postprocessor
+        return prepare_postprocessor(root,spec_path,run_id)
     if spec["purpose"]=="research":
         verify_bundle(root)
         require(Path(spec_path).resolve().is_relative_to(root/"experiments"),"Research specification must be experiment source")
@@ -73,6 +76,12 @@ def load(root,work):
     verify_snapshot(work,m["source"])
     for name,asset in m["spec"]["inputs"].items():
         require(digest(inside(root,asset["path"]))==asset["sha256"],"Input changed: "+name)
+    from .policy import validate_anchor
+    validate_anchor(root,m["spec"])
+    for asset in m.get("generated_inputs",{}).values():
+        require(digest(inside(root,asset["path"]))==asset["sha256"],"Prepared input changed")
+    if m["spec"]["schema_version"] in (2,3):
+        require(read(work/"prepare.ledger.json")["exit_code"]==0,"Preparation accounting incomplete")
     # An old adapter is never silently combined with a changed runtime.
     for name,expected in m["source"]["files"].items():
         if name.startswith("tools/ml_workflow/") or name in {"tools/run_experiment.py","tools/experiment_runner.py","tools/consolidate.py"}:
@@ -88,11 +97,16 @@ def adapter(work,m):
     module_spec=importlib.util.spec_from_file_location("workflow_adapter_"+m["run_id"].replace("-","_"),path)
     module=importlib.util.module_from_spec(module_spec);module_spec.loader.exec_module(module)
     require(m["spec"]["purpose"] in module.PURPOSES,"Adapter purpose mismatch")
+    if m["spec"]["schema_version"] in (2,3):
+        if m["spec"]["schema_version"]==3:
+            require(m["spec"]["candidates"]==module.CANDIDATES,"Postprocessor candidate family differs")
+        else:
+            require(all(p.get("config")==module.CONFIG for p in m["spec"]["candidates"].values()),"Postprocessor recipe differs")
     return module
 
 
 def events(root,m,name):
-    with np.load(inside(root,m["spec"]["inputs"][name]["path"]),allow_pickle=False) as stored:
+    with np.load(inside(root,m.get("generated_inputs",{}).get(name,m["spec"]["inputs"][name])["path"]),allow_pickle=False) as stored:
         data={k:stored[k] for k in stored.files}
     validate_events(data,name=="train")
     if name=="train":
@@ -167,6 +181,9 @@ def point(y,before,after):
 
 
 def _score(root,work,m,module,raw,candidate,case):
+    if m["spec"]["schema_version"] in (2,3):
+        from .postprocessing import score
+        return score(root,work,m,module,raw,candidate,case)
     fit=first_indices(raw["u"],raw["t"],case.meta_cutoff,case.meta_cutoff+DAY)
     valid=first_indices(raw["u"],raw["t"],case.target_cutoff,case.target_end)
     require(len(fit) and len(valid) and raw["t"][fit].max()<case.target_cutoff
@@ -222,12 +239,16 @@ def _report(work,m,stage,results,passed,extra=None):
     report={"schema_version":1,"stage":stage,"purpose":m["spec"]["purpose"],"complete":True,"passed":bool(passed),
         "submission_ready":False,"manifest_sha256":digest(work/"manifest.json"),"results":results,"files":files,
         "hashing_seconds":m["hashing_seconds"],"validation_status":m["validation_status"],**(extra or {})}
+    from .policy import is_trial
+    if is_trial(m["spec"]):report.update(release_policy="v7_upload_trial",upload_comparator="V7")
     path=work/(stage+".json");write_new(path,report)
     write_new(work/(stage+".seal.json"),{"sha256":digest(path)})
     return report
 
 
 def checked(work,stage):
+    from .policy import is_trial, validate_metric, stage_passed
+    spec=read(work/"manifest.json").get("spec",{})
     path=work/(stage+".json")
     require(path.is_file() and read(work/(stage+".seal.json"))["sha256"]==digest(path),"Missing or changed "+stage+" report")
     result=read(path)
@@ -241,25 +262,41 @@ def checked(work,stage):
         if stage in {"screen","stress"}:
             require(type(row["resamples"]) is int and 990<=row["resamples"]<=1000 and np.isfinite(row["ci_lower"]) and np.isfinite(row["ci_upper"])
                 and -1<=row["ci_lower"]<=row["ci_upper"]<=1,"Invalid confidence evidence")
+    if is_trial(spec):
+        for row in result["results"].values():
+            validate_metric(row["v7_comparison"],stage in {"screen","stress"})
+            from .policy import V7_SHA
+            require(row["v7_comparison"].get("anchor_sha256")==V7_SHA,"V7 comparison identity changed")
+            require(abs(row["candidate_auc"]-row["v7_comparison"]["candidate_auc"])<1e-12,"Candidate comparison differs")
+            if "late" in row["v7_comparison"]:validate_metric(row["v7_comparison"]["late"])
     if stage=="develop":
-        spec=read(work/"manifest.json")["spec"]
         actual=_winner(spec,result["results"])
         require(result.get("winner")==actual,"Development selection changed")
     else:actual=None
-    expected=(actual is not None) if stage=="develop" else (
-        result["results"]["primary"]["ci_lower"]>0 and result["results"]["secondary"]["auc_diff"]>=0) if stage=="screen" else (
-        result["results"]["five_day"]["ci_lower"]>0 and result["results"]["five_day"]["late"]["auc_diff"]>=0)
+    expected=(actual is not None) if stage=="develop" else stage_passed(spec,stage,result["results"])
     require(result["passed"] is True and bool(expected),stage+" gate failed; recipe is terminal")
     return result
 
 
 def _winner(spec,results):
+    from .policy import is_trial, comparison, validate_metric
     keys={candidate+"/"+case["name"] for candidate in spec["candidate_order"] for case in spec["development"]}
     require(set(results)==keys,"Development comparisons incomplete")
     eligible=[]
     for candidate in spec["candidate_order"]:
-        gains=[results[candidate+"/"+case["name"]]["auc_diff"] for case in spec["development"]]
-        if min(gains)>=0 and np.mean(gains)>0:eligible.append((candidate,min(gains)))
+        rows=[comparison(spec,results[candidate+"/"+case["name"]]) for case in spec["development"]]
+        if is_trial(spec):
+            for row in rows:validate_metric(row)
+        gains=[row["auc_diff"] for row in rows]
+        aged=[]
+        if spec["schema_version"]==3 and not is_trial(spec):
+            for case in spec["development"]:
+                if case["target_end"]>case["target_cutoff"]+2*DAY:
+                    row=results[candidate+"/"+case["name"]]
+                    require(row["diagnostics"]["late"]["events"]>0,"Missing aged development events")
+                    aged.append(row["diagnostics"]["late"]["auc_diff"])
+            require(aged and np.isfinite(aged).all(),"Invalid aged development evidence")
+        if min(gains+aged)>=0 and np.mean(gains)>0:eligible.append((candidate,min(gains+aged)))
     if not eligible:return None
     best=max(value for _,value in eligible)
     return next(name for name,value in eligible if best-value<=1e-12)
@@ -287,6 +324,9 @@ def _private_replay(root,work,m,number):
 
 
 def finalize(root,work,m,module,raw,winner):
+    if m["spec"]["schema_version"] in (2,3):
+        from .postprocessing import finalize as finalize_postprocessor
+        return finalize_postprocessor(root,work,m,module,raw,winner)
     screen=checked(work,"screen");checked(work,"stress")
     evaluation=events(root,m,"evaluation")
     require((evaluation["t"]>=JAN20+7*DAY).all(),"Evaluation precedes final cutoff")
@@ -349,16 +389,21 @@ def verify(root,run_id):
     for stage in STAGES:
         require(read(work/(stage+".ledger.json"))["exit_code"]==0,"Stage did not complete")
     research=m["spec"]["purpose"]=="research"
-    ready=False
+    from .policy import receipt_ready, is_trial
+    ready=False;upload_ready=False
     if research and (work/"published.json").exists():
         receipt=read(work/"published.json")
         config=inside(root,"configs/"+m["spec"]["release_name"]+".json")
         output=inside(root,"artifacts/submissions/"+m["spec"]["release_name"]+".csv")
         require(config.is_file() and read(config)==receipt and receipt["manifest_sha256"]==digest(work/"manifest.json")
-            and receipt["submission_ready"] is True and digest(output)==final["csv_sha256"],"Publication incomplete or changed")
-        ready=True
+            and receipt_ready(m["spec"],receipt) and digest(output)==final["csv_sha256"],"Publication incomplete or changed")
+        if is_trial(m["spec"]):
+            from .policy import v6_gates
+            require(receipt.get("v6_gate_results")==v6_gates(checked(work,"screen"),checked(work,"stress"))
+                    and receipt.get("v7_anchor_sha256")==m["spec"]["anchor_sha256"],"Trial comparison receipt changed")
+        ready=not is_trial(m["spec"]);upload_ready=True
     return {"run_id":run_id,"purpose":m["spec"]["purpose"],"validation_complete":True,
-        "submission_ready":ready,"rows":final["rows"],"csv_sha256":final["csv_sha256"],"source_commit":m["source"]["commit"]}
+        "submission_ready":ready,"upload_ready":upload_ready,"rows":final["rows"],"csv_sha256":final["csv_sha256"],"source_commit":m["source"]["commit"]}
 
 
 def publish(root,work,m):
@@ -370,9 +415,13 @@ def publish(root,work,m):
     require(not config.exists() and not output.exists(),"Preserve existing release")
     output.parent.mkdir(parents=True,exist_ok=True)
     os.link(work/"candidate.csv",output)
-    receipt={"schema_version":1,"submission_ready":True,"purpose":"research","run_id":m["run_id"],
+    from .policy import release_flags, is_trial, v6_gates
+    receipt={"schema_version":1,**release_flags(m["spec"]),"purpose":"research","run_id":m["run_id"],
         "csv_sha256":final["csv_sha256"],"source_snapshot_sha256":m["source"]["sha256"],"manifest_sha256":digest(work/"manifest.json"),
         "final_report_sha256":digest(work/"finalize.json"),"competition_upload_performed":False}
+    if is_trial(m["spec"]):
+        receipt["v6_gate_results"]=v6_gates(checked(work,"screen"),checked(work,"stress"))
+        receipt["v7_anchor_sha256"]=m["spec"]["anchor_sha256"]
     write_new(work/"published.json",receipt)
     candidate=work/"ready-config.json";write_new(candidate,receipt);os.link(candidate,config)
 
@@ -386,14 +435,17 @@ def _worker_lease(root,work,m,stage):
     return attempt["controller_pid"]
 
 
-def worker(root,work,stage):
-    m=load(root,work);controller=_worker_lease(root,work,m,stage)
+def _start_watchdog(controller):
     def watch_controller():
         while True:
             if os.getppid()!=controller:
                 os.killpg(os.getpgrp(),signal.SIGKILL)
             time.sleep(.1)
     threading.Thread(target=watch_controller,daemon=True).start()
+
+
+def worker(root,work,stage):
+    m=load(root,work);_start_watchdog(_worker_lease(root,work,m,stage))
     module=adapter(work,m);raw=events(root,m,"train")
     if stage=="develop":
         results={};eligible=[]
@@ -413,8 +465,8 @@ def worker(root,work,stage):
             return finalize(root,work,m,module,raw,winner)
         names=("primary","secondary") if stage=="screen" else ("five_day",)
         results={name:_score(root,work,m,module,raw,winner,CaseSpec.parse(m["spec"]["promotion"][name])) for name in names}
-        passed=(results["primary"]["ci_lower"]>0 and results["secondary"]["auc_diff"]>=0) if stage=="screen" else (
-            results["five_day"]["ci_lower"]>0 and results["five_day"]["late"]["auc_diff"]>=0)
+        from .policy import stage_passed
+        passed=stage_passed(m["spec"],stage,results)
         report=_report(work,m,stage,results,passed,{"winner":winner})
     return 0 if report["passed"] else 2
 

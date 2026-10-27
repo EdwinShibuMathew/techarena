@@ -31,6 +31,65 @@ adjustment, cold-history fallback, CatBoost combiners, longer preference
 training, lower-rate fine-tuning, dimension/seed diversity and the small V6
 global row-ranking update.
 
+## V7.1 entropy-conditioned allocation (not promoted)
+
+The fixed two-parameter postprocessor used user-grouped cross-fitted V6 scores,
+retaining event score mass and within-event ranking. It passed both development
+cases, primary/Jan26 screening and the five-day confidence gate. It failed the
+late-window point gate; the recipe is closed with no final export.
+
+| Gate | AUC change vs V6 | Paired 95% interval | Decision |
+|---|---:|---|---|
+| Primary Jan25–26 | +0.000253392017 | [+0.000135593223, +0.000375645545] | Passed |
+| Secondary Jan26 | +0.000299762461 | [+0.000178194607, +0.000414059705] | Passed |
+| Five-day Jan22–26 | +0.000208877797 | [+0.000023714297, +0.000373496981] | Passed |
+| Late48–120h | −0.000483522408 | Point comparison | Failed |
+
+No promotion-based tuning, fallback, cohort routing or new neural training was
+performed. Finalization refused at the failed stress gate. New compute was
+915.106481503s; cumulative research usage is 2,889.465828965005s of 14,400.
+The dates remain reused retrospective evidence. See the
+[protocol, source provenance and terminal decision](results/v7.1-entropy-sharpening-v1/README.md).
+
+## V7.2 joint calibration (rejected during development)
+
+All three predeclared calibration variants improved the two aggregate development
+windows, but all regressed on the Jan22–24 aged 48–72-hour subset. No candidate
+qualified, so the campaign stopped before promotion. All four promotion gates
+remain unchanged and were not evaluated. No submission CSV was produced.
+
+| Variant | Jan22–24 change | Jan24 forward change | Aged change |
+|---|---:|---:|---:|
+| Event correction | +0.000666948308 | +0.000474150119 | −0.000152856957 |
+| Joint constant | +0.000726594348 | +0.000585951991 | −0.000084809510 |
+| Joint entropy | +0.000720001722 | +0.000573566195 | −0.000087419660 |
+
+The controller refused further stages before phase claims. New compute was
+507.804453513 seconds; cumulative usage is 3,397.270282478001 of 14,400 seconds.
+See the [frozen method and exact evidence](results/v7.2-joint-calibration-v1/README.md).
+
+## V7.3 upload trial (accepted against V7)
+
+The selected entropy-plus-mass correction on fixed V7 passed the user-approved
+trial criteria. Primary and five-day paired 95% lower bounds against V7 were
+strictly positive; Jan26 point change was nonnegative. Late change is reported
+as risk and did not block this explicitly approved trial policy.
+
+| Window | AUC change vs V7 | Paired 95% interval |
+|---|---:|---|
+| Primary Jan25–26 | +0.000081636115 | [+0.000026788450, +0.000136279733] |
+| Secondary Jan26 | +0.000127886096 | [+0.000089680508, +0.000165693243] |
+| Five-day Jan22–26 | +0.000161523553 | [+0.000038298539, +0.000272903676] |
+| Late 48–120h | −0.000252453117 | Diagnostic point comparison |
+
+The original V6 late gate still fails; full scientific promotion is not claimed.
+Two independent final exports and a separately budgeted supported replay matched
+exactly. The validated 529,390-row CSV was delivered to the project submissions
+folder and Windows Downloads. New compute was 1,062.429163982 seconds; cumulative
+usage is 4,459.699446460001 of 14,400 seconds. Reused dates remain retrospective,
+not independent or selection-adjusted evidence; no hidden competition score is
+claimed. See the [exact method, evidence and CSV fingerprint](results/v7.3-v7-anchor-v1/README.md).
+
 ## Archived V8 campaigns
 
 [PR #4's preserved evidence](results/v8-archive/README.md) records six closed

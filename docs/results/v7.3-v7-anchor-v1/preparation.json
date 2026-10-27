@@ -1,0 +1,21 @@
+{
+  "source_commit": "ce1eef8fbbbbbe8bc97c808c40ea50d0e9f5e933",
+  "source_archive_sha256": "cb938b341d1d2f57b508305a9857db56f9e0c0d2d2f684d07b26334110105d47",
+  "source_files": 263,
+  "manifest_sha256": "2ab46795cc26a2dfc33bf4ee92a9d4920f36acbb4fbafa19ec51c4063c07afca",
+  "spec_sha256": "e8efafa5a0fef611022b67caefc6d6f119b08f5a31b440af79449187a72ff7e4",
+  "generated_inputs": {
+    "train": {
+      "path": "artifacts/experiments/v7.3-v7-anchor-v1/inputs/train.npz",
+      "sha256": "88509328efbcdd376dbf8ab272f6d3bed617485782e49fa8abc999fc948b2c07"
+    },
+    "evaluation": {
+      "path": "artifacts/experiments/v7.3-v7-anchor-v1/inputs/evaluation.npz",
+      "sha256": "6566734e7185827b5926d0b87a34c48e68cd19d8f3994eb33d6a2ae3969cb6db"
+    }
+  },
+  "carry_identity": "15fac4ea051b87f1457742744eb4b1fb3452626509cfb1555b44e6c4702c3547",
+  "continuation_decision_sha256": "b6bcdc9aa1e3e813bad392cb455662bb5631b8e3a4279b758c979ea77fb7f406",
+  "v7_config_sha256": "f9a34c48b957e565205a1506c8e48757f962bda4b4fb9fd46b8bd7388a026670",
+  "v7_validation_sha256": "45a07e04783b52bc0791f1f7a876f96c6049d022349155a053ee9abd38947ead"
+}
