@@ -17,7 +17,10 @@ def main():
     args=parser.parse_args();root=args.root.resolve()
     try:
         if args.action=="prepare":
-            if args.worker or args.spec is None:parser.error("prepare requires --spec")
+            if args.worker:
+                from ml_workflow.postprocessing import prepare_worker
+                raise SystemExit(prepare_worker(root,args.run_id))
+            if args.spec is None:parser.error("prepare requires --spec")
             result=engine.prepare(root,args.spec,args.run_id)
         elif args.action=="verify":
             result=engine.verify(root,args.run_id)

@@ -38,6 +38,9 @@ def locate(root,run_id):
 def prepare(root,spec_path,run_id):
     root=Path(root).resolve();identifier(run_id)
     spec=ExperimentSpec.parse(read(spec_path)).value
+    if spec["schema_version"]==2:
+        from .postprocessing import prepare as prepare_postprocessor
+        return prepare_postprocessor(root,spec_path,run_id)
     if spec["purpose"]=="research":
         verify_bundle(root)
         require(Path(spec_path).resolve().is_relative_to(root/"experiments"),"Research specification must be experiment source")
@@ -73,6 +76,10 @@ def load(root,work):
     verify_snapshot(work,m["source"])
     for name,asset in m["spec"]["inputs"].items():
         require(digest(inside(root,asset["path"]))==asset["sha256"],"Input changed: "+name)
+    for asset in m.get("generated_inputs",{}).values():
+        require(digest(inside(root,asset["path"]))==asset["sha256"],"Prepared input changed")
+    if m["spec"]["schema_version"]==2:
+        require(read(work/"prepare.ledger.json")["exit_code"]==0,"Preparation accounting incomplete")
     # An old adapter is never silently combined with a changed runtime.
     for name,expected in m["source"]["files"].items():
         if name.startswith("tools/ml_workflow/") or name in {"tools/run_experiment.py","tools/experiment_runner.py","tools/consolidate.py"}:
@@ -88,11 +95,13 @@ def adapter(work,m):
     module_spec=importlib.util.spec_from_file_location("workflow_adapter_"+m["run_id"].replace("-","_"),path)
     module=importlib.util.module_from_spec(module_spec);module_spec.loader.exec_module(module)
     require(m["spec"]["purpose"] in module.PURPOSES,"Adapter purpose mismatch")
+    if m["spec"]["schema_version"]==2:
+        require(all(p.get("config")==module.CONFIG for p in m["spec"]["candidates"].values()),"Postprocessor recipe differs")
     return module
 
 
 def events(root,m,name):
-    with np.load(inside(root,m["spec"]["inputs"][name]["path"]),allow_pickle=False) as stored:
+    with np.load(inside(root,m.get("generated_inputs",{}).get(name,m["spec"]["inputs"][name])["path"]),allow_pickle=False) as stored:
         data={k:stored[k] for k in stored.files}
     validate_events(data,name=="train")
     if name=="train":
@@ -167,6 +176,9 @@ def point(y,before,after):
 
 
 def _score(root,work,m,module,raw,candidate,case):
+    if m["spec"]["schema_version"]==2:
+        from .postprocessing import score
+        return score(root,work,m,module,raw,candidate,case)
     fit=first_indices(raw["u"],raw["t"],case.meta_cutoff,case.meta_cutoff+DAY)
     valid=first_indices(raw["u"],raw["t"],case.target_cutoff,case.target_end)
     require(len(fit) and len(valid) and raw["t"][fit].max()<case.target_cutoff
@@ -287,6 +299,9 @@ def _private_replay(root,work,m,number):
 
 
 def finalize(root,work,m,module,raw,winner):
+    if m["spec"]["schema_version"]==2:
+        from .postprocessing import finalize as finalize_postprocessor
+        return finalize_postprocessor(root,work,m,module,raw,winner)
     screen=checked(work,"screen");checked(work,"stress")
     evaluation=events(root,m,"evaluation")
     require((evaluation["t"]>=JAN20+7*DAY).all(),"Evaluation precedes final cutoff")
@@ -386,14 +401,17 @@ def _worker_lease(root,work,m,stage):
     return attempt["controller_pid"]
 
 
-def worker(root,work,stage):
-    m=load(root,work);controller=_worker_lease(root,work,m,stage)
+def _start_watchdog(controller):
     def watch_controller():
         while True:
             if os.getppid()!=controller:
                 os.killpg(os.getpgrp(),signal.SIGKILL)
             time.sleep(.1)
     threading.Thread(target=watch_controller,daemon=True).start()
+
+
+def worker(root,work,stage):
+    m=load(root,work);_start_watchdog(_worker_lease(root,work,m,stage))
     module=adapter(work,m);raw=events(root,m,"train")
     if stage=="develop":
         results={};eligible=[]
