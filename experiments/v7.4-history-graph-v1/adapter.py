@@ -143,6 +143,7 @@ def tilt(anchor, features, alpha, derivative=False):
             and np.isfinite(p).all() and ((p >= 0) & (p <= 1)).all()
             and np.isfinite(z).all() and np.isfinite(alpha) and 0 <= alpha <= .25, 'Invalid residual inputs')
     interior = (p > 0) & (p < 1)
+    unchanged = (z == z[:, :1]).all(1)
     if alpha == 0 or not np.any(z):
         q = p.copy()
     else:
@@ -159,13 +160,18 @@ def tilt(anchor, features, alpha, derivative=False):
             high = np.where(over, middle, high)
             low = np.where(over, low, middle)
         q = np.where(interior, expit(base + delta + (low + high) / 2), p)
+    # A common feature offset carries no relative information. Preserve exact
+    # fallback scores even when other events in this batch have graph evidence.
+    q[unchanged] = p[unchanged]
     require(np.isfinite(q).all() and ((q >= 0) & (q <= 1)).all()
             and np.allclose(q.sum(1), p.sum(1), rtol=0, atol=CONFIG['mass_tolerance']), 'Residual changed event mass or bounds')
     if not derivative:
         return q
     variance = q * (1 - q) * interior
     weighted = (variance * z).sum(1, keepdims=True) / np.maximum(variance.sum(1, keepdims=True), 1e-300)
-    return q, variance * (z - weighted)
+    jacobian = variance * (z - weighted)
+    jacobian[unchanged] = 0
+    return q, jacobian
 
 
 def objective(alpha, anchor, features, labels, positive, sampled):

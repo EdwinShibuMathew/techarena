@@ -131,9 +131,11 @@ class HistoryGraphModelTests(unittest.TestCase):
         p = rng.uniform(.001, .999, (30, 10))
         p[:5] = [[0] * 10, [1] * 10, [1, 0] * 5, [1e-300] * 10, [.05] * 10]
         z = rng.uniform(-5, 5, p.shape)
+        z[8] = 0; z[9] = 2.2
         np.testing.assert_array_equal(adapter.tilt(p, z, 0), p)
         for alpha in (.01, .25):
             q = adapter.tilt(p, z, alpha)
+            np.testing.assert_array_equal(q[8:10], p[8:10])
             np.testing.assert_allclose(q.sum(1), p.sum(1), rtol=0, atol=1e-14)
             np.testing.assert_array_equal(q[(p == 0) | (p == 1)], p[(p == 0) | (p == 1)])
             self.assertTrue(np.isfinite(q).all() and ((q >= 0) & (q <= 1)).all())
