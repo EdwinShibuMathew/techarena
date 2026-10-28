@@ -1,5 +1,11 @@
 # V7.6 bounded V7-anchored residual, revision 2
 
+**Closed at inner selection.** All 30 inner fits completed, but every declared
+penalty regressed against rebuilt V7 in required regimes. No candidate advanced
+to outer training, promotion gates or competition export. See the
+[measured results](../../docs/results/v7.6-anchored-residual-v2/README.md).
+The commands below preserve the terminal decision; they do not reopen it.
+
 One focused recipe tests whether causal stale-prefix graph views can improve
 global row AUC without the cross-event regression observed in V7.5. The prior
 design and closed experiments remain unchanged. Comparisons use rebuilt V6 and
