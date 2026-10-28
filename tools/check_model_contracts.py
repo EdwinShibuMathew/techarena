@@ -16,7 +16,19 @@ def main():
         if not found.countTestCases():raise RuntimeError("No tests found: "+pattern)
         suite.addTests(found)
     result=unittest.TextTestRunner(verbosity=2).run(suite)
-    return 0 if result.wasSuccessful() and not result.skipped and result.testsRun>=13 else 1
+    if not result.wasSuccessful() or result.skipped or result.testsRun < 13:
+        return 1
+    # Reconstruction contracts use pytest fixtures; require them without skips too.
+    import pytest
+    class RequiredRebuild:
+        skipped = False
+        passed = 0
+        def pytest_runtest_logreport(self, report):
+            if report.skipped: self.skipped = True
+            if report.when == 'call' and report.passed: self.passed += 1
+    required = RequiredRebuild()
+    status = pytest.main([str(ROOT / 'tests/test_rebuild.py'), '-q'], plugins=[required])
+    return 0 if status == 0 and required.passed >= 12 and not required.skipped else 1
 
 
 if __name__=="__main__":raise SystemExit(main())

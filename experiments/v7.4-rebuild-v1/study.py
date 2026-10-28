@@ -5,6 +5,7 @@ import importlib.util
 from pathlib import Path
 import os
 import sys
+import time
 
 import numpy as np
 
@@ -18,6 +19,11 @@ from predict_v7 import calibrate_v7_probabilities
 
 ROOT = Path(__file__).resolve().parents[2]
 ADAPTER = 'experiments/v7.4-history-graph-v1/adapter.py'
+
+
+def write_identical(path, value):
+    if path.exists(): require(read(path) == value, 'Technical retry changed frozen scientific evidence')
+    else: write_new(path, value)
 
 
 def adapter():
@@ -208,8 +214,12 @@ def score(work, raw, case, candidate):
                 'calibrator_metadata': metadata, 'parameters': params, 'prediction_sha256': digest(prediction),
                 'baseline_lineage': 'rebuilt_v6_v7_recipe', 'fitting_events': len(fit),
                 'references': dependencies, 'calibrator_sha256': digest(calibrator)})
+    row['evidence'] = files(work, [calibrator, prediction, prediction.with_suffix('.receipt.json'),
+                                  work / 'data/metadata.json',
+                                  work / 'graphs' / (str(meta) + '.npz'),
+                                  work / 'graphs' / (str(target) + '.npz')])
     output = work / 'results' / (candidate + '-' + case + '.json')
-    write_new(output, row)
+    write_identical(output, row)
     print('gate-input', case, candidate, 'vs rebuilt V6', row['auc_diff'], 'vs rebuilt V7', row['v7_comparison']['auc_diff'], 'alpha', saved['alpha'], flush=True)
     return files(work, [output, prediction, prediction.with_suffix('.receipt.json'), calibrator])
 
@@ -237,7 +247,21 @@ def checked(work, stage):
     require(report['genesis_sha256'] == digest(work / 'genesis.json')
             and report['protocol_sha256'] == canonical(protocol()), 'Scientific generation changed')
     for name, expected in report['files'].items(): require(digest(inside(work, name)) == expected, 'Stage evidence changed')
+    for row in report['results'].values(): validate_row(work, row)
     return report
+
+
+def validate_row(work, row):
+    from run import completed
+    candidate, case = row['candidate'], row['case']
+    require(candidate in RECIPE['candidate_order'] and case in CASES
+            and completed(work, f'score-{candidate}-{case}'), 'Unaccounted scientific result')
+    require(row['baseline_lineage'] == 'rebuilt_v6_v7_recipe'
+            and row['parameters'] == protocol()['candidates'][candidate], 'Wrong comparison lineage or candidate')
+    for relative, expected in {**row['references'], **row['evidence']}.items():
+        require(digest(inside(work, relative)) == expected, 'Scientific dependency changed: ' + relative)
+    policy.validate_metric(row, confidence=case in ('primary', 'secondary', 'five_day'))
+    policy.validate_metric(row['v7_comparison'], confidence=case in ('primary', 'secondary', 'five_day'))
 
 
 def summarize(work, stage):
@@ -255,8 +279,9 @@ def summarize(work, stage):
         for case in (('primary', 'secondary') if stage == 'screen' else ('five_day',)):
             path = work / 'results' / (winner + '-' + case + '.json'); results[case] = read(path); paths.append(path)
         passed = policy.stage_passed(protocol(), stage, results)
+    for row in results.values(): validate_row(work, row)
     output = work / 'stages' / (stage + '.json')
-    write_new(output, {'schema_version': 5, 'baseline_lineage': 'rebuilt_v6_v7_recipe',
+    write_identical(output, {'schema_version': 5, 'baseline_lineage': 'rebuilt_v6_v7_recipe',
                        'genesis_sha256': digest(work / 'genesis.json'), 'protocol_sha256': canonical(protocol()),
                        'winner': winner, 'passed': bool(passed), 'results': results, 'files': files(work, paths),
                        'validation_status': 'retrospective reused dates; not independent holdout evidence'})
@@ -297,7 +322,9 @@ def export(work, root, raw, number):
     evidence = module.affinities(graph(work, raw, FULL, fresh=True), evaluation, secondary['parameters']['half_life_hours'])
     after = module.predict_calibrator(anchor.copy(), evidence, deepcopy(state))
     require(np.allclose(after.sum(1), anchor.sum(1), rtol=0, atol=1e-14), 'Final correction changed event mass')
-    folder = work / 'exports' / str(number); folder.mkdir(parents=True, exist_ok=False)
+    final_folder = work / 'exports' / str(number)
+    folder = work / 'exports' / ('attempt-' + str(number) + '-' + str(time.time_ns()))
+    folder.mkdir(parents=True, exist_ok=False)
     ids = evaluation['rowids'].ravel(); example = root / 'data/raw/example_submission.csv'
     outputs = []
     for name, p in [('rebuilt_v6', baseline), ('rebuilt_v7', anchor), ('v7_4', after)]:
@@ -311,10 +338,15 @@ def export(work, root, raw, number):
     outputs.append(vectors)
     receipt = folder / 'validation.json'
     write_new(receipt, {'schema_version': 5, 'baseline_lineage': 'rebuilt_v6_v7_recipe', 'winner': winner,
-                        'gates': gates, 'genesis_sha256': digest(work / 'genesis.json'), 'files': files(work, outputs),
+                        'gates': gates, 'genesis_sha256': digest(work / 'genesis.json'),
+                        'files': {(final_folder / p.name).relative_to(work).as_posix(): digest(p) for p in outputs},
                         'dependencies': dependencies, 'calibrator_sha256': digest(calibrator), 'fresh_graph': True,
                         'fresh_neural_features': True, 'independent_replay': number > 1})
-    return files(work, outputs + [receipt])
+    if final_folder.exists():
+        require(all(digest(final_folder / p.name) == digest(p) for p in outputs + [receipt]),
+                'Technical replay differs from preserved finalization evidence')
+    else: folder.rename(final_folder)
+    return files(work, [final_folder / p.name for p in outputs + [receipt]])
 
 
 def worker(root, work, claim):
@@ -389,6 +421,9 @@ def publish(root, work):
     winner, gates = verify_gates(work)
     for number in (1, 2): require(completed(work, f'export-{number}'), 'Both independently accounted exports required')
     ledger = accounting(work)
+    accounting_copy = work / 'publications' / (canonical(ledger) + '.ledger.json')
+    if accounting_copy.exists(): require(read(accounting_copy) == ledger, 'Publication accounting changed')
+    else: write_new(accounting_copy, ledger)
     outputs = files(work, [work / 'exports/1' / (name + '.csv') for name in ('rebuilt_v6', 'rebuilt_v7', 'v7_4')])
     for name in ('rebuilt_v6', 'rebuilt_v7', 'v7_4'):
         require(digest(work / 'exports/1' / (name + '.csv')) == digest(work / 'exports/2' / (name + '.csv')), 'Replay fingerprint differs')
@@ -408,7 +443,8 @@ def publish(root, work):
     if output.exists(): require(digest(output) == config['submission_sha256'], 'Preserve different submission bytes')
     else: os.link(work / 'exports/1/v7_4.csv', output)
     receipt = {'schema_version': 5, **config, 'config_sha256': digest(path), 'files': outputs,
-               'accounting_sha256_at_publication': digest(work / 'compute-ledger.json')}
+               'accounting_record': accounting_copy.relative_to(work).as_posix(),
+               'accounting_sha256_at_publication': digest(accounting_copy)}
     if (work / 'readiness.json').exists(): require(read(work / 'readiness.json') == receipt, 'Preserve different readiness record')
     else: write_new(work / 'readiness.json', receipt)
 
@@ -416,6 +452,8 @@ def publish(root, work):
 def verify(root, work):
     winner, gates = verify_gates(work); ledger = accounting(work)
     receipt = read(work / 'readiness.json')
+    require(digest(inside(work, receipt['accounting_record'])) == receipt['accounting_sha256_at_publication'],
+            'Publication accounting evidence changed')
     require(receipt['submission_ready'] is True and receipt['winner'] == winner and receipt['gates'] == gates
             and digest(root / 'configs/v7_4.json') == receipt['config_sha256']
             and digest(root / 'artifacts/submission_v7_4.csv') == receipt['submission_sha256'], 'Release evidence changed')

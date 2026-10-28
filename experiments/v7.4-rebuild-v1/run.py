@@ -16,9 +16,29 @@ from ml_workflow.contracts import canonical, digest, inside, require
 from ml_workflow.storage import read, write_new, snapshot, verify_snapshot
 from ml_workflow.budget import Budget
 from ml_workflow import engine
+from consolidate import write_json
 from recipe import RECIPE, MEMBERS, CUTOFFS, FULL, TOTAL_SECONDS
 
 RELATIVE = 'experiments/v7.4-rebuild-v1'
+
+
+class ReconstructionBudget(Budget):
+    def __enter__(self):
+        super().__enter__()
+        try:
+            # Exclusive ownership proves any previous reservation has lost its
+            # lock. Keep its entire charge; never reconstruct an elapsed refund.
+            changed = False
+            for attempt in self.state['attempts'][:-1]:
+                if attempt['status'] == 'running':
+                    attempt.update(status='abandoned_reserved', seconds=attempt['reserved_seconds'],
+                                   error='Prior ownership ended without final accounting; full reservation retained')
+                    changed = True
+            if changed: write_json(self.path, self.state)
+            return self
+        except BaseException:
+            self.lock.close()
+            raise
 
 
 def workspace(root):
@@ -73,13 +93,29 @@ def completed(work, task):
     return True
 
 
+def recover_validation(work, claim, state):
+    """Adopt only a fully validated identical task; partial outputs never qualify."""
+    for prior in reversed(state['attempts'][:-1]):
+        token = prior['owner'].split('/', 1)[-1]
+        path = work / 'attempts' / (token + '.validated.json')
+        if not path.exists(): continue
+        old_claim = read(work / 'attempts' / (token + '.claim.json'))
+        if any(old_claim[k] != claim[k] for k in ('task', 'action', 'arguments', 'source', 'genesis_sha256')): continue
+        validation = read(path)
+        require(validation['genesis_sha256'] == claim['genesis_sha256']
+                and validation['source_sha256'] == claim['source']['sha256'], 'Recovery identity changed')
+        for relative, value in validation['files'].items(): require(digest(inside(work, relative)) == value, 'Recovery artifact changed')
+        return {**validation, 'technical_recovery_from': token}
+    return None
+
+
 def launch(root, action, task, limit, arguments=None):
     work, genesis = initialize(root)
     if completed(work, task):
         print('completed', task, flush=True); return
     token = task + '-' + str(time.time_ns())
     ledger = work / 'compute-ledger.json'
-    with Budget(ledger, genesis['generation'] + '/' + token, limit, TOTAL_SECONDS,
+    with ReconstructionBudget(ledger, genesis['generation'] + '/' + token, limit, TOTAL_SECONDS,
                 carry_identity=digest(work / 'genesis.json')) as budget:
         lock = work / ('baseline-source.json' if action == 'train' else 'scientific-source.json')
         if action != 'prepare' and lock.exists():
@@ -93,9 +129,13 @@ def launch(root, action, task, limit, arguments=None):
                  'arguments': arguments or {}, 'source': source, 'snapshot_relative': folder.relative_to(work).as_posix(),
                  'genesis_sha256': digest(work / 'genesis.json')}
         write_new(work / 'attempts' / (token + '.claim.json'), claim)
-        command = [sys.executable, str(folder / 'source' / RELATIVE / 'run.py'), action,
-                   '--root', str(root), '--worker', '--token', token]
-        require(budget.run(command, folder / 'source') == 0, 'Reconstruction worker failed; preserve reservation/checkpoint evidence')
+        recovered = recover_validation(work, claim, budget.state)
+        if recovered is not None:
+            write_new(work / 'attempts' / (token + '.validated.json'), recovered)
+        else:
+            command = [sys.executable, str(folder / 'source' / RELATIVE / 'run.py'), action,
+                       '--root', str(root), '--worker', '--token', token]
+            require(budget.run(command, folder / 'source') == 0, 'Reconstruction worker failed; preserve reservation/checkpoint evidence')
         validation = read(work / 'attempts' / (token + '.validated.json'))
         require(validation['genesis_sha256'] == claim['genesis_sha256'] and validation['source_sha256'] == source['sha256'], 'Worker validation identity differs')
         for relative, value in validation['files'].items(): require(digest(inside(work, relative)) == value, 'Worker artifact changed')
@@ -115,6 +155,8 @@ def worker(root, action, token):
             and claim['genesis_sha256'] == digest(work / 'genesis.json'), 'Worker requires an active generation-owning controller')
     verify_snapshot(work / claim['snapshot_relative'], claim['source'])
     require(ROOT == work / claim['snapshot_relative'] / 'source', 'Execute the frozen reconstruction source')
+    require(genesis['runtime'] == {n: importlib.metadata.version(n) for n in genesis['runtime']}
+            and genesis['python'] == sys.version, 'Reconstruction runtime changed')
     engine._start_watchdog(attempt['controller_pid'])
     for relative, value in genesis['raw_sha256'].items():
         require(digest(root / relative) == value, 'Declared raw archive changed')
