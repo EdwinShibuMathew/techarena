@@ -204,6 +204,7 @@ def test_synthetic_end_to_end_graph_combiner_gates_and_csv(tmp_path):
         write_new(work / 'tasks' / (task + '.json'), {'token': token, 'manifest_sha256': digest(work / 'manifest.json'), 'validation_sha256': digest(path)})
     for c in v75.EXTRA_CUTOFFS:
         for member in v75.MEMBERS: task_marker(f'train-{c}-{member}', {})
+    for member in v75.MEMBERS: task_marker(f'train-{v75.FULL}-{member}', {})
     def neural_fixture(root, work, raw, cutoff, begin, end, member, evaluation=False, fresh=False):
         target = evaluation_data if evaluation else raw
         ix = np.arange(24) if evaluation else first_indices(target['u'], target['t'], begin, end)

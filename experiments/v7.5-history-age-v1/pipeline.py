@@ -287,6 +287,8 @@ def get37(root, work, raw, cutoff, begin, end, member):
     parent = root / 'artifacts/rebuild'
     original = parent / 'features' / path.name
     if original.exists():
+        import run as prior_runner
+        require(prior_runner.completed(parent, 'feature-' + original.stem), 'Borrowed feature lacks original accounted evidence')
         receipt = original.with_suffix('.receipt.json'); record = read(receipt); old = record['identity']
         folder = model_paths(root, work, cutoff, member)
         expected_indices = first_indices(raw['u'], raw['t'], begin, end)
@@ -316,6 +318,8 @@ def graph(root, work, raw, cutoff, fresh=False):
     def compute():
         original = parent / 'graphs' / (str(cutoff) + '.npz')
         if original.exists() and not fresh:
+            import study as prior_study
+            prior_study.checked(parent, 'develop')
             record = read(original.with_suffix('.receipt.json'))
             producer = read(parent / 'scientific-source.json')['source']
             require(record['sha256'] == digest(original) and record['identity']['data_sha256'] == digest(parent / 'data/metadata.json')
@@ -500,6 +504,12 @@ def validate_row(work, row):
     require(row['candidate'] in CANDIDATES and row['case'] in CASES
             and completed(work, 'score-' + row['candidate'] + '-' + row['case']), 'Scientific result lacks accounted ownership')
     for name, value in row['evidence'].items(): require(digest(inside(work, name)) == value, 'Scientific dependency changed')
+    for name in row['evidence']:
+        if name.endswith('.cbm.receipt.json'):
+            fitted = read(inside(work, name))['identity'].get('features', {})
+            for relative, value in fitted.items():
+                if relative.startswith('features47/'):
+                    require(digest(inside(work, relative)) == value, 'Fitting feature changed')
     if row['status'] == 'valid':
         require(row['baseline_lineage'] == 'rebuilt_v6_v7_recipe', 'Comparator lineage differs')
         for result in (row, row['v7_comparison']): policy.validate_metric(result, confidence=row['case'] in ('primary', 'secondary', 'five_day'))
@@ -617,6 +627,9 @@ def publish_candidate(root, work):
 def verify(root, work):
     from campaign import completed
     baseline = read(work / 'baseline-delivery.json')
+    for member in MEMBERS:
+        require(completed(work, f'train-{FULL}-{member}'), 'Baseline model evidence changed')
+    for number in (1, 2): require(completed(work, f'baseline-export-{number}'), 'Baseline inference evidence changed')
     baseline_path = inside(root, baseline['submission'])
     require(digest(inside(root, baseline['submission'])) == baseline['sha256'] and baseline['model_role'] == 'rebuilt_baseline'
             and baseline['promotion_supported'] is False, 'Baseline delivery identity changed')
