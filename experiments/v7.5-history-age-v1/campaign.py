@@ -156,13 +156,14 @@ def main():
     try:
         if args.worker: worker(root, args.action, args.token); return 0
         work = workdir(root); work.mkdir(parents=True, exist_ok=True)
+        if args.action == 'status':
+            ledger = read(root / 'artifacts/rebuild/compute-ledger.json')
+            print(json.dumps({'used_seconds_including_reservation': ledger['used_seconds'], 'latest': ledger['attempts'][-1],
+                              'completed_tasks': len(list((work / 'tasks').glob('*.json')))}, indent=2))
+            return 0
         with (work / 'controller.lock').open('a') as lock:
             fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
             if args.action == 'baseline': baseline(root)
-            elif args.action == 'status':
-                ledger = read(root / 'artifacts/rebuild/compute-ledger.json')
-                print(json.dumps({'used_seconds_including_reservation': ledger['used_seconds'], 'latest': ledger['attempts'][-1],
-                                  'completed_tasks': len(list((work / 'tasks').glob('*.json')))}, indent=2))
             elif args.action in ('prepare', 'develop', 'screen', 'stress', 'finalize', 'replay', 'verify'):
                 import pipeline
                 pipeline.controller(root, work, args.action, launch)

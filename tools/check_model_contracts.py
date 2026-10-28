@@ -27,8 +27,8 @@ def main():
             if report.skipped: self.skipped = True
             if report.when == 'call' and report.passed: self.passed += 1
     required = RequiredRebuild()
-    status = pytest.main([str(ROOT / 'tests/test_rebuild.py'), '-q'], plugins=[required])
-    return 0 if status == 0 and required.passed >= 12 and not required.skipped else 1
+    status = pytest.main([str(ROOT / 'tests/test_rebuild.py'), str(ROOT / 'tests/test_v75.py'), '-q'], plugins=[required])
+    return 0 if status == 0 and required.passed >= 24 and not required.skipped else 1
 
 
 if __name__=="__main__":raise SystemExit(main())
