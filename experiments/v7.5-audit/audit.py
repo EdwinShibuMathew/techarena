@@ -35,8 +35,18 @@ def unchanged(root, inventory):
         require(digest(inside(root, name)) == expected, 'Protected audit input changed: ' + name)
 
 
+def original_data_identity(root):
+    parent = root / 'artifacts/rebuild'
+    manifest = read(root / 'artifacts/v7_5/manifest.json')
+    require(digest(parent / 'data/metadata.json') == manifest['data_sha256'], 'Original dataset metadata changed')
+    require(digest(parent / 'genesis.json') == manifest['parent_genesis_sha256'], 'Original reconstruction genesis changed')
+    for name, expected in read(parent / 'genesis.json')['raw_sha256'].items():
+        require(digest(inside(root, name)) == expected, 'Original raw input changed: ' + name)
+
+
 def inventory(root):
     """Explicit task inventories only; never traverse local/ or inspect raw rows."""
+    original_data_identity(root)
     work = root / 'artifacts/v7_5'; files = set()
     def add(path): files.add(path.relative_to(root).as_posix())
     for path in sorted((work / 'tasks').glob('*.json')):
@@ -184,7 +194,7 @@ def worker(root, token):
 def verify(root):
     work = root / WORK; receipt = read(work / 'receipt.json')
     result = inside(work, receipt['report']); require(digest(result) == receipt['report_sha256'], 'Audit report changed')
-    report = read(result); unchanged(root, report['protected_inputs'])
+    report = read(result); unchanged(root, report['protected_inputs']); original_data_identity(root)
     ledger = inside(work, receipt['accounting_record']); require(digest(ledger) == receipt['accounting_sha256'], 'Audit accounting seal changed')
     state = read(ledger); prior = receipt['prior_attempts']
     require(canonical(state['attempts'][:prior]) == receipt['prior_attempts_sha256']
@@ -195,6 +205,10 @@ def verify(root):
     successor.validate_design(read(work / 'successor_spec.json'))
     require(report['diagnostic_only'] is True and report['promotion_supported'] is False
             and report['new_model_training_performed'] is False, 'Audit cannot claim promotion')
+    output = root / 'docs/results/v7.5-audit'
+    for name, expected in (('audit.json', report), ('receipt.json', receipt), ('accounting.json', state),
+                           ('successor_spec.json', successor.design())):
+        if (output / name).exists(): require(read(output / name) == expected, 'Published audit evidence changed: ' + name)
     return report, receipt
 
 

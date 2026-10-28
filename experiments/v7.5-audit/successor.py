@@ -13,7 +13,7 @@ def design():
             'hypothesis': 'A bounded V7-anchored graph correction limits cross-event distortion while retaining useful graph evidence',
             'anchor': {'lineage': 'rebuilt_v6_v7_recipe', 'version': 'V7', 'gamma': 1.12,
                        'replace_original_combiners': False, 'retrain_neural_models': False},
-            'features': FEATURES, 'excluded_features': ['raw_prefix_age', 'global_prefix_event_count', 'global_prefix_user_count', 'calendar_date'],
+            'features': list(FEATURES), 'excluded_features': ['raw_prefix_age', 'global_prefix_event_count', 'global_prefix_user_count', 'calendar_date'],
             'network': {'hidden_layers': [16], 'activation': 'tanh', 'output_activation': 'tanh',
                         'log_odds_radius': .25, 'output_initialization': 'zero_weights_and_bias',
                         'formula': 'sigmoid(logit(anchor) + 0.25*tanh(network(features)))',

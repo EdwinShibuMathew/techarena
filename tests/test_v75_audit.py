@@ -133,6 +133,9 @@ def test_frozen_successor_is_design_only_and_detects_changes():
     for field in ('training_authorized_by_this_audit', 'promotion_supported'):
         changed = deepcopy(value); changed[field] = True
         with pytest.raises(ValueError): successor.validate_design(changed)
+    changed = successor.design(); changed['features'][0] = 'calendar_date'
+    with pytest.raises(ValueError): successor.validate_design(changed)
+    assert successor.design()['features'][0] == 'graph_affinity_24h'
 
 
 def test_forecast_schedule_enforces_historical_fit_and_prediction_prefixes():
@@ -161,6 +164,44 @@ def test_publication_requires_settled_receipt_and_preserves_inputs(tmp_path):
     audit.unchanged(tmp_path, protected)
     path.write_bytes(b'changed')
     with pytest.raises(ValueError, match='Protected'): audit.unchanged(tmp_path, protected)
+
+
+def test_audit_final_accounting_write_failure_prevents_publication(tmp_path, monkeypatch):
+    parent = tmp_path / 'artifacts/rebuild'
+    write_new(parent / 'genesis.json', {'generation': 'fixture'})
+    write_new(parent / 'compute-ledger.json', {'used_seconds': 0, 'attempts': []})
+    source = {'sha256': 'a' * 64}
+    work = tmp_path / audit.WORK
+    class FailedFinalAccounting:
+        def __init__(self, *args, **kwargs): pass
+        def __enter__(self): return self
+        def run(self, command, cwd):
+            token = command[-1]; result = work / 'attempts' / (token + '.result.json')
+            write_new(result, {'diagnostic_only': True})
+            write_new(work / 'attempts' / (token + '.validated.json'),
+                      {'report': result.relative_to(work).as_posix(), 'sha256': digest(result), 'source_sha256': source['sha256']})
+            return 0
+        def __exit__(self, *_): raise OSError('durable accounting failed')
+    monkeypatch.setattr(audit.rebuild, 'ReconstructionBudget', FailedFinalAccounting)
+    monkeypatch.setattr(audit.rebuild, 'freeze', lambda *_: (work / 'snapshots/fixture', source))
+    with patch.object(audit, 'publish') as publication:
+        with pytest.raises(OSError, match='durable accounting'): audit.run(tmp_path)
+        publication.assert_not_called()
+    assert not (work / 'receipt.json').exists() and not (tmp_path / 'docs').exists()
+
+
+def test_data_identity_checks_frozen_metadata_not_just_self_consistent_arrays(tmp_path):
+    metadata = tmp_path / 'artifacts/rebuild/data/metadata.json'; write_new(metadata, {})
+    write_new(tmp_path / 'artifacts/v7_5/manifest.json', {'data_sha256': '0' * 64})
+    with pytest.raises(ValueError, match='Original dataset metadata'): audit.original_data_identity(tmp_path)
+    root = tmp_path / 'valid'
+    metadata = root / 'artifacts/rebuild/data/metadata.json'; write_new(metadata, {})
+    genesis = root / 'artifacts/rebuild/genesis.json'; write_new(genesis, {'raw_sha256': {}})
+    write_new(root / 'artifacts/v7_5/manifest.json',
+              {'data_sha256': digest(metadata), 'parent_genesis_sha256': digest(genesis)})
+    audit.original_data_identity(root)
+    genesis.write_text('{}')
+    with pytest.raises(ValueError, match='Original reconstruction genesis'): audit.original_data_identity(root)
 
 
 @pytest.fixture

@@ -1,0 +1,148 @@
+{
+  "schema_version": 1,
+  "design_id": "v7.6-v7-anchored-residual-v1",
+  "status": "design_only_not_executed",
+  "training_authorized_by_this_audit": false,
+  "promotion_supported": false,
+  "hypothesis": "A bounded V7-anchored graph correction limits cross-event distortion while retaining useful graph evidence",
+  "anchor": {
+    "lineage": "rebuilt_v6_v7_recipe",
+    "version": "V7",
+    "gamma": 1.12,
+    "replace_original_combiners": false,
+    "retrain_neural_models": false
+  },
+  "features": [
+    "graph_affinity_24h",
+    "graph_affinity_72h",
+    "graph_centered_24h",
+    "graph_centered_72h",
+    "log_graph_item_support",
+    "graph_history_coverage",
+    "graph_edge_coverage",
+    "anchor_row_logit",
+    "log1p_anchor_event_score_sum",
+    "anchor_conditional_probability",
+    "anchor_conditional_entropy",
+    "history_length_over_20",
+    "unseen_user"
+  ],
+  "excluded_features": [
+    "raw_prefix_age",
+    "global_prefix_event_count",
+    "global_prefix_user_count",
+    "calendar_date"
+  ],
+  "network": {
+    "hidden_layers": [
+      16
+    ],
+    "activation": "tanh",
+    "output_activation": "tanh",
+    "log_odds_radius": 0.25,
+    "output_initialization": "zero_weights_and_bias",
+    "formula": "sigmoid(logit(anchor) + 0.25*tanh(network(features)))",
+    "zero_output_returns_exact_anchor": true,
+    "preserve_zero_one_endpoints": true,
+    "event_mass_constraint": "none",
+    "identity_event_mask": "history_length==0 OR max(graph_edge_coverage across ten candidates)==0"
+  },
+  "normalization": {
+    "fit_on_training_records_only": true,
+    "scale_floor": 1e-06,
+    "standardized_feature_bound": 5.0,
+    "feature_logit_epsilon": 1e-06,
+    "entropy_normalizer": "log(10)",
+    "event_score_sum_is_probability": false
+  },
+  "training": {
+    "epochs": 32,
+    "optimizer": "AdamW",
+    "learning_rate": 0.001,
+    "weight_decay": 0.01,
+    "batch_events": 2048,
+    "seed": 2026,
+    "pair_seed": 5026,
+    "early_stopping": false,
+    "bce_weight": 0.5,
+    "global_row_pair_weight": 0.5,
+    "negative_rows_per_positive": 16,
+    "negative_pool": "all unclicked candidate rows in the event minibatch, including other users",
+    "anchor_divergence": "mean Bernoulli KL(anchor || corrected) over rows",
+    "divergence_penalties": [
+      0.1,
+      1.0,
+      10.0
+    ]
+  },
+  "historical_forecasts": {
+    "block_hours": 6,
+    "first_block_start": 1737374400,
+    "combiner_neural_prefix": "latest available cutoff c <= block_start - 6h",
+    "combiner_fitting_interval": "[c, block_start)",
+    "prediction_neural_prefix": "latest available cutoff d <= block_start",
+    "graph_prefix": "d",
+    "target_interval": "[block_start, block_start + 6h)",
+    "first_user_per_block": true,
+    "require_all_fitting_labels_before_target": true
+  },
+  "inner_selection": {
+    "validation_blocks": [
+      [
+        1737460800,
+        1737482400
+      ],
+      [
+        1737482400,
+        1737504000
+      ]
+    ],
+    "user_folds": 5,
+    "group_seed": 2026,
+    "exclude_validation_users_from_all_prior_residual_fitting_records": true,
+    "fitting_records": "only historical forecasts whose labels precede validation block start",
+    "eligibility": "nonnegative global-row AUC differences vs both anchors in both blocks; positive mean vs each",
+    "selection": "maximum minimum paired 95% lower bound over blocks and anchors",
+    "tie_break": "largest divergence penalty within 1e-12 of best score",
+    "if_none_eligible": "stop before outer evaluation",
+    "freeze_one_penalty_before_Jan22_outer_results": true
+  },
+  "outer_fitting": {
+    "record_window_hours": 48,
+    "label_end": "metadata_cutoff + 24h",
+    "first_record_per_user_in_window": true,
+    "normalization_fitting_records_only": true,
+    "chronology": "same development and promotion cutoffs as V7.5",
+    "outer_hyperparameter_updates": false,
+    "runner_up_after_failure": false
+  },
+  "acceptance": {
+    "release_policy": "v6_v7_four_gate",
+    "comparators": [
+      "rebuilt V6",
+      "rebuilt V7"
+    ],
+    "bootstrap": {
+      "resamples": 1000,
+      "seed": 2026,
+      "minimum_valid": 990
+    },
+    "primary_and_five_day_ci_lower": ">0",
+    "secondary_and_late_auc_difference": ">=0",
+    "validation_status": "retrospective reused dates; not independent holdout evidence",
+    "promotion_verifier": "ml_workflow.promotion.verify_promotion",
+    "identity_alone_qualifies": false
+  },
+  "budget": {
+    "ledger": "artifacts/rebuild/compute-ledger.json",
+    "total_seconds": 43200,
+    "extend_or_reset": false,
+    "finalization_reserve_seconds": 3600,
+    "training_job_seconds": 900,
+    "other_job_seconds": 1200
+  },
+  "delivery": {
+    "retain_existing_verified_baseline": true,
+    "competition_upload": "manual"
+  }
+}
