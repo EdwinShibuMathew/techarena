@@ -1,0 +1,1583 @@
+{
+  "used_seconds": 8622.898038783052,
+  "carry_identity": "562479ca1358473a1c8e28c00161b363d90f9cd4bbd39ba99cd3a52c127235bf",
+  "total_seconds": 43200,
+  "attempts": [
+    {
+      "owner": "v74-from-raw-1793146553281960999/prepare-1793146553300502028",
+      "status": "complete",
+      "reserved_seconds": 1800,
+      "controller_pid": 91514,
+      "seconds": 134.73182544500014,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/train-1737417600-dim8_seed42-1793146718881263240",
+      "status": "complete",
+      "reserved_seconds": 3600,
+      "controller_pid": 91699,
+      "seconds": 105.16372343100011,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/train-1737417600-dim8_seed43-1793146824050437556",
+      "status": "complete",
+      "reserved_seconds": 3600,
+      "controller_pid": 91699,
+      "seconds": 116.51240207799856,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/train-1737417600-dim8_seed44-1793146940579586924",
+      "status": "complete",
+      "reserved_seconds": 3600,
+      "controller_pid": 91699,
+      "seconds": 132.87248935599928,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/train-1737417600-dim16_seed42-1793147073458173282",
+      "status": "complete",
+      "reserved_seconds": 3600,
+      "controller_pid": 91699,
+      "seconds": 92.85697957299999,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/train-1737417600-dim16_seed43-1793147166329343310",
+      "status": "complete",
+      "reserved_seconds": 3600,
+      "controller_pid": 91699,
+      "seconds": 125.53591784699893,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/train-1737504000-dim8_seed42-1793147291870513264",
+      "status": "complete",
+      "reserved_seconds": 3600,
+      "controller_pid": 91699,
+      "seconds": 163.0482655529995,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/train-1737504000-dim8_seed43-1793147454924750009",
+      "status": "complete",
+      "reserved_seconds": 3600,
+      "controller_pid": 91699,
+      "seconds": 144.66221319000033,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/train-1737504000-dim8_seed44-1793147599591849395",
+      "status": "complete",
+      "reserved_seconds": 3600,
+      "controller_pid": 91699,
+      "seconds": 154.31121466699915,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/train-1737504000-dim16_seed42-1793147753910443872",
+      "status": "complete",
+      "reserved_seconds": 3600,
+      "controller_pid": 91699,
+      "seconds": 102.9521127299995,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/train-1737504000-dim16_seed43-1793147856876388523",
+      "status": "complete",
+      "reserved_seconds": 3600,
+      "controller_pid": 91699,
+      "seconds": 122.12619555000128,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/train-1737676800-dim8_seed42-1793147979016244194",
+      "status": "complete",
+      "reserved_seconds": 3600,
+      "controller_pid": 91699,
+      "seconds": 203.96978431500247,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/train-1737676800-dim8_seed43-1793148182991992547",
+      "status": "complete",
+      "reserved_seconds": 3600,
+      "controller_pid": 91699,
+      "seconds": 189.6308789020004,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/train-1737676800-dim8_seed44-1793148372636773647",
+      "status": "complete",
+      "reserved_seconds": 3600,
+      "controller_pid": 91699,
+      "seconds": 182.78587608399903,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/train-1737676800-dim16_seed42-1793148555428052140",
+      "status": "complete",
+      "reserved_seconds": 3600,
+      "controller_pid": 91699,
+      "seconds": 149.5164848159984,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/train-1737676800-dim16_seed43-1793148704958926766",
+      "status": "complete",
+      "reserved_seconds": 3600,
+      "controller_pid": 91699,
+      "seconds": 151.26283146599962,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/train-1737763200-dim8_seed42-1793148856228931294",
+      "status": "complete",
+      "reserved_seconds": 3600,
+      "controller_pid": 91699,
+      "seconds": 211.98459301300318,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/train-1737763200-dim8_seed43-1793149068227757403",
+      "status": "complete",
+      "reserved_seconds": 3600,
+      "controller_pid": 91699,
+      "seconds": 196.78424601400184,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/train-1737763200-dim8_seed44-1793149265017420217",
+      "status": "complete",
+      "reserved_seconds": 3600,
+      "controller_pid": 91699,
+      "seconds": 191.92887792699912,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/train-1737763200-dim16_seed42-1793149456951585229",
+      "status": "complete",
+      "reserved_seconds": 3600,
+      "controller_pid": 91699,
+      "seconds": 156.01261289200193,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/train-1737763200-dim16_seed43-1793149612971838284",
+      "status": "complete",
+      "reserved_seconds": 3600,
+      "controller_pid": 91699,
+      "seconds": 175.4681713070022,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/train-1737849600-dim8_seed42-1793149788446279303",
+      "status": "complete",
+      "reserved_seconds": 3600,
+      "controller_pid": 91699,
+      "seconds": 223.15599796700553,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/train-1737849600-dim8_seed43-1793150011609687497",
+      "status": "complete",
+      "reserved_seconds": 3600,
+      "controller_pid": 91699,
+      "seconds": 201.5942143219945,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/train-1737849600-dim8_seed44-1793150213221234695",
+      "status": "complete",
+      "reserved_seconds": 3600,
+      "controller_pid": 91699,
+      "seconds": 213.45423052899423,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/train-1737849600-dim16_seed42-1793150426682126924",
+      "status": "complete",
+      "reserved_seconds": 3600,
+      "controller_pid": 91699,
+      "seconds": 180.694511736001,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/train-1737849600-dim16_seed43-1793150607391000865",
+      "status": "complete",
+      "reserved_seconds": 3600,
+      "controller_pid": 91699,
+      "seconds": 180.482006567996,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/feature-1737417600-1737417600-1737504000-dim8_seed42-1793150798017039548",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 108827,
+      "seconds": 11.78045380399999,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/feature-1737504000-1737504000-1737763200-dim8_seed42-1793150809804531773",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 108827,
+      "seconds": 8.857940333000442,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/combiner-1737417600-dim8_seed42-1793150818675761583",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 108827,
+      "seconds": 13.487381494996953,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/crossfit-1737417600-dim8_seed42-1793150832176708427",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 108827,
+      "seconds": 49.08937755700026,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/feature-1737417600-1737417600-1737504000-dim8_seed43-1793150881279192361",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 108827,
+      "seconds": 7.472643025001162,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/feature-1737504000-1737504000-1737763200-dim8_seed43-1793150888766340709",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 108827,
+      "seconds": 8.16168026500236,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/combiner-1737417600-dim8_seed43-1793150896933963213",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 108827,
+      "seconds": 13.083133835003537,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/crossfit-1737417600-dim8_seed43-1793150910022838836",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 108827,
+      "seconds": 50.93312069500098,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/feature-1737417600-1737417600-1737504000-dim8_seed44-1793150960970000238",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 108827,
+      "seconds": 7.033276872003626,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/feature-1737504000-1737504000-1737763200-dim8_seed44-1793150968017097777",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 108827,
+      "seconds": 7.800771021997207,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/combiner-1737417600-dim8_seed44-1793150975823971122",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 108827,
+      "seconds": 13.695477740002389,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/crossfit-1737417600-dim8_seed44-1793150989533096467",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 108827,
+      "seconds": 50.02877341499698,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/feature-1737417600-1737417600-1737504000-dim16_seed42-1793151039576193204",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 108827,
+      "seconds": 7.14342182699329,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/feature-1737504000-1737504000-1737763200-dim16_seed42-1793151046725864757",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 108827,
+      "seconds": 8.207113318996562,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/combiner-1737417600-dim16_seed42-1793151054938589025",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 108827,
+      "seconds": 13.28949755600479,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/crossfit-1737417600-dim16_seed42-1793151068242385687",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 108827,
+      "seconds": 48.02828268599842,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/feature-1737417600-1737417600-1737504000-dim16_seed43-1793151116284646614",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 108827,
+      "seconds": 7.068488142998831,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/feature-1737504000-1737504000-1737763200-dim16_seed43-1793151123358670321",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 108827,
+      "seconds": 8.098181509994902,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/combiner-1737417600-dim16_seed43-1793151131463036073",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 108827,
+      "seconds": 13.528559985003085,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/crossfit-1737417600-dim16_seed43-1793151145005383251",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 108827,
+      "seconds": 48.521986026004015,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/score-history_24h-jan22_long-1793151193533651657",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 108827,
+      "seconds": 21.067007375000685,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/score-history_72h-jan22_long-1793151214614804955",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 108827,
+      "seconds": 12.262581909999426,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/feature-1737504000-1737504000-1737590400-dim8_seed42-1793151226891741213",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 108827,
+      "seconds": 6.778098709997721,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/feature-1737676800-1737676800-1737763200-dim8_seed42-1793151233675792295",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 108827,
+      "seconds": 7.430312431002676,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/combiner-1737504000-dim8_seed42-1793151241112810886",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 108827,
+      "seconds": 13.289315097004874,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/crossfit-1737504000-dim8_seed42-1793151254415844561",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 108827,
+      "seconds": 48.669587056996534,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/feature-1737504000-1737504000-1737590400-dim8_seed43-1793151303100331298",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 108827,
+      "seconds": 7.097579235000012,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/feature-1737676800-1737676800-1737763200-dim8_seed43-1793151310203672515",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 108827,
+      "seconds": 7.338819729004172,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/combiner-1737504000-dim8_seed43-1793151317548417641",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 108827,
+      "seconds": 13.226663706998806,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/crossfit-1737504000-dim8_seed43-1793151330789096696",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 108827,
+      "seconds": 48.77567315999477,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/feature-1737504000-1737504000-1737590400-dim8_seed44-1793151379578636603",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 108827,
+      "seconds": 6.77021548099583,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/feature-1737676800-1737676800-1737763200-dim8_seed44-1793151386354802659",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 108827,
+      "seconds": 7.453362633001234,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/combiner-1737504000-dim8_seed44-1793151393823261756",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 108827,
+      "seconds": 13.531010979000712,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/crossfit-1737504000-dim8_seed44-1793151407369160413",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 108827,
+      "seconds": 48.17723941100121,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/feature-1737504000-1737504000-1737590400-dim16_seed42-1793151455552224693",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 108827,
+      "seconds": 7.08652531500411,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/feature-1737676800-1737676800-1737763200-dim16_seed42-1793151462654793519",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 108827,
+      "seconds": 7.694615979999071,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/combiner-1737504000-dim16_seed42-1793151470358745341",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 108827,
+      "seconds": 13.98285253400536,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/crossfit-1737504000-dim16_seed42-1793151484356227269",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 108827,
+      "seconds": 49.68476798199845,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/feature-1737504000-1737504000-1737590400-dim16_seed43-1793151534054897171",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 108827,
+      "seconds": 7.074625178996939,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/feature-1737676800-1737676800-1737763200-dim16_seed43-1793151541136684674",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 108827,
+      "seconds": 7.700091708997206,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/combiner-1737504000-dim16_seed43-1793151548842935906",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 108827,
+      "seconds": 13.205676120000135,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/crossfit-1737504000-dim16_seed43-1793151562063904856",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 108827,
+      "seconds": 47.717839635995915,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/score-history_24h-jan24_forward-1793151609797207655",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 108827,
+      "seconds": 21.318886925000697,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/score-history_72h-jan24_forward-1793151631122660302",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 108827,
+      "seconds": 10.505429443997855,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/develop-1793151641644114699",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 108827,
+      "seconds": 1.639450337002927,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-train-1737936000-dim8_seed42-1793202845100632658",
+      "status": "complete",
+      "reserved_seconds": 900,
+      "controller_pid": 115277,
+      "seconds": 206.47716519600363,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-baseline-fit-feature-dim8_seed42-1793203051584565638",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 115277,
+      "seconds": 8.478925011993852,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-baseline-combiner-dim8_seed42-1793203060079407112",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 115277,
+      "seconds": 12.731659394004964,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-train-1737936000-dim8_seed43-1793203072828139748",
+      "status": "complete",
+      "reserved_seconds": 900,
+      "controller_pid": 115277,
+      "seconds": 200.6633104930006,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-baseline-fit-feature-dim8_seed43-1793203273499497363",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 115277,
+      "seconds": 7.277570415004448,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-baseline-combiner-dim8_seed43-1793203280784631339",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 115277,
+      "seconds": 12.623469393998676,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-train-1737936000-dim8_seed44-1793203293424197768",
+      "status": "complete",
+      "reserved_seconds": 900,
+      "controller_pid": 115277,
+      "seconds": 210.90552906499943,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-baseline-fit-feature-dim8_seed44-1793203504337680101",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 115277,
+      "seconds": 7.543989035999402,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-baseline-combiner-dim8_seed44-1793203511888443684",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 115277,
+      "seconds": 13.08105095299834,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-train-1737936000-dim16_seed42-1793203524983835820",
+      "status": "complete",
+      "reserved_seconds": 900,
+      "controller_pid": 115277,
+      "seconds": 155.56044430600014,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-baseline-fit-feature-dim16_seed42-1793203680551082070",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 115277,
+      "seconds": 7.990884858001664,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-baseline-combiner-dim16_seed42-1793203688550091384",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 115277,
+      "seconds": 12.940910912002437,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-train-1737936000-dim16_seed43-1793203701508134854",
+      "status": "complete",
+      "reserved_seconds": 900,
+      "controller_pid": 115277,
+      "seconds": 188.5776725600008,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-baseline-fit-feature-dim16_seed43-1793203890092894952",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 115277,
+      "seconds": 7.803184937001788,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-baseline-combiner-dim16_seed43-1793203897903518527",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 115277,
+      "seconds": 13.23545717500383,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-baseline-export-1-1793203911154286967",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 115277,
+      "seconds": 25.587867053000082,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-baseline-export-2-1793203936759070602",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 115277,
+      "seconds": 25.54504578700289,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-train-1737352800-dim8_seed42-1793204021919077907",
+      "status": "complete",
+      "reserved_seconds": 900,
+      "controller_pid": 132742,
+      "seconds": 37.42358103400329,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-train-1737352800-dim8_seed43-1793204059349598453",
+      "status": "complete",
+      "reserved_seconds": 900,
+      "controller_pid": 132742,
+      "seconds": 42.09298639900226,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-train-1737352800-dim8_seed44-1793204101449275072",
+      "status": "complete",
+      "reserved_seconds": 900,
+      "controller_pid": 132742,
+      "seconds": 28.502271877994644,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-train-1737352800-dim16_seed42-1793204129965978705",
+      "status": "complete",
+      "reserved_seconds": 900,
+      "controller_pid": 132742,
+      "seconds": 30.219369443999312,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-train-1737352800-dim16_seed43-1793204160194972763",
+      "status": "complete",
+      "reserved_seconds": 900,
+      "controller_pid": 132742,
+      "seconds": 31.825695334002376,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-train-1737374400-dim8_seed42-1793204192029121899",
+      "status": "complete",
+      "reserved_seconds": 900,
+      "controller_pid": 132742,
+      "seconds": 71.40678762299649,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-train-1737374400-dim8_seed43-1793204263442720467",
+      "status": "complete",
+      "reserved_seconds": 900,
+      "controller_pid": 132742,
+      "seconds": 77.20640015299432,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-train-1737374400-dim8_seed44-1793204340657109074",
+      "status": "complete",
+      "reserved_seconds": 900,
+      "controller_pid": 132742,
+      "seconds": 61.709200450000935,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-train-1737374400-dim16_seed42-1793204402382329159",
+      "status": "complete",
+      "reserved_seconds": 900,
+      "controller_pid": 132742,
+      "seconds": 54.04350742600218,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-train-1737374400-dim16_seed43-1793204456442061169",
+      "status": "complete",
+      "reserved_seconds": 900,
+      "controller_pid": 132742,
+      "seconds": 53.001942628005054,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-train-1737590400-dim8_seed42-1793204509457330389",
+      "status": "complete",
+      "reserved_seconds": 900,
+      "controller_pid": 132742,
+      "seconds": 193.14372497300064,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-train-1737590400-dim8_seed43-1793204702610131635",
+      "status": "complete",
+      "reserved_seconds": 900,
+      "controller_pid": 132742,
+      "seconds": 175.80054969699995,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-train-1737590400-dim8_seed44-1793204878417335213",
+      "status": "complete",
+      "reserved_seconds": 900,
+      "controller_pid": 132742,
+      "seconds": 158.22646585800248,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-train-1737590400-dim16_seed42-1793205036651338114",
+      "status": "complete",
+      "reserved_seconds": 900,
+      "controller_pid": 132742,
+      "seconds": 133.7617803020039,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-train-1737590400-dim16_seed43-1793205170421920273",
+      "status": "complete",
+      "reserved_seconds": 900,
+      "controller_pid": 132742,
+      "seconds": 123.16936491700471,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-baseline-export-3-1793205374241111565",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 136447,
+      "seconds": 25.39878103099909,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-feature37-1737417600-dim8_seed42-1793205415700698638",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 136764,
+      "seconds": 2.1804511490045115,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-reference-combiner-1737417600-dim8_seed42-1793205417896739465",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 136764,
+      "seconds": 12.969642420001037,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-feature47-1737352800-1737417600-1737504000-dim8_seed42-1793205430882369989",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 136764,
+      "seconds": 9.53875642800267,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-feature47-1737374400-1737417600-1737504000-dim8_seed42-1793205440428601007",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 136764,
+      "seconds": 10.41662400199857,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-feature47-1737417600-1737417600-1737504000-dim8_seed42-1793205450856857905",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 136764,
+      "seconds": 4.773613417004526,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-feature47-1737504000-1737504000-1737763200-dim8_seed42-1793205455637845982",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 136764,
+      "seconds": 5.775778253999306,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-combiner47-current-1737417600-dim8_seed42-1793205461421010888",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 136764,
+      "seconds": 15.696922331000678,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-combiner47-pooled-1737417600-dim8_seed42-1793205477129703746",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 136764,
+      "seconds": 39.238752734003356,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-feature37-1737417600-dim8_seed43-1793205516384521395",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 136764,
+      "seconds": 2.0069186890032142,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-reference-combiner-1737417600-dim8_seed43-1793205518407416985",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 136764,
+      "seconds": 12.829196981001587,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-feature47-1737352800-1737417600-1737504000-dim8_seed43-1793205531245334691",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 136764,
+      "seconds": 7.523280159999558,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-feature47-1737374400-1737417600-1737504000-dim8_seed43-1793205538775428498",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 136764,
+      "seconds": 7.62489839400223,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-feature47-1737417600-1737417600-1737504000-dim8_seed43-1793205546407492946",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 136764,
+      "seconds": 3.2279215149974334,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-feature47-1737504000-1737504000-1737763200-dim8_seed43-1793205549643890567",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 136764,
+      "seconds": 4.104374825001287,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-combiner47-current-1737417600-dim8_seed43-1793205553755523593",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 136764,
+      "seconds": 13.826272790000075,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-combiner47-pooled-1737417600-dim8_seed43-1793205567598286733",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 136764,
+      "seconds": 38.03437616299925,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-feature37-1737417600-dim8_seed44-1793205605648527973",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 136764,
+      "seconds": 1.9605392849989585,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-reference-combiner-1737417600-dim8_seed44-1793205607624844831",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 136764,
+      "seconds": 12.974545347999083,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-feature47-1737352800-1737417600-1737504000-dim8_seed44-1793205620615058871",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 136764,
+      "seconds": 7.776640763004252,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-feature47-1737374400-1737417600-1737504000-dim8_seed44-1793205628416876297",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 136764,
+      "seconds": 8.103509583001141,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-feature47-1737417600-1737417600-1737504000-dim8_seed44-1793205636528007990",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 136764,
+      "seconds": 3.21403005799948,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-feature47-1737504000-1737504000-1737763200-dim8_seed44-1793205639757072508",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 136764,
+      "seconds": 4.01494329200068,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-combiner47-current-1737417600-dim8_seed44-1793205643788133828",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 136764,
+      "seconds": 14.967554683003982,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-combiner47-pooled-1737417600-dim8_seed44-1793205658771187537",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 136764,
+      "seconds": 40.05008706499939,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-feature37-1737417600-dim16_seed42-1793205698838643791",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 136764,
+      "seconds": 1.9620815480011515,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-reference-combiner-1737417600-dim16_seed42-1793205700816926614",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 136764,
+      "seconds": 13.287165533998632,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-feature47-1737352800-1737417600-1737504000-dim16_seed42-1793205714120324467",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 136764,
+      "seconds": 7.902506452002854,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-feature47-1737374400-1737417600-1737504000-dim16_seed42-1793205722031964321",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 136764,
+      "seconds": 8.130951202998403,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-feature47-1737417600-1737417600-1737504000-dim16_seed42-1793205730170395697",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 136764,
+      "seconds": 3.162427900999319,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-feature47-1737504000-1737504000-1737763200-dim16_seed42-1793205733340604253",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 136764,
+      "seconds": 4.074954483003239,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-combiner47-current-1737417600-dim16_seed42-1793205737430645959",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 136764,
+      "seconds": 15.303830682998523,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-combiner47-pooled-1737417600-dim16_seed42-1793205752750696548",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 136764,
+      "seconds": 39.3922819799991,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-feature37-1737417600-dim16_seed43-1793205792152469194",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 136764,
+      "seconds": 1.9582076709993999,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-reference-combiner-1737417600-dim16_seed43-1793205794125312381",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 136764,
+      "seconds": 13.638855131001037,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-feature47-1737352800-1737417600-1737504000-dim16_seed43-1793205807781706054",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 136764,
+      "seconds": 7.9325496919991565,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-feature47-1737374400-1737417600-1737504000-dim16_seed43-1793205815721931902",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 136764,
+      "seconds": 8.184475807996932,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-feature47-1737417600-1737417600-1737504000-dim16_seed43-1793205823915192943",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 136764,
+      "seconds": 3.2607844680023845,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-feature47-1737504000-1737504000-1737763200-dim16_seed43-1793205827183630708",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 136764,
+      "seconds": 4.132390931001282,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-combiner47-current-1737417600-dim16_seed43-1793205831331283524",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 136764,
+      "seconds": 14.10285686100542,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-combiner47-pooled-1737417600-dim16_seed43-1793205845455085994",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 136764,
+      "seconds": 40.0415157690004,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-score-A-jan22_long-1793205885512075630",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 136764,
+      "seconds": 9.443875948003551,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-score-B-jan22_long-1793205894973182056",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 136764,
+      "seconds": 9.199159181000141,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-score-C-jan22_long-1793205904187625253",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 136764,
+      "seconds": 9.179757862999395,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-feature37-1737504000-dim8_seed42-1793205913382560390",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 136764,
+      "seconds": 1.8171660260049975,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-reference-combiner-1737504000-dim8_seed42-1793205915215400610",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 136764,
+      "seconds": 13.078892211000493,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-feature47-1737352800-1737504000-1737590400-dim8_seed42-1793205928310109061",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 136764,
+      "seconds": 8.74035705300048,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-feature47-1737374400-1737504000-1737590400-dim8_seed42-1793205937058687427",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 136764,
+      "seconds": 9.135823389995494,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-feature47-1737417600-1737504000-1737590400-dim8_seed42-1793205946203378604",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 136764,
+      "seconds": 9.286736016998475,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-feature47-1737504000-1737504000-1737590400-dim8_seed42-1793205955501254481",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 136764,
+      "seconds": 4.512403113003529,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-feature47-1737676800-1737676800-1737763200-dim8_seed42-1793205960031218230",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 136764,
+      "seconds": 4.9788829350000015,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-combiner47-current-1737504000-dim8_seed42-1793205965026974225",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 136764,
+      "seconds": 14.406489519002207,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-combiner47-pooled-1737504000-dim8_seed42-1793205979449143431",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 136764,
+      "seconds": 52.99043485800212,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-feature37-1737504000-dim8_seed43-1793206032448347201",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 136764,
+      "seconds": 1.9155414650012972,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-reference-combiner-1737504000-dim8_seed43-1793206034374088254",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 136764,
+      "seconds": 14.055425154001568,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-feature47-1737352800-1737504000-1737590400-dim8_seed43-1793206048445321313",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 136764,
+      "seconds": 7.533264880999923,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-feature47-1737374400-1737504000-1737590400-dim8_seed43-1793206055987997381",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 136764,
+      "seconds": 7.639054725994356,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-feature47-1737417600-1737504000-1737590400-dim8_seed43-1793206063635969414",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 136764,
+      "seconds": 8.057154522997735,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-feature47-1737504000-1737504000-1737590400-dim8_seed43-1793206071701103966",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 136764,
+      "seconds": 3.1750126240003738,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-feature47-1737676800-1737676800-1737763200-dim8_seed43-1793206074892448068",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 136764,
+      "seconds": 3.361995532999572,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-combiner47-current-1737504000-dim8_seed43-1793206078269673286",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 136764,
+      "seconds": 15.038579414998821,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-combiner47-pooled-1737504000-dim8_seed43-1793206093325579349",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 136764,
+      "seconds": 53.45679465000285,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-feature37-1737504000-dim8_seed44-1793206146797956127",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 136764,
+      "seconds": 1.834844268996676,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-reference-combiner-1737504000-dim8_seed44-1793206148640472052",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 136764,
+      "seconds": 12.68272673800675,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-feature47-1737352800-1737504000-1737590400-dim8_seed44-1793206161339347154",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 136764,
+      "seconds": 7.833350731001701,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-feature47-1737374400-1737504000-1737590400-dim8_seed44-1793206169180739650",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 136764,
+      "seconds": 7.793915596004808,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-feature47-1737417600-1737504000-1737590400-dim8_seed44-1793206176988515779",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 136764,
+      "seconds": 8.19946656999673,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-feature47-1737504000-1737504000-1737590400-dim8_seed44-1793206185196520512",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 136764,
+      "seconds": 3.2218009749994962,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-feature47-1737676800-1737676800-1737763200-dim8_seed44-1793206188434958448",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 136764,
+      "seconds": 3.4184728620020906,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-combiner47-current-1737504000-dim8_seed44-1793206191870112961",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 136764,
+      "seconds": 14.389555705005478,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-combiner47-pooled-1737504000-dim8_seed44-1793206206280734978",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 136764,
+      "seconds": 52.90937095099798,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-feature37-1737504000-dim16_seed42-1793206259207181392",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 136764,
+      "seconds": 1.8659683669975493,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-reference-combiner-1737504000-dim16_seed42-1793206261082519846",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 136764,
+      "seconds": 12.742065885999182,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-feature47-1737352800-1737504000-1737590400-dim16_seed42-1793206273841001712",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 136764,
+      "seconds": 7.967186749003304,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-feature47-1737374400-1737504000-1737590400-dim16_seed42-1793206281821275152",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 136764,
+      "seconds": 8.291181064996636,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-feature47-1737417600-1737504000-1737590400-dim16_seed42-1793206290121926381",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 136764,
+      "seconds": 8.289430744000128,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-feature47-1737504000-1737504000-1737590400-dim16_seed42-1793206298419677271",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 136764,
+      "seconds": 3.166993384998932,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-feature47-1737676800-1737676800-1737763200-dim16_seed42-1793206301602417114",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 136764,
+      "seconds": 3.4198207929948694,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-combiner47-current-1737504000-dim16_seed42-1793206305038877299",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 136764,
+      "seconds": 14.636473701997602,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-combiner47-pooled-1737504000-dim16_seed42-1793206319683706351",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 136764,
+      "seconds": 53.510638492996804,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-feature37-1737504000-dim16_seed43-1793206373212431067",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 136764,
+      "seconds": 2.0275683450017823,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-reference-combiner-1737504000-dim16_seed43-1793206375256147077",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 136764,
+      "seconds": 12.840493654002785,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-feature47-1737352800-1737504000-1737590400-dim16_seed43-1793206388113328167",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 136764,
+      "seconds": 8.211539013995207,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-feature47-1737374400-1737504000-1737590400-dim16_seed43-1793206396333070072",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 136764,
+      "seconds": 8.621380561002297,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-feature47-1737417600-1737504000-1737590400-dim16_seed43-1793206404965255308",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 136764,
+      "seconds": 8.857136178994551,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-feature47-1737504000-1737504000-1737590400-dim16_seed43-1793206413831424280",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 136764,
+      "seconds": 3.1649215029974584,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-feature47-1737676800-1737676800-1737763200-dim16_seed43-1793206417011825799",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 136764,
+      "seconds": 3.3720628900045995,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-combiner47-current-1737504000-dim16_seed43-1793206420391888476",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 136764,
+      "seconds": 14.944185603999358,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-combiner47-pooled-1737504000-dim16_seed43-1793206435355862225",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 136764,
+      "seconds": 53.45757225700072,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-score-A-jan24_forward-1793206488822612512",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 136764,
+      "seconds": 7.3341519229943515,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-score-B-jan24_forward-1793206496173077339",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 136764,
+      "seconds": 7.12655562999862,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-score-C-jan24_forward-1793206503317011406",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 136764,
+      "seconds": 7.1830923079978675,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/v75-develop-1793206510516599606",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 136764,
+      "seconds": 2.2400274550018366,
+      "error": null
+    },
+    {
+      "owner": "v74-from-raw-1793146553281960999/audit-v75-1793213426834622291",
+      "status": "complete",
+      "reserved_seconds": 1200,
+      "controller_pid": 2,
+      "seconds": 64.80082819300151,
+      "error": null
+    }
+  ]
+}

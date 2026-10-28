@@ -33,7 +33,7 @@ def _context(root, release):
     work = engine.locate(root, config['run_id'])
     require(engine.ROOT.resolve() == (work / 'source').resolve(), 'Bridge requires the frozen runtime')
     m = engine.load(root, work)
-    require(m['spec'].get('release_name') == release and m['spec']['schema_version'] in (2, 3)
+    require(m['spec'].get('release_name') == release and m['spec']['schema_version'] in (2, 3, 4)
             and m['spec']['purpose'] == 'research', 'Wrong release recipe')
     require(receipt_ready(m['spec'], config), 'Release is not ready for its declared policy')
     verified = engine.verify(root, m['run_id'])
@@ -54,6 +54,8 @@ def _context(root, release):
         'carry_identity': m['carry_identity'],
         'protected_paths': [p.relative_to(root).as_posix() for p in protected],
     }
+    if m['spec']['schema_version']==4:
+        record['context_schema']=4
     return work, m, calibrator, record
 
 
@@ -98,12 +100,19 @@ def _validate_output(output, root, record):
 
 
 def _validation(record, token, stage, root, bridge_sha):
-    return {
+    result = {
         'schema_version': 1, 'token': token,
         **{k: record[k] for k in ('run_id', 'release_name', 'manifest_sha256', 'config_sha256',
                                  'source_snapshot_sha256', 'source_commit', 'rows', 'csv_sha256')},
         'stage_relative': stage.relative_to(root).as_posix(), 'replay_code_sha256': bridge_sha,
     }
+    if record.get('context_schema')==4:
+        from ml_workflow import engine
+        from ml_workflow.contracts import digest
+        work=engine.locate(root,record['run_id'])
+        path=work/'graphs'/('final-'+token+'.npz')
+        result['graph_files']={p.relative_to(root).as_posix():digest(p) for p in (path,path.with_suffix('.json'))}
+    return result
 
 
 def staged_worker(root, release, token, stage):

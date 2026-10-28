@@ -1,0 +1,11 @@
+{
+  "report": "attempts/1793213426834622291.result.json",
+  "report_sha256": "64e29cf89181039dd659a784c22f6cd2a4003daa4a4b70e671d519ca83109bb3",
+  "owner": "v74-from-raw-1793146553281960999/audit-v75-1793213426834622291",
+  "accounting_record": "accounting/5d75768b98e634b9c2a19f11b5bd904d9e1b4c5f1d37c1d7e30228f65bd9fa78.json",
+  "accounting_sha256": "5d75768b98e634b9c2a19f11b5bd904d9e1b4c5f1d37c1d7e30228f65bd9fa78",
+  "prior_attempts": 196,
+  "prior_attempts_sha256": "40f58e23f9f3e419144ec3ca95ef45cb4a3ea74999280e3920c36ba406f2932f",
+  "diagnostic_only": true,
+  "promotion_supported": false
+}

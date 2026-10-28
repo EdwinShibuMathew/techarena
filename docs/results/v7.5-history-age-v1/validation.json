@@ -1,0 +1,46 @@
+{
+  "schema_version": 6,
+  "scientific_source_commit": "cf46c0900fab039a291d1c6516add0afac8f5bbe",
+  "baseline_training_source_commit": "ba2ac0389c64413982e0620fe162981d6ce775b6",
+  "baseline_lineage": "rebuilt_v6_v7_recipe",
+  "source_ci": {
+    "run_id": 40725030908,
+    "commit": "cf46c0900fab039a291d1c6516add0afac8f5bbe",
+    "conclusion": "success",
+    "required_model_contracts": 95,
+    "v75_contracts": 13,
+    "required_skips": 0,
+    "frozen_source_files_verified": 59
+  },
+  "baseline_delivery_checks": {
+    "rows": 529390,
+    "official_header_ids_order": true,
+    "unique_ids": true,
+    "finite_probabilities_in_range": true,
+    "independent_exports": 2,
+    "supported_cli_replays": 1,
+    "identical_csv_hashes": true,
+    "member_prediction_absolute_tolerance": 1e-15,
+    "checksum_sidecar_verified": true,
+    "sha256": "9320ca6465c5ce6576746c5fc8f00d13109e507d7a20d5d506a9e03f63fa2b85"
+  },
+  "terminal_guard_checks": {
+    "screen_exit_code": 1,
+    "screen_reason": "Development failure is terminal",
+    "finalize_exit_code": 1,
+    "finalize_reason": "Stage lacks durable accounting: screen",
+    "ledger_sha256_before": "7944d33fed2d4c8e2a01faa6eb7a5f59aeecd0be7f4385df0e318ab06fac782f",
+    "ledger_sha256_after": "7944d33fed2d4c8e2a01faa6eb7a5f59aeecd0be7f4385df0e318ab06fac782f",
+    "claims_before": 125,
+    "claims_after": 125,
+    "v75_ready_configuration_exists": false,
+    "v75_submission_exists": false,
+    "v75_readiness_receipt_exists": false
+  },
+  "scientific_status": "rejected_at_develop",
+  "competition_csv_ready": true,
+  "delivered_model_role": "rebuilt_baseline",
+  "v7_5_promoted": false,
+  "historical_v6_v7_reproduced": false,
+  "competition_upload_performed": false
+}

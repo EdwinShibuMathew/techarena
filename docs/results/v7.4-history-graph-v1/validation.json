@@ -1,0 +1,86 @@
+{
+  "base_commit": "329d79cdd279dcf4f8c0359a15815cb42d2e5026",
+  "dependencies": {
+    "catboost": "1.2.10",
+    "numpy": "2.2.6",
+    "pytest": "8.4.2",
+    "scikit-learn": "1.9.1",
+    "scipy": "1.15.3",
+    "torch": "2.13.0+cpu"
+  },
+  "dependency_consistency": "success",
+  "frozen_baseline_paths_unchanged": true,
+  "implementation_commit": "8636f6803d2c9112513c3d8df672be5eb0d82378",
+  "kind": "v7_4_implementation_validation",
+  "lightweight_source_regressions": {
+    "failed": 0,
+    "passed": 153,
+    "skipped": 31
+  },
+  "locked_cpu_regressions": {
+    "failed": 0,
+    "passed": 183,
+    "skipped": 1
+  },
+  "raw_assets_restored": {
+    "data/raw/evaluation.zip": {
+      "matched_declared_input": true,
+      "sha256": "0573325e00039650639543ba10b73386a87e60ff4347202edda14d6df641e27e"
+    },
+    "data/raw/example_submission.csv": {
+      "matched_declared_input": true,
+      "sha256": "573ab520d363c4fd3fa85be37b324e5af96b7c3b97bf2a830a470a14b8dff185"
+    },
+    "data/raw/train.zip": {
+      "matched_declared_input": true,
+      "sha256": "70f32dafff193a91ab42831337d50bde011d04e29d50b63239cde98e51dbd580"
+    }
+  },
+  "required_model_contracts": {
+    "failed": 0,
+    "passed": 70,
+    "skipped": 0
+  },
+  "research": {
+    "authoritative_current_compute_seconds": null,
+    "competition_upload_performed": false,
+    "historical_recorded_compute_seconds": 4459.699446460001,
+    "measured_auc": null,
+    "missing_prerequisite_roles": 82,
+    "original_cap_seconds": 14400,
+    "private_inference_performed": false,
+    "promotion_gate_results": null,
+    "promotion_supported": false,
+    "ready_for_prepare": false,
+    "scientific_training_performed": false,
+    "selected_candidate": null,
+    "status": "not_started_missing_private_assets_and_authoritative_ledger",
+    "submission_ready": false
+  },
+  "schema_version": 1,
+  "source_readiness": {
+    "archive": {
+      "filename": "techarena-source.tar.gz",
+      "sha256": "555ba0a701fe3f7a62b38d627e9a426aa4448cd94c5426e776d25c0d0ef2ceb7"
+    },
+    "checks": {
+      "cpu_tests": "success",
+      "model_contracts": "success",
+      "source_archive": "success",
+      "source_integrity": "success"
+    },
+    "competition_submission_created": false,
+    "evaluation_rows": 529390,
+    "frozen_source_files_verified": 59,
+    "git_commit": "8636f6803d2c9112513c3d8df672be5eb0d82378",
+    "kind": "source_readiness",
+    "model_inference_performed": false,
+    "private_assets_verified": false,
+    "schema_version": 1,
+    "source_manifest_sha256": "72421f9519e72229bbc905bad7db671e9d58f4141f5f00bfb304178fc105649f",
+    "tracked_files": 292,
+    "v6_config_sha256": "a6e7a3a1ab67b7e1fa234851831c88ca68c18d2e9eab22914b2b2cfbb47c3e68",
+    "v6_submission_sha256": "c386d545b3746e05dd515020c6185afda06cefdbcdf7d48df022454762fb378c"
+  },
+  "v7_4_required_tests": 18
+}

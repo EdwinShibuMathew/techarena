@@ -72,17 +72,19 @@ class ExperimentSpec:
 
     @classmethod
     def parse(cls, value):
-        require(value.get("schema_version") in (1,2,3), "Unsupported specification version")
-        post=value["schema_version"] in (2,3)
-        if post:require(value.get("mode")=="ensemble_postprocessor", "Unsupported schema-v2 mode")
+        require(value.get("schema_version") in (1,2,3,4), "Unsupported specification version")
+        history=value['schema_version']==4
+        post=value["schema_version"] in (2,3,4)
+        if post:require(value.get("mode")==('history_postprocessor' if history else "ensemble_postprocessor"), "Unsupported postprocessor mode")
         require(value.get("purpose") in {"synthetic_validation","research"}, "Unknown experiment purpose")
         require(isinstance(value.get("hypothesis"),str) and value["hypothesis"].strip(), "Declare one hypothesis")
         require(value.get("comparator")=="V6", "Comparator must be V6")
         policy=value.get("release_policy","v6_four_gate")
-        require(policy in {"v6_four_gate","v7_upload_trial"}, "Unknown release policy")
+        require(policy in {"v6_four_gate","v7_upload_trial","v6_v7_four_gate"}, "Unknown release policy")
+        require((policy=='v6_v7_four_gate')==history, 'Dual promotion requires schema-v4 history mode')
         trial=policy=="v7_upload_trial"
-        if trial:
-            require(value["schema_version"]==3 and value.get("upload_comparator")=="V7", "V7 trials require schema-v3 and explicit comparator")
+        if trial or history:
+            require(value["schema_version"]==(4 if history else 3) and value.get("upload_comparator")=="V7", "V7 policies require an explicit comparator")
             require(value.get("anchor_sha256")=="9aebf08df53b9b1d0661479151c37118859831b3b4c9d371d533c3bf203b141a" and value.get("anchor_gamma")==1.12,"Fixed V7 identity changed")
             require({"v7_config","v7_validation"}<=set(value["inputs"]), "Missing V7 identity evidence")
         else:require("upload_comparator" not in value,"Upload comparator requires trial policy")
@@ -93,7 +95,7 @@ class ExperimentSpec:
         for name, params in candidates.items():
             identifier(name)
             if post:
-                require(params.get("kind")=="ensemble_postprocessor", "Invalid postprocessor candidate")
+                require(params.get("kind")==('history_postprocessor' if history else "ensemble_postprocessor"), "Invalid postprocessor candidate")
             else:
                 changed=params["members"]
                 require(bool(changed) and len(set(changed))==len(changed) and set(changed)<=set(MEMBERS), "Unknown or repeated changed members")
@@ -101,7 +103,9 @@ class ExperimentSpec:
         require(isinstance(order,list) and len(order)==len(candidates) and set(order)==set(candidates),"Declare an explicit candidate tie order")
         require(type(value.get("seed")) is int, "Declare deterministic seed")
         require(value.get("bootstrap")=={"resamples":1000,"seed":2026,"minimum_valid":990}, "Promotion bootstrap contract changed")
-        require(value.get("selection")==("maximin_nonnegative_v7_origins" if trial else "maximin_nonnegative_origins_and_late" if value["schema_version"]==3 else "maximin_nonnegative_origins"), "Unsupported selection rule")
+        require(value.get("selection")==("maximin_nonnegative_dual_origins_and_late" if history else "maximin_nonnegative_v7_origins" if trial else "maximin_nonnegative_origins_and_late" if value["schema_version"]==3 else "maximin_nonnegative_origins"), "Unsupported selection rule")
+        if history:
+            require(value.get('postprocessing_contract')=={'event_mass':'preserve_v7','within_event_order':'learned','state_schema_version':3}, 'Invalid history postprocessing contract')
         if value["schema_version"]==3:
             require(value.get("postprocessing_contract")=={"event_mass":"learned","within_event_order":"preserve","state_schema_version":2}, "Invalid schema-v3 postprocessing contract")
         for name, asset in value["inputs"].items():
@@ -112,7 +116,7 @@ class ExperimentSpec:
         cases = [CaseSpec.parse(c) for c in value["development"]]
         require(cases and len({c.name for c in cases})==len(cases), "Development cases must be unique and nonempty")
         require(all(c.target_end<=JAN20+5*DAY for c in cases), "Development must end before Jan25")
-        if value["schema_version"]==3:
+        if value["schema_version"] in (3,4):
             require(any(c.target_end>c.target_cutoff+2*DAY for c in cases), "Missing aged development case")
         expected={"primary":(JAN20+4*DAY,JAN20+5*DAY,JAN20+7*DAY),
                   "secondary":(JAN20+5*DAY,JAN20+6*DAY,JAN20+7*DAY),
@@ -130,6 +134,8 @@ class ExperimentSpec:
             require(budget["total_seconds"]==14400 and "carry" in value["inputs"], "Research requires original budget and a verified carry decision")
             require(identifier(value["release_name"]) not in {"v6","v7"}, "Protected release name")
             require(value.get("device") in {"cpu","cuda"},"Declare research device")
+            if history:
+                require(budget['phase_seconds']<=1200 and 'continuation' in value['inputs'], 'History research requires continuation and phase caps')
         require(value.get("baseline_sha256")==V6_SHA, "V6 baseline identity changed")
         return cls(json.loads(json.dumps(value,allow_nan=False)))
 

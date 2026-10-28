@@ -9,12 +9,16 @@ def is_trial(spec):
     return spec.get('release_policy', 'v6_four_gate') == 'v7_upload_trial'
 
 
+def is_dual(spec):
+    return spec.get('release_policy') == 'v6_v7_four_gate'
+
+
 def comparison(spec, row):
     return row['v7_comparison'] if is_trial(spec) else row
 
 
 def validate_anchor(root, spec):
-    if not is_trial(spec):
+    if not (is_trial(spec) or is_dual(spec)):
         return
     from .contracts import inside
     from .storage import read
@@ -39,6 +43,9 @@ def validate_metric(row, confidence=False):
 
 
 def stage_passed(spec, stage, results):
+    if is_dual(spec):
+        v7 = {name: row['v7_comparison'] for name, row in results.items()}
+        return stage_passed({}, stage, results) and stage_passed({}, stage, v7)
     if stage == 'screen':
         primary = comparison(spec, results['primary'])
         secondary = comparison(spec, results['secondary'])
@@ -55,7 +62,41 @@ def v6_gates(screen, stress):
             'late': stress['results']['five_day']['late']['auc_diff'] >= 0}
 
 
+def dual_gates(screen, stress):
+    def anchor(report):
+        return {'results': {name: row['v7_comparison'] for name, row in report['results'].items()}}
+    return {'V6': v6_gates(screen, stress), 'V7': v6_gates(anchor(screen), anchor(stress))}
+
+
+def dual_winner(spec, results):
+    from .contracts import DAY
+    eligible = []
+    for name in spec['candidate_order']:
+        gains = [[], []]
+        aged = []
+        for case in spec['development']:
+            row = results[name + '/' + case['name']]
+            for index, comparison in enumerate((row, row['v7_comparison'])):
+                validate_metric(comparison)
+                gains[index].append(comparison['auc_diff'])
+                if case['target_end'] > case['target_cutoff'] + 2 * DAY:
+                    require(row['late']['events'] > 0, 'Missing aged development events')
+                    validate_metric(comparison['late'])
+                    aged.append(comparison['late']['auc_diff'])
+        require(aged and np.isfinite(aged).all(), 'Invalid aged development evidence')
+        overall = gains[0] + gains[1]
+        if min(overall + aged) >= 0 and all(np.mean(g) > 0 for g in gains):
+            eligible.append((name, min(overall)))
+    if not eligible:
+        return None
+    best = max(value for _, value in eligible)
+    return next(name for name, value in eligible if best - value <= 1e-12)
+
+
 def release_flags(spec):
+    if is_dual(spec):
+        return {'release_policy': 'v6_v7_four_gate', 'upload_ready': True,
+                'submission_ready': True, 'promotion_supported': True}
     if is_trial(spec):
         return {'release_policy': 'v7_upload_trial', 'upload_ready': True,
                 'submission_ready': False, 'promotion_supported': False}
@@ -63,6 +104,6 @@ def release_flags(spec):
 
 
 def receipt_ready(spec, receipt):
-    if spec.get("release_policy","v6_four_gate") not in {"v6_four_gate","v7_upload_trial"}:return False
+    if spec.get("release_policy","v6_four_gate") not in {"v6_four_gate","v7_upload_trial","v6_v7_four_gate"}:return False
     return all(receipt.get(k) == v and type(receipt.get(k)) is type(v)
                for k, v in release_flags(spec).items())

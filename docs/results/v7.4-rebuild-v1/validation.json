@@ -1,0 +1,38 @@
+{
+  "schema_version": 5,
+  "scientific_source_commit": "49cc3677855678356ac00a48156af0b4442703a3",
+  "baseline_lineage": "rebuilt_v6_v7_recipe",
+  "local_checks": {
+    "locked_cpu_regressions_passed": 195,
+    "optional_private_artifact_skips": 1,
+    "required_model_contracts_passed": 82,
+    "required_model_contract_skips": 0,
+    "reconstruction_contracts": 12,
+    "frozen_source_files_verified": 59,
+    "source_package_passed": true
+  },
+  "source_ci": {
+    "run_id": 40608973998,
+    "commit": "49cc3677855678356ac00a48156af0b4442703a3",
+    "conclusion": "success"
+  },
+  "terminal_guard_checks": {
+    "screen_exit_code": 1,
+    "screen_reason": "Development failure is terminal",
+    "finalize_exit_code": 1,
+    "finalize_reason": "Stage must complete with durable accounting: screen",
+    "ledger_sha256_before": "1bf6fd848ff12a8381683e5f4df4ae0ca415b8c5021a7b508ca7f5f2711cdd26",
+    "ledger_sha256_after": "1bf6fd848ff12a8381683e5f4df4ae0ca415b8c5021a7b508ca7f5f2711cdd26",
+    "claims_before": 71,
+    "claims_after": 71,
+    "ready_configuration_exists": false,
+    "submission_exists": false,
+    "readiness_receipt_exists": false,
+    "full_prefix_model_directory_exists": false
+  },
+  "scientific_status": "rejected_at_develop",
+  "historical_v6_v7_reproduced": false,
+  "submission_ready": false,
+  "promotion_supported": false,
+  "competition_upload_performed": false
+}

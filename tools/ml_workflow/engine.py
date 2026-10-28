@@ -38,7 +38,7 @@ def locate(root,run_id):
 def prepare(root,spec_path,run_id):
     root=Path(root).resolve();identifier(run_id)
     spec=ExperimentSpec.parse(read(spec_path)).value
-    if spec["schema_version"] in (2,3):
+    if spec["schema_version"] in (2,3,4):
         from .postprocessing import prepare as prepare_postprocessor
         return prepare_postprocessor(root,spec_path,run_id)
     if spec["purpose"]=="research":
@@ -80,7 +80,7 @@ def load(root,work):
     validate_anchor(root,m["spec"])
     for asset in m.get("generated_inputs",{}).values():
         require(digest(inside(root,asset["path"]))==asset["sha256"],"Prepared input changed")
-    if m["spec"]["schema_version"] in (2,3):
+    if m["spec"]["schema_version"] in (2,3,4):
         require(read(work/"prepare.ledger.json")["exit_code"]==0,"Preparation accounting incomplete")
     # An old adapter is never silently combined with a changed runtime.
     for name,expected in m["source"]["files"].items():
@@ -97,8 +97,8 @@ def adapter(work,m):
     module_spec=importlib.util.spec_from_file_location("workflow_adapter_"+m["run_id"].replace("-","_"),path)
     module=importlib.util.module_from_spec(module_spec);module_spec.loader.exec_module(module)
     require(m["spec"]["purpose"] in module.PURPOSES,"Adapter purpose mismatch")
-    if m["spec"]["schema_version"] in (2,3):
-        if m["spec"]["schema_version"]==3:
+    if m["spec"]["schema_version"] in (2,3,4):
+        if m["spec"]["schema_version"] in (3,4):
             require(m["spec"]["candidates"]==module.CANDIDATES,"Postprocessor candidate family differs")
         else:
             require(all(p.get("config")==module.CONFIG for p in m["spec"]["candidates"].values()),"Postprocessor recipe differs")
@@ -181,7 +181,10 @@ def point(y,before,after):
 
 
 def _score(root,work,m,module,raw,candidate,case):
-    if m["spec"]["schema_version"] in (2,3):
+    if m['spec']['schema_version']==4:
+        from .history_postprocessing import score
+        return score(root,work,m,module,raw,candidate,case)
+    if m["spec"]["schema_version"] in (2,3,4):
         from .postprocessing import score
         return score(root,work,m,module,raw,candidate,case)
     fit=first_indices(raw["u"],raw["t"],case.meta_cutoff,case.meta_cutoff+DAY)
@@ -247,7 +250,7 @@ def _report(work,m,stage,results,passed,extra=None):
 
 
 def checked(work,stage):
-    from .policy import is_trial, validate_metric, stage_passed
+    from .policy import is_trial, is_dual, validate_metric, stage_passed
     spec=read(work/"manifest.json").get("spec",{})
     path=work/(stage+".json")
     require(path.is_file() and read(work/(stage+".seal.json"))["sha256"]==digest(path),"Missing or changed "+stage+" report")
@@ -262,13 +265,20 @@ def checked(work,stage):
         if stage in {"screen","stress"}:
             require(type(row["resamples"]) is int and 990<=row["resamples"]<=1000 and np.isfinite(row["ci_lower"]) and np.isfinite(row["ci_upper"])
                 and -1<=row["ci_lower"]<=row["ci_upper"]<=1,"Invalid confidence evidence")
-    if is_trial(spec):
-        for row in result["results"].values():
+    if is_trial(spec) or is_dual(spec):
+        for result_name,row in result["results"].items():
             validate_metric(row["v7_comparison"],stage in {"screen","stress"})
             from .policy import V7_SHA
             require(row["v7_comparison"].get("anchor_sha256")==V7_SHA,"V7 comparison identity changed")
             require(abs(row["candidate_auc"]-row["v7_comparison"]["candidate_auc"])<1e-12,"Candidate comparison differs")
             if "late" in row["v7_comparison"]:validate_metric(row["v7_comparison"]["late"])
+            if is_dual(spec):
+                case_name=result_name.split('/')[-1] if stage=='develop' else result_name
+                expected = next((c for c in spec['development'] if c['name']==case_name), None) if stage=='develop' else spec['promotion'].get(case_name)
+                require(row['case']==expected, 'History comparison chronology changed')
+                if 'late' in row:
+                    validate_metric(row['late'])
+                    require(abs(row['late']['candidate_auc']-row['v7_comparison']['late']['candidate_auc'])<1e-12, 'Late candidate comparison differs')
     if stage=="develop":
         actual=_winner(spec,result["results"])
         require(result.get("winner")==actual,"Development selection changed")
@@ -279,9 +289,10 @@ def checked(work,stage):
 
 
 def _winner(spec,results):
-    from .policy import is_trial, comparison, validate_metric
+    from .policy import is_trial, is_dual, comparison, validate_metric, dual_winner
     keys={candidate+"/"+case["name"] for candidate in spec["candidate_order"] for case in spec["development"]}
     require(set(results)==keys,"Development comparisons incomplete")
+    if is_dual(spec):return dual_winner(spec,results)
     eligible=[]
     for candidate in spec["candidate_order"]:
         rows=[comparison(spec,results[candidate+"/"+case["name"]]) for case in spec["development"]]
@@ -324,7 +335,7 @@ def _private_replay(root,work,m,number):
 
 
 def finalize(root,work,m,module,raw,winner):
-    if m["spec"]["schema_version"] in (2,3):
+    if m["spec"]["schema_version"] in (2,3,4):
         from .postprocessing import finalize as finalize_postprocessor
         return finalize_postprocessor(root,work,m,module,raw,winner)
     screen=checked(work,"screen");checked(work,"stress")
@@ -389,7 +400,7 @@ def verify(root,run_id):
     for stage in STAGES:
         require(read(work/(stage+".ledger.json"))["exit_code"]==0,"Stage did not complete")
     research=m["spec"]["purpose"]=="research"
-    from .policy import receipt_ready, is_trial
+    from .policy import receipt_ready, is_trial, is_dual, dual_gates
     ready=False;upload_ready=False
     if research and (work/"published.json").exists():
         receipt=read(work/"published.json")
@@ -401,9 +412,14 @@ def verify(root,run_id):
             from .policy import v6_gates
             require(receipt.get("v6_gate_results")==v6_gates(checked(work,"screen"),checked(work,"stress"))
                     and receipt.get("v7_anchor_sha256")==m["spec"]["anchor_sha256"],"Trial comparison receipt changed")
+        if is_dual(m['spec']):
+            require(receipt.get('comparison_gate_results')==dual_gates(checked(work,'screen'),checked(work,'stress'))
+                    and receipt.get('v7_anchor_sha256')==m['spec']['anchor_sha256'], 'Dual comparison receipt changed')
         ready=not is_trial(m["spec"]);upload_ready=True
-    return {"run_id":run_id,"purpose":m["spec"]["purpose"],"validation_complete":True,
+    result={"run_id":run_id,"purpose":m["spec"]["purpose"],"validation_complete":True,
         "submission_ready":ready,"upload_ready":upload_ready,"rows":final["rows"],"csv_sha256":final["csv_sha256"],"source_commit":m["source"]["commit"]}
+    if is_dual(m['spec']):result.update(release_policy='v6_v7_four_gate',promotion_supported=ready)
+    return result
 
 
 def publish(root,work,m):
@@ -415,13 +431,16 @@ def publish(root,work,m):
     require(not config.exists() and not output.exists(),"Preserve existing release")
     output.parent.mkdir(parents=True,exist_ok=True)
     os.link(work/"candidate.csv",output)
-    from .policy import release_flags, is_trial, v6_gates
+    from .policy import release_flags, is_trial, is_dual, v6_gates, dual_gates
     receipt={"schema_version":1,**release_flags(m["spec"]),"purpose":"research","run_id":m["run_id"],
         "csv_sha256":final["csv_sha256"],"source_snapshot_sha256":m["source"]["sha256"],"manifest_sha256":digest(work/"manifest.json"),
         "final_report_sha256":digest(work/"finalize.json"),"competition_upload_performed":False}
     if is_trial(m["spec"]):
         receipt["v6_gate_results"]=v6_gates(checked(work,"screen"),checked(work,"stress"))
         receipt["v7_anchor_sha256"]=m["spec"]["anchor_sha256"]
+    if is_dual(m['spec']):
+        receipt['comparison_gate_results']=dual_gates(checked(work,'screen'),checked(work,'stress'))
+        receipt['v7_anchor_sha256']=m['spec']['anchor_sha256']
     write_new(work/"published.json",receipt)
     candidate=work/"ready-config.json";write_new(candidate,receipt);os.link(candidate,config)
 

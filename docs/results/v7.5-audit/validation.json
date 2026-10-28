@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "validation_type": "source_engineering_and_posthoc_saved_artifact_audit",
+  "local_cpu_tests": {
+    "command": "python -m pytest tests/ -q",
+    "passed": 238,
+    "skipped": 1,
+    "skip_reason": "Missing historical artifacts/submissions/v7_candidate.csv"
+  },
+  "required_model_contracts": {
+    "command": "python tools/check_model_contracts.py",
+    "unittest_passed": 70,
+    "pytest_passed": 55,
+    "total_passed": 125,
+    "skipped": 0,
+    "audit_contracts": 30
+  },
+  "audit_execution": {
+    "scientific_source_commit": "2554e7d6367a3d7501b4de4e7d08671320761452",
+    "protected_inputs": 766,
+    "development_windows": 2,
+    "candidate_comparisons_reproduced": 6,
+    "combiner_prediction_absolute_tolerance": 1e-15,
+    "posthoc_bootstrap_resamples": 1000,
+    "posthoc_bootstrap_seed": 2026,
+    "seconds_charged": 64.80082819300151,
+    "prior_attempts_preserved": 196,
+    "total_attempts_after_audit": 197,
+    "rerun_reused_completed_result_without_new_charge": true,
+    "durable_accounting_before_publication": true,
+    "new_model_training_performed": false,
+    "new_submission_exported": false,
+    "promotion_supported": false
+  },
+  "preserved_submission_sha256": "9320ca6465c5ce6576746c5fc8f00d13109e507d7a20d5d506a9e03f63fa2b85",
+  "successor_status": "design_only_not_executed",
+  "competition_upload_performed": false
+}

@@ -1,0 +1,11 @@
+{
+  "schema_version": 6,
+  "csv_valid": true,
+  "replay_verified": true,
+  "model_role": "rebuilt_baseline",
+  "v7_5_promoted": false,
+  "submission": "artifacts/submissions/rebuilt_v6_submission.csv",
+  "sha256": "9320ca6465c5ce6576746c5fc8f00d13109e507d7a20d5d506a9e03f63fa2b85",
+  "receipt": "artifacts/submissions/rebuilt_v6_submission.csv.receipt.json",
+  "checksum": "artifacts/submissions/rebuilt_v6_submission.csv.sha256"
+}
