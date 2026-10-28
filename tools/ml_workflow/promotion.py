@@ -69,7 +69,11 @@ def verify_promotion(root, evidence):
     try:
         result['evidence_sha256'] = canonical(evidence)
         require(isinstance(evidence, dict) and type(evidence.get('schema_version')) is int
-                and evidence['schema_version'] == 1, 'Unsupported promotion evidence schema')
+                and evidence['schema_version'] in (1, 2), 'Unsupported promotion evidence schema')
+        extended = evidence['schema_version'] == 2
+        if extended:
+            from .historical import PROFILE
+            require(evidence.get('release_profile') == PROFILE, 'Unknown extended release profile')
         role = evidence.get('model_role'); result['model_role'] = role
         require(role == 'candidate', 'Fallback/diagnostic evidence cannot promote a candidate')
         require(evidence.get('purpose') == 'research', 'Only real research evidence can promote')
@@ -105,6 +109,19 @@ def verify_promotion(root, evidence):
         source_folder = inside(root, evidence['source_directory'])
         verify_snapshot(source_folder, source_record)
         require(source_record['sha256'] == manifest['source_sha256'], 'Scientific source changed')
+        if extended:
+            from .historical import verify_floors, floor_gates
+            require(manifest['protocol']['release_profile'] == evidence['release_profile'], 'Manifest profile differs')
+            floors = verify_floors(read(artifact(evidence['historical_floors'])), artifact, read, source_record)
+            baseline = manifest['baseline_inputs']
+            require(set(baseline) == {'data_sha256', 'recipe', 'models'}
+                    and baseline['data_sha256'] == manifest['data_sha256'] and baseline['models']
+                    and all(name.endswith(('.pt', '.cbm', '.npz')) for name in baseline['models']),
+                    'Baseline identity contains candidate coefficients or invalid inputs')
+            for name, value in baseline['models'].items():
+                require(inventory.get(name) == value, 'Unbound comparator model'); artifact(name)
+            require(manifest['comparators'] == {a: canonical({'anchor': a, 'baseline': baseline}) for a in ('V6', 'V7')},
+                    'Comparator identity does not reproduce independently of the candidate')
         engineering = read(artifact(evidence['engineering_receipt']))
         require(engineering['kind'] == 'source_readiness' and engineering['git_commit'] == source_record['commit']
                 and all(engineering['checks'].get(k) == 'success' for k in
@@ -156,6 +173,10 @@ def verify_promotion(root, evidence):
                         comparisons.setdefault('late', {})[anchor] = {'baseline_auc': a, 'candidate_auc': b, 'auc_diff': b - a}
         computed = metric_gates(comparisons)
         result.update(computed); result['comparisons'] = comparisons
+        if extended:
+            result['historical_floors'] = floor_gates(comparisons, floors)
+            result['blockers'].extend('historical/' + name + ': point threshold failed'
+                                      for name, passed in result['historical_floors'].items() if not passed)
         # CSV validity does not imply scientific eligibility. Both are required.
         validator_path = Path(__file__).resolve().parents[2] / 'legacy/submission_export.py'
         require(source_record['files'].get('legacy/submission_export.py') == digest(validator_path), 'CSV validator source differs')
@@ -163,12 +184,14 @@ def verify_promotion(root, evidence):
         validator = importlib.util.module_from_spec(loader); loader.loader.exec_module(validator)
         example = artifact(evidence['example_submission'])
         exports = evidence['exports']; require(len(exports) >= 2, 'Require independent inference exports')
+        if extended: require(len(exports) == 3, 'Require two exports and a third standalone replay')
         csv_paths = []; expected_hash = None
-        owners = set()
-        for export in exports:
+        owners = set(); first_vectors = None
+        for number, export in enumerate(exports, 1):
             csv_path = artifact(export['csv']); receipt = read(artifact(export['receipt']))
-            require(receipt['candidate'] == evidence['candidate'] and receipt['fresh_neural_features'] is True
-                    and receipt['fresh_graph'] is True and receipt['source_sha256'] == source_record['sha256']
+            freshness = ('fresh_neural_features', 'fresh_context_features', 'fresh_slate_features') if extended else ('fresh_neural_features', 'fresh_graph')
+            require(receipt['candidate'] == evidence['candidate'] and all(receipt.get(k) is True for k in freshness)
+                    and receipt['source_sha256'] == source_record['sha256']
                     and receipt['manifest_sha256'] == digest(artifact(evidence['run_manifest']))
                     and receipt['model_sha256'] == canonical(manifest['models'])
                     and receipt['csv_sha256'] == digest(csv_path), 'Inference receipt does not bind the selected model/source')
@@ -179,6 +202,21 @@ def verify_promotion(root, evidence):
             owners.add(owner)
             require(all(not os.path.samefile(csv_path, prior) for prior in csv_paths), 'Exports alias the same physical file')
             validator.validate_csv(csv_path, example, EXPECTED_ROWS)
+            if extended:
+                require(receipt['number'] == number and receipt['purpose'] == 'research'
+                        and receipt['vectors_sha256'] == digest(artifact(export['vectors'])), 'Replay vector identity differs')
+                from row_auc_final_utils import verify_csv_probabilities
+                with np.load(artifact(export['vectors']), allow_pickle=False) as saved:
+                    vectors = {k: saved[k] for k in ('candidate', 'members', 'rowids')}
+                verify_csv_probabilities(csv_path, vectors['rowids'].ravel(), vectors['candidate'])
+                require(vectors['candidate'].shape == (EXPECTED_ROWS // 10, 10)
+                        and vectors['members'].shape == (5, EXPECTED_ROWS // 10, 10)
+                        and np.isfinite(vectors['members']).all(), 'Replay member schema differs')
+                if first_vectors is None: first_vectors = vectors
+                else:
+                    require(np.array_equal(vectors['rowids'], first_vectors['rowids'])
+                            and all(np.allclose(vectors[k], first_vectors[k], rtol=0, atol=1e-15) for k in ('candidate', 'members')),
+                            'Independent member predictions differ')
             if expected_hash is None: expected_hash = digest(csv_path)
             else: require(digest(csv_path) == expected_hash, 'Independent CSV hashes differ')
             csv_paths.append(csv_path)
