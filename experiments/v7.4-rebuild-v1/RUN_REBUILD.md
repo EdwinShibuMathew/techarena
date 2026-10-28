@@ -32,6 +32,12 @@ Only a passing candidate permits full-prefix training and independent final
 replays. Publication follows successful durable accounting. Until then there is
 no submission-ready V7.4 and no modification to official V7.
 
+This generation has completed and was **rejected at development**. All 25 prefix
+models were trained, but neither variant passed the aged comparison against
+rebuilt V6. Screening and finalization refuse this recorded failure. See the
+[terminal report](../../docs/results/v7.4-rebuild-v1/README.md). The commands below
+describe the frozen workflow; they do not authorize another scientific attempt.
+
 ```bash
 python experiments/v7.4-rebuild-v1/run.py prepare
 python experiments/v7.4-rebuild-v1/run.py baselines

@@ -1,5 +1,10 @@
 # V7.4 implementation validation — research not started
 
+Historical pre-reconstruction status: the subsequently authorized from-raw
+campaign rebuilt all 25 prefix models and closed at the development gate.
+See its [measured results and terminal decision](../v7.4-rebuild-v1/README.md).
+The original implementation evidence below is preserved.
+
 **Not promoted; no competition submission produced.** The graph model and full
 V6/V7 promotion workflow are implemented, but this checkout lacks the verified
 trained bundle, chronological prefix assets, processed caches and authoritative
