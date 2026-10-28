@@ -241,6 +241,10 @@ def controller(root, work, action, launch):
     if action == 'verify':
         print(verify(root, work)); return
     require((work / 'baseline-delivery.json').exists(), 'Deliver the baseline CSV before candidate research')
+    if action == 'replay-baseline':
+        number = max(int(p.stem.split('-')[-1]) for p in (work / 'tasks').glob('baseline-export-*.json')) + 1
+        launch(root, 'baseline-export', f'baseline-export-{number}', arguments={'number': number})
+        print(verify(root, work)); return
     if action == 'prepare':
         for cutoff in EXTRA_CUTOFFS:
             for member in MEMBERS:

@@ -128,6 +128,17 @@ def test_research_reserve_refuses_before_claiming(tmp_path):
     assert not (work / 'attempts').exists()
 
 
+def test_baseline_replay_remains_available_after_candidate_failure(tmp_path):
+    work = tmp_path / 'work'; write_new(work / 'baseline-delivery.json', {'exists': True})
+    write_new(work / 'stages/develop.json', {'passed': False})
+    for n in (1, 2): write_new(work / 'tasks' / f'baseline-export-{n}.json', {})
+    called = []
+    with patch.object(pipeline, 'verify', return_value={'baseline_verified': True}):
+        pipeline.controller(tmp_path, work, 'replay-baseline', lambda *a, **kw: called.append((a, kw)))
+    assert called[0][0][1:3] == ('baseline-export', 'baseline-export-3')
+    assert called[0][1]['arguments'] == {'number': 3}
+
+
 def test_each_dual_gate_failure_is_terminal(tmp_path):
     def metric():
         return dict(baseline_auc=.8, candidate_auc=.801, auc_diff=.001,
@@ -219,6 +230,7 @@ def test_synthetic_end_to_end_graph_combiner_gates_and_csv(tmp_path):
         if campaign.completed(work, task): return
         args = arguments or {}
         if action == 'baseline-combiner': outputs = pipeline.baseline_combiner(work, raw, args['member'], args['meta'])
+        elif action == 'baseline-export': outputs = pipeline.baseline_export(root, work, raw, args['number'])
         else: outputs = pipeline.research_worker(root, work, raw, {'action': action, 'arguments': args})
         task_marker(task, outputs)
     original_export, original_validate = submission_export.export_submission, submission_export.validate_csv
@@ -233,8 +245,10 @@ def test_synthetic_end_to_end_graph_combiner_gates_and_csv(tmp_path):
         for number in (1, 2): task_marker(f'baseline-export-{number}', pipeline.baseline_export(root, work, raw, number))
         pipeline.publish_baseline(root, work)
         pipeline.controller(root, work, 'finalize', launch)
+        pipeline.controller(root, work, 'replay-baseline', launch)
         result = pipeline.verify(root, work)
     assert result['v7_5_promoted'] is True
     assert digest(root / result['submission']) == digest(work / 'exports/3/v7_5.csv')
+    assert digest(root / 'artifacts/submissions/rebuilt_v6_submission.csv') == digest(work / 'baseline-exports/3/rebuilt_v6.csv')
     with (work / 'exports/3/graph.npz').open('ab') as f: f.write(b'changed')
     with pytest.raises(ValueError, match='Task output changed'): campaign.completed(work, 'export-3')

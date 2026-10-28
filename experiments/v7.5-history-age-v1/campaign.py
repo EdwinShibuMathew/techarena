@@ -146,7 +146,7 @@ def baseline(root):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('action', choices=['baseline', 'prepare', 'develop', 'screen', 'stress', 'finalize', 'replay', 'verify', 'status',
+    parser.add_argument('action', choices=['baseline', 'prepare', 'develop', 'screen', 'stress', 'finalize', 'replay', 'replay-baseline', 'verify', 'status',
                                           'train', 'baseline-feature', 'baseline-combiner', 'baseline-export',
                                           'feature', 'combiner', 'score', 'summarize', 'export'])
     parser.add_argument('--root', type=Path, default=ROOT)
@@ -164,7 +164,7 @@ def main():
         with (work / 'controller.lock').open('a') as lock:
             fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
             if args.action == 'baseline': baseline(root)
-            elif args.action in ('prepare', 'develop', 'screen', 'stress', 'finalize', 'replay', 'verify'):
+            elif args.action in ('prepare', 'develop', 'screen', 'stress', 'finalize', 'replay', 'replay-baseline', 'verify'):
                 import pipeline
                 pipeline.controller(root, work, args.action, launch)
             else: raise ValueError('Internal action requires an owning controller')

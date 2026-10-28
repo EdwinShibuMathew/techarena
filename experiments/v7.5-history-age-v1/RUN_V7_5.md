@@ -37,6 +37,7 @@ CSV529390 rows must match the example IDs/header/order, with finite scores in
 
 ```bash
 python experiments/v7.5-history-age-v1/campaign.py baseline
+python experiments/v7.5-history-age-v1/campaign.py replay-baseline
 python experiments/v7.5-history-age-v1/campaign.py prepare
 python experiments/v7.5-history-age-v1/campaign.py develop
 python experiments/v7.5-history-age-v1/campaign.py screen
