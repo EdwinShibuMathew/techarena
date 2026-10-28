@@ -1,5 +1,11 @@
 # V7.5 history and prefix-age combiner
 
+This generation is **closed at development**. A recovered the aged regression
+but failed the Jan24 comparison against rebuilt V7; B/C also failed eligibility.
+The verified rebuilt-V6 competition CSV was delivered with matching independent
+exports and supported replay. See [measured results and delivery](../../docs/results/v7.5-history-age-v1/README.md).
+The scientific commands below preserve the failed decision; they do not reopen it.
+
 Hypothesis: graph evidence and real stale-prefix training improve aged transfer
 without losing near-window gains. Comparators are rebuilt V6 and fixed-gamma V7.
 Historical fingerprints and closed outcomes are preserved. All dates are reused

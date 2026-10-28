@@ -21,6 +21,7 @@ and submission CSVs are distributed separately through private team access.
 | **V7.2 joint calibration** | **Rejected during development**; no submission exported | All three variants improved aggregate development AUC but lost on aged events. [Results and terminal decision](docs/results/v7.2-joint-calibration-v1/README.md). |
 | **V7.3 V7-anchored correction** | **Upload trial ready** under the approved V7 comparison policy | Confidence-backed primary/five-day gains versus V7; late performance declined. [Metrics, CSV fingerprint and replay](docs/results/v7.3-v7-anchor-v1/README.md). |
 | **V7.4 history graph from raw** | **Rejected during development**; 25 prefix models rebuilt and trained | Both variants improved overall AUC but lost on aged events versus rebuilt V6. [Results and reconstruction evidence](docs/results/v7.4-rebuild-v1/README.md). |
+| **V7.5 graph-age combiners** | **Baseline competition CSV delivered; V7.5 rejected during development** | A recovered the aged regression but lost the Jan24 comparison against rebuilt V7. [Measured results and verified CSV delivery](docs/results/v7.5-history-age-v1/README.md). |
 | **V8 research archive** | Six closed campaigns; **none promoted**, no submission-ready V8 | [Preserved evidence and review dispositions](docs/results/v8-archive/README.md). |
 
 V6 combines three dimension-8 preference models and two dimension-16 models,
