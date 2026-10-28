@@ -221,7 +221,7 @@ def test_failed_final_accounting_cannot_mark_task_or_publish(tmp_path, monkeypat
     write_new(parent / 'genesis.json', {'generation': 'fixture'}); write_new(parent / 'compute-ledger.json', {'used_seconds': 0})
     write_new(work / 'manifest.json', {}); source = {'sha256': 'a' * 64}
     class FailedAccounting:
-        def __init__(self, *_args, **_kwargs): self.state = {'attempts': []}
+        def __init__(self, *_args, **_kwargs): self.state = {'attempts': [], 'used_seconds': 1200}
         def __enter__(self): return self
         def run(self, command, cwd):
             token = command[-1]; claim = work / 'attempts' / (token + '.claim.json')
@@ -235,6 +235,21 @@ def test_failed_final_accounting_cannot_mark_task_or_publish(tmp_path, monkeypat
     monkeypatch.setattr(v76.rebuild, 'ReconstructionBudget', FailedAccounting)
     with pytest.raises(OSError, match='accounting'): v76.launch(tmp_path, 'preflight', 'preflight')
     assert not (work / 'tasks/preflight.json').exists() and not (work / 'readiness.json').exists()
+
+
+def test_reserve_is_rechecked_under_lock_before_any_claim(tmp_path, monkeypatch):
+    parent = tmp_path / 'artifacts/rebuild'
+    write_new(parent / 'genesis.json', {'generation': 'fixture'})
+    write_new(parent / 'compute-ledger.json', {'used_seconds': 0})
+    class ConcurrentSpend:
+        def __init__(self, *_args, **_kwargs): self.state = {'used_seconds': 40000}
+        def __enter__(self): return self
+        def __exit__(self, *_): return False
+    monkeypatch.setattr(v76.rebuild, 'ReconstructionBudget', ConcurrentSpend)
+    with patch.object(v76, 'initialize') as initializer:
+        with pytest.raises(ValueError, match='after acquiring'): v76.launch(tmp_path, 'preflight', 'preflight')
+        initializer.assert_not_called()
+    assert not (tmp_path / v76.WORK / 'attempts').exists()
 
 
 def test_publication_requires_settled_promotion_verification(tmp_path, monkeypatch):

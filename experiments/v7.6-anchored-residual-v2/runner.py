@@ -84,6 +84,8 @@ def launch(root, action, task, arguments=None, limit=1200, final=False):
     token = task + '-' + str(time.time_ns())
     with rebuild.ReconstructionBudget(parent / 'compute-ledger.json', genesis['generation'] + '/v76-' + token,
                                       limit, 43200, carry_identity=digest(parent / 'genesis.json')) as budget:
+        require(final or budget.state['used_seconds'] <= 43200 - 3600,
+                'Protect finalization reserve after acquiring the shared ledger lock')
         work, _ = initialize(root)
         pointer = work / 'scientific-source.json'
         if pointer.exists():
