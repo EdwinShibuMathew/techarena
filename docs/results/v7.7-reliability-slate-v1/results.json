@@ -1,0 +1,282 @@
+{
+  "schema_version": 1,
+  "protocol": {
+    "schema_version": 1,
+    "purpose": "research",
+    "design_id": "v7.7-reliability-slate-v1",
+    "hypothesis": "First-return user reliability and candidate slate evidence improve global row ranking",
+    "baseline_lineage": "rebuilt_v6_v7_recipe",
+    "release_policy": "v6_v7_four_gate",
+    "release_profile": "dual_anchor_plus_historical_floors_v1",
+    "candidate_order": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ],
+    "candidates": {
+      "A": {
+        "event": 4,
+        "row": false
+      },
+      "B": {
+        "event": 11,
+        "row": false
+      },
+      "C": {
+        "event": 4,
+        "row": true
+      },
+      "D": {
+        "event": 11,
+        "row": true
+      }
+    },
+    "mature_prefixes": [
+      1737417600,
+      1737504000,
+      1737590400,
+      1737676800,
+      1737763200,
+      1737849600
+    ],
+    "metadata_days": [
+      1737417600,
+      1737504000,
+      1737676800,
+      1737763200
+    ],
+    "event_features": [
+      "log1p_anchor_sum",
+      "conditional_entropy",
+      "maximum_conditional",
+      "member_logit_rms",
+      "log1p_user_events",
+      "smoothed_user_ctr",
+      "log1p_user_clicks",
+      "log1p_activity_gap",
+      "history_length_over20",
+      "log1p_history_gap",
+      "unseen_user"
+    ],
+    "row_features": [
+      "member_logit_deviation_dim8_seed42",
+      "member_logit_deviation_dim8_seed43",
+      "member_logit_deviation_dim8_seed44",
+      "member_logit_deviation_dim16_seed42",
+      "member_logit_deviation_dim16_seed43",
+      "member_rank_deviation_dim8_seed42",
+      "member_rank_deviation_dim8_seed43",
+      "member_rank_deviation_dim8_seed44",
+      "member_rank_deviation_dim16_seed42",
+      "member_rank_deviation_dim16_seed43",
+      "slate_mean_cosine",
+      "slate_max_cosine",
+      "slate_weighted_cosine"
+    ],
+    "normalization_scale_floor": 1e-06,
+    "standardized_bound": 5.0,
+    "feature_probability_epsilon": 1e-06,
+    "event_radius": 0.25,
+    "row_raw_radius": 0.125,
+    "initialization": "zero",
+    "objective": {
+      "bce": 0.5,
+      "global_pair": 0.5,
+      "l2_sum": 0.01,
+      "negatives_per_positive": 16
+    },
+    "optimizer": {
+      "method": "L-BFGS-B",
+      "maxiter": 200,
+      "ftol": 1e-12,
+      "gtol": 1e-08,
+      "maxls": 50
+    },
+    "dtype": "float64",
+    "device": "cpu",
+    "threads": 4,
+    "folds": 5,
+    "fold_seed": 2026,
+    "pair_seed": 5026,
+    "training_population": "first event per user since each prefix; query in metadata day",
+    "strata": "prefix lag by day and query six-hour bin; equal nonempty stratum weight; per-event sum<=1",
+    "teacher_population": "metadata-day first users; held users excluded across every view",
+    "bootstrap": {
+      "resamples": 1000,
+      "seed": 2026,
+      "minimum_valid": 990
+    },
+    "development": [
+      {
+        "name": "jan22_long",
+        "meta_cutoff": 1737417600,
+        "target_cutoff": 1737504000,
+        "target_end": 1737763200
+      },
+      {
+        "name": "jan24_forward",
+        "meta_cutoff": 1737504000,
+        "target_cutoff": 1737676800,
+        "target_end": 1737763200
+      }
+    ],
+    "phase_limits": {
+      "prepare": 5000,
+      "develop": 8000,
+      "promotion": 10000
+    },
+    "total_seconds": 43200,
+    "finalization_reserve_seconds": 3600,
+    "training_job_seconds": 900,
+    "other_job_seconds": 1200,
+    "retrain_neural": false,
+    "upload": "manual",
+    "validation_status": "retrospective reused dates; historical floors are point thresholds, not paired historical tests"
+  },
+  "manifest_sha256": "037e0260287d9f0405da55bb94e26335494e1fa5bc0ecfed7aa14bb8c0ccdcd7",
+  "scientific_source": "68d7c9c5f7c44ab4edca5de674d02dd4f865ba07",
+  "status": {
+    "v7_7_promoted": false,
+    "submission_ready": false
+  },
+  "stages": {
+    "selection": {
+      "passed": false,
+      "winner": null,
+      "report": "jobs/develop-selection-44136fa355b3678a1146ad16-1793230954452769973/development.json",
+      "results": {
+        "A/jan22_long": {
+          "baseline_auc": 0.7857459612365525,
+          "candidate_auc": 0.786176556518938,
+          "auc_diff": 0.00043059528238553746,
+          "v7_comparison": {
+            "baseline_auc": 0.786013982894133,
+            "candidate_auc": 0.786176556518938,
+            "auc_diff": 0.00016257362480498472,
+            "late": {
+              "baseline_auc": 0.7452298678252256,
+              "candidate_auc": 0.745201023619581,
+              "auc_diff": -2.8844205644640297e-05
+            }
+          },
+          "late": {
+            "baseline_auc": 0.7455360711422705,
+            "candidate_auc": 0.745201023619581,
+            "auc_diff": -0.0003350475226895355,
+            "events": 4065
+          }
+        },
+        "A/jan24_forward": {
+          "baseline_auc": 0.8096206669105158,
+          "candidate_auc": 0.8098986036433629,
+          "auc_diff": 0.00027793673284703946,
+          "v7_comparison": {
+            "baseline_auc": 0.8098034981948756,
+            "candidate_auc": 0.8098986036433629,
+            "auc_diff": 9.510544848723157e-05
+          }
+        },
+        "B/jan22_long": {
+          "baseline_auc": 0.7857459612365525,
+          "candidate_auc": 0.7862046069311068,
+          "auc_diff": 0.00045864569455433823,
+          "v7_comparison": {
+            "baseline_auc": 0.786013982894133,
+            "candidate_auc": 0.7862046069311068,
+            "auc_diff": 0.0001906240369737855,
+            "late": {
+              "baseline_auc": 0.7452298678252256,
+              "candidate_auc": 0.7452376676899546,
+              "auc_diff": 7.79986472898564e-06
+            }
+          },
+          "late": {
+            "baseline_auc": 0.7455360711422705,
+            "candidate_auc": 0.7452376676899546,
+            "auc_diff": -0.0002984034523159096,
+            "events": 4065
+          }
+        },
+        "B/jan24_forward": {
+          "baseline_auc": 0.8096206669105158,
+          "candidate_auc": 0.8099441129861068,
+          "auc_diff": 0.00032344607559098293,
+          "v7_comparison": {
+            "baseline_auc": 0.8098034981948756,
+            "candidate_auc": 0.8099441129861068,
+            "auc_diff": 0.00014061479123117504
+          }
+        },
+        "C/jan22_long": {
+          "baseline_auc": 0.7857459612365525,
+          "candidate_auc": 0.7861250488432651,
+          "auc_diff": 0.00037908760671256925,
+          "v7_comparison": {
+            "baseline_auc": 0.786013982894133,
+            "candidate_auc": 0.7861250488432651,
+            "auc_diff": 0.0001110659491320165,
+            "late": {
+              "baseline_auc": 0.7452298678252256,
+              "candidate_auc": 0.7453120264003704,
+              "auc_diff": 8.21585751448195e-05
+            }
+          },
+          "late": {
+            "baseline_auc": 0.7455360711422705,
+            "candidate_auc": 0.7453120264003704,
+            "auc_diff": -0.00022404474190007573,
+            "events": 4065
+          }
+        },
+        "C/jan24_forward": {
+          "baseline_auc": 0.8096206669105158,
+          "candidate_auc": 0.8099696136613279,
+          "auc_diff": 0.0003489467508120958,
+          "v7_comparison": {
+            "baseline_auc": 0.8098034981948756,
+            "candidate_auc": 0.8099696136613279,
+            "auc_diff": 0.00016611546645228792
+          }
+        },
+        "D/jan22_long": {
+          "baseline_auc": 0.7857459612365525,
+          "candidate_auc": 0.7861553197194082,
+          "auc_diff": 0.0004093584828557262,
+          "v7_comparison": {
+            "baseline_auc": 0.786013982894133,
+            "candidate_auc": 0.7861553197194082,
+            "auc_diff": 0.00014133682527517344,
+            "late": {
+              "baseline_auc": 0.7452298678252256,
+              "candidate_auc": 0.7453499755461496,
+              "auc_diff": 0.0001201077209239676
+            }
+          },
+          "late": {
+            "baseline_auc": 0.7455360711422705,
+            "candidate_auc": 0.7453499755461496,
+            "auc_diff": -0.00018609559612092763,
+            "events": 4065
+          }
+        },
+        "D/jan24_forward": {
+          "baseline_auc": 0.8096206669105158,
+          "candidate_auc": 0.8100167557144448,
+          "auc_diff": 0.0003960888039289401,
+          "v7_comparison": {
+            "baseline_auc": 0.8098034981948756,
+            "candidate_auc": 0.8100167557144448,
+            "auc_diff": 0.0002132575195691322
+          }
+        }
+      }
+    },
+    "screen": null,
+    "stress": null
+  },
+  "accounting_sha256": "d09d96fbeff466e643f8ac977bb3a85f7c20369eb1a9819b23111a063bc4cfd2",
+  "cumulative_seconds": 10402.612492673012,
+  "competition_upload_performed": false,
+  "historical_dates_reused": true
+}
