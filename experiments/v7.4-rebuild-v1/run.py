@@ -81,13 +81,13 @@ def launch(root, action, task, limit, arguments=None):
     ledger = work / 'compute-ledger.json'
     with Budget(ledger, genesis['generation'] + '/' + token, limit, TOTAL_SECONDS,
                 carry_identity=digest(work / 'genesis.json')) as budget:
-        lock = work / 'baseline-source.json'
-        if action == 'train' and lock.exists():
+        lock = work / ('baseline-source.json' if action == 'train' else 'scientific-source.json')
+        if action != 'prepare' and lock.exists():
             locked = read(lock); folder = work / locked['snapshot_relative']; source = locked['source']
             verify_snapshot(folder, source)
         else:
             folder, source = freeze(root, work)
-            if action == 'train':
+            if action != 'prepare':
                 write_new(lock, {'snapshot_relative': folder.relative_to(work).as_posix(), 'source': source})
         claim = {'schema_version': 5, 'task': task, 'action': action, 'token': token,
                  'arguments': arguments or {}, 'source': source, 'snapshot_relative': folder.relative_to(work).as_posix(),
@@ -147,7 +147,8 @@ def worker(root, action, token):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('action', choices=['prepare', 'baselines', 'train', 'develop', 'screen', 'stress', 'finalize', 'verify', 'replay', 'status'])
+    parser.add_argument('action', choices=['prepare', 'baselines', 'train', 'develop', 'screen', 'stress', 'finalize', 'verify', 'replay', 'status',
+                                         'feature', 'combiner', 'crossfit', 'score', 'summarize', 'export'])
     parser.add_argument('--root', type=Path, default=ROOT)
     parser.add_argument('--worker', action='store_true', help=argparse.SUPPRESS)
     parser.add_argument('--token', help=argparse.SUPPRESS)
